@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Ramsey\Uuid\Uuid;
 
 class User extends Authenticatable
 {
@@ -46,6 +47,15 @@ class User extends Authenticatable
     ];
 
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = Uuid::uuid4()->toString();
+        });
+    }
+    
     protected function role(): Attribute
     {
         return new Attribute(
