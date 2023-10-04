@@ -5,6 +5,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\WebconfigController;
 use App\Models\Image;
 use Illuminate\Foundation\Application;
@@ -42,6 +43,23 @@ Route::get('/product', ProductController::class)->name('product');
 Route::get('/product/{slug}', [ProductController::class, 'ProductDetail'])->name('product.detail');
 
 Route::get('/gallery', GalleryController::class)->name('gallery');
+
+
+// Reservation System Route Start
+Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
+Route::get('/admin/reservation', [ReservationController::class, 'admindashboard'])->name('admin.reservation.index');
+
+Route::get('/reservation/myreservation', [ReservationController::class, 'myReservation'])->name('reservation.myreservation');
+
+Route::get('/reservation/room', [ReservationController::class, 'room'])->name('reservation.room');
+Route::get('/reservation/room/{id}', [ReservationController::class, 'roomDetail'])->name('reservation.room.detail');
+Route::post('/reservation/room}', [ReservationController::class, 'roomDetail'])->name('reservation.reserve.room');
+
+Route::get('/reservation/item', [ReservationController::class, 'item'])->name('reservation.item');
+Route::get('/reservation/item/{id}', [ReservationController::class, 'itemDetail'])->name('reservation.item.detail');
+Route::post('/reservation/item', [ReservationController::class, 'itemReserve']);
+
+// Reservation System Route End 
 
 
 Route::get('/dashboard', function () {

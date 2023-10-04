@@ -11,13 +11,13 @@ import Slider from '@/Components/General/Slider';
 import { SwiperSlide } from 'swiper/vue';
 
 
-
 export default function HomePage({ auth, WebconfigData, cache, helper, testimonies }: PageProps<{ WebconfigData: any, cache: any, helper: string, testimonies: any }>) {
     const currentYear = new Date().getDate();
     const companyData: any = usePage().props.companyData; //get page info
     useEffect(() => {
         console.log(companyData);
     }, [])
+
     return (
         <>
             <Head>

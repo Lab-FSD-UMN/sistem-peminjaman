@@ -19,6 +19,7 @@ class CallAllSeeder extends Seeder
             MessageSeeder::class,
             // PostSeeder::class,
             // CommentSeeder::class,
+            ReservationSeeder::class,
         ]);
     }
 }

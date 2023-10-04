@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ReservationController;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendMail;
 use Illuminate\Http\Request;
@@ -32,3 +33,14 @@ Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.ema
 //     // dispatch(new SendEmailJob($data));
 //     // return 'Email was sent';
 // });
+
+
+// Reservation System Route Start
+Route::post('/item', [ReservationController::class, 'createItem']); //  create item
+Route::put('/item', [ReservationController::class, 'roomReserve']);
+Route::delete('/item', [ReservationController::class, 'roomReserve']);
+
+Route::post('/room', [ReservationController::class, 'roomReserve']);
+
+Route::post('/reservation/item', [ReservationController::class, 'itemReserve']);
+// Reservation System Route End
