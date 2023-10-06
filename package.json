@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build"
+        "build": "tsc && vite build",
+        "serve": "concurrently \"yarn dev\" \"php artisan serve\""
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
@@ -33,13 +34,16 @@
         "@types/react-responsive-masonry": "^2.1.0",
         "antd": "^5.7.3",
         "concurrently": "^8.2.1",
+        "formik": "^2.4.5",
         "graphql": "^16.8.0",
         "lowlight": "^2.9.0",
         "moment": "^2.29.4",
+        "primereact": "^10.0.2",
         "prop-types": "^15.8.1",
         "react-icons": "^4.10.1",
         "react-responsive-masonry": "^2.1.7",
         "sass": "^1.64.2",
-        "swiper": "^10.2.0"
+        "swiper": "^10.2.0",
+        "use-debounce": "^9.0.4"
     }
 }

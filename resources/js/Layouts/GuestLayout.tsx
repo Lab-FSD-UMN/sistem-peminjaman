@@ -133,7 +133,11 @@ const Route = [
         path: '/contact',
         route: 'contact'
     },
-
+    {
+        name: 'Reservation',
+        path: '/reservation',
+        route: 'reservation'
+    },
     {
         name: 'Login',
         path: '/login',

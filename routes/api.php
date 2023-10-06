@@ -34,13 +34,21 @@ Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.ema
 //     // return 'Email was sent';
 // });
 
-
-// Reservation System Route Start
+// Reservation System Route Start [Edited by Ivan]
+// USER
+// API for create new Item
 Route::post('/item', [ReservationController::class, 'createItem']); //  create item
 Route::put('/item', [ReservationController::class, 'roomReserve']);
 Route::delete('/item', [ReservationController::class, 'roomReserve']);
+// API for search item
+Route::post('/search/item', [ReservationController::class, 'searchItemData']);
 
 Route::post('/room', [ReservationController::class, 'roomReserve']);
 
-Route::post('/reservation/item', [ReservationController::class, 'itemReserve']);
+Route::post('/reservation/item', [ReservationController::class, 'reserveItem']);
+
+// ADMIN
+Route::post('/reservation/list/item/status', [ReservationController::class, 'ChangeItemStatus']);
+// addNewReservatioItem
+Route::post('/admin/reservation/item', [ReservationController::class, 'addNewReservatioItem']);
 // Reservation System Route End

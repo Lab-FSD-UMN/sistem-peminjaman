@@ -165,5 +165,11 @@ const Route = [
         name: 'Gallery Config',
         path: '/admin/gallery',
         route: 'admin.gallery'
-    }
+    },
+    {
+        name: 'Reservation',
+        path: '/admin/reservation',
+        route: 'admin.reservation.index'
+    },
+
 ]

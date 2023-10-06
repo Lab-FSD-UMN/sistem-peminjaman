@@ -1,34 +1,48 @@
+import AdminLayout from '@/Layouts/AdminLayout'
+import Guest from '@/Layouts/GuestLayout'
 import axiosClient from '@/Services/axiosClient'
-import { useForm, usePage } from '@inertiajs/react'
+import { Link, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 
 export default function ReservationDashboardPage() {
-    const Items: any = usePage().props.items
+    const Items: any = usePage().props.items;
+    const Info = usePage();
     useEffect(() => {
-        console.log("Items", Items)
+        console.log("pageInfo", Info);
     }, [])
     return (
-        <div>
-            Reservation Dashboard Page
-            <CreateItemPage />
-            <CreateRoomPage />
-            <div className='flex flex-col gap-[1rem]'
+        <AdminLayout>
+            <section
+                className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'
             >
+                <h1>
+                    Reservation Dashboard Page
+                </h1>
+                <LinkButton href='/admin/reservation/list'>
+                    Reservation List & Approval
+                </LinkButton>
+                <LinkButton href='/admin/reservation/item'>
+                    Item Reservation
+                </LinkButton>
+                <LinkButton href='/'>
+                    Room Reservation
+                </LinkButton>
+                <LinkButton href='/admin/reservation/history'>
+                    Reservation History
+                </LinkButton>
+            </section>
+        </AdminLayout>
+    )
+}
 
-                {
-                    Items?.map(
-                        (item: any) => (
-                            <div
-                                className='flex flex-col p-[1rem] gap-[1rem] bg-green-400'
-                                key={item.id}
-                            >
-                                <p>Item Name: {item.name}</p>
-                            </div>
-                        )
-                    )
-                }
-            </div>
-        </div>
+const LinkButton = ({ href, children }: any) => {
+    return (
+        <Link
+            href={href}
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        >
+            {children}
+        </Link>
     )
 }
 

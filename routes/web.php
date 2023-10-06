@@ -45,28 +45,104 @@ Route::get('/product/{slug}', [ProductController::class, 'ProductDetail'])->name
 Route::get('/gallery', GalleryController::class)->name('gallery');
 
 
-// Reservation System Route Start
-Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
-Route::get('/admin/reservation', [ReservationController::class, 'admindashboard'])->name('admin.reservation.index');
 
-Route::get('/reservation/myreservation', [ReservationController::class, 'myReservation'])->name('reservation.myreservation');
+Route::middleware(['auth', 'role:user'])->group(function () {
+    // User Reservation System Route Start
+    // [Reservation/] Show Reservation Dashboard Page for user (GET)
+    Route::get('/reservation', [ReservationController::class, 'showUserReservatioPage'])->name('reservation');
+    // [Reservation/Myreservation] Show all item and room reservation of user (GET)
+    Route::get('/reservation/myreservation', [ReservationController::class, 'showUserReservationListAndStatusPage'])->name('reservation.myreservation');
 
-Route::get('/reservation/room', [ReservationController::class, 'room'])->name('reservation.room');
-Route::get('/reservation/room/{id}', [ReservationController::class, 'roomDetail'])->name('reservation.room.detail');
-Route::post('/reservation/room}', [ReservationController::class, 'roomDetail'])->name('reservation.reserve.room');
+    // [Reservation/Room] Show All Room for reservation (GET)
+    Route::get('/reservation/room', [ReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
+    // [Reservation/Room/{id}] Show Room Reservation Detail Page (GET)
+    Route::get('/reservation/room/{id}', [ReservationController::class, 'showRoomReservationDetailPage']);
 
-Route::get('/reservation/item', [ReservationController::class, 'item'])->name('reservation.item');
-Route::get('/reservation/item/{id}', [ReservationController::class, 'itemDetail'])->name('reservation.item.detail');
-Route::post('/reservation/item', [ReservationController::class, 'itemReserve']);
-
-// Reservation System Route End 
-
+    // [Reservation/Item] Show All Item for reservation (GET)
+    Route::get('/reservation/item', [ReservationController::class, 'showItemReservationPage'])->name('reservation.item');
+    // [Reservation/Item/{id}] Show Item Reservation Detail Page (GET)
+    Route::get('/reservation/item/{id}', [ReservationController::class, 'showItemReservationDetailPage']);
+    // Reservation System Route End 
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    // [Reservation System START]
+    // [Reservation/] Show Admin Reservation Dashboard Page (GET)
+    Route::get('/admin/reservation', [ReservationController::class, 'showAdminReservationDashboardPage'])->name('admin.reservation.index');
+
+    // [Reservation/List] Show Update of User Reservation (GET)
+    Route::get('/admin/reservation/list', [ReservationController::class, 'showAdminReservationListPage'])->name('admin.reservation.list');
+
+    // [Reservation/History] Show History of User Reservation (GET)
+    Route::get('/admin/reservation/history', [ReservationController::class, 'showAdminReservationHistoryPage'])->name('admin.reservation.history');
+
+    // [Reservation/Item] Show Reservation Menu Related to Item
+    Route::get('/admin/reservation/item', [
+        ReservationController::class,
+        'showAdminReservationItemPage'
+    ]); //get
+
+    Route::post('/item', [ReservationController::class, 'createItem']); //  create item
+
+    // [Reservation/Item/schedule] Show Item Schedule in time series
+    Route::get('/admin/reservation/item/schedule', [ReservationController::class, 'ShowAdminReservationItemCurrentReservationPage']); //get
+
+    // [Reservation/Item/data] Show & Configure Reservation Data 
+    Route::prefix('/admin/reservation/item/data')->group(function () {
+        // Display the item data page
+        Route::get('/', [ReservationController::class, 'showAdminReservationItemDataPage'])->name('admin.reservation.item.data.index');
+
+        // Display item details (GET)
+        Route::get('/{id}', [ReservationController::class, 'showAdminReservationItemDataDetailPage'])->name('admin.reservation.item.data.show');
+
+        // Create a new item (POST)
+        Route::post('/{id}', [ReservationController::class, 'creataItemData'])->name('admin.reservation.item.data.store');
+
+        // Update item details (PUT)
+        Route::put('/{id}', [ReservationController::class, 'updateItemData'])->name('admin.reservation.item.data.update');
+
+        // Delete an item (DELETE)
+        Route::delete('/{id}', [ReservationController::class, 'deleteItemData'])->name('admin.reservation.item.data.destroy');
+    });
+
+
+
+    // [Reservation/] Show Room Menu page
+    Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationSubMenuRoomPage']); //get
+
+
+    // Room
+    Route::get('/admin/reservation/room', [ReservationController::class, 'adminReservationRoomPage']);
+
+    // Room data functon
+    Route::prefix('/admin/reservation/room/data')->group(function () {
+        // Display the room data page
+        Route::get('/', [ReservationController::class, 'adminReservationRoomPage'])->name('admin.reservation.room.data.index');
+
+        // Display room details (GET)
+        Route::get('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.show');
+
+        // Create a new room (POST)
+        Route::post('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.store');
+
+        // Update room details (PUT)
+        Route::put('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.update');
+
+        // Delete a room (DELETE)
+        Route::delete('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.destroy');
+    });
+
+    // Room schedule function
+    Route::get('/admin/reservation/room/schedule', [ReservationController::class, 'adminReservationRoomPage']);
+
+    // Reservation System END
+
     Route::get('/admin', function () {
         return Inertia::render('Admin/AdminPage');
     })->name('admin');
