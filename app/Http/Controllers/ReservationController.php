@@ -197,7 +197,7 @@ class ReservationController extends Controller
         // get all booked rooms 
         $booked_rooms = Booked_room::with('user')->with('room')->get();
         return Inertia::render(
-            'Admin/Reservation/ReservationMenu/showAdminReservationRequest.tsx',
+            'Admin/Reservation/ReservationMenu/showAdminReservationRequest',
             [
                 'booked_items' => $booked_items,
                 'booked_rooms' => $booked_rooms

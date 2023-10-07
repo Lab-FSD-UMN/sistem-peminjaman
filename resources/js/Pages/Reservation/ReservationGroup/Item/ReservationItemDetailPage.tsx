@@ -95,7 +95,8 @@ export default function ReservationItemDetailPage() {
                 {/* TODO: Nanti jangan lupa dikasih fallback ketika image not found (suggestion, use svg) */}
                 <img
                     className='w-[20rem] h-[20rem] object-cover'
-                    src={Item.item_images[0]?.link} alt="" />
+                    src={Item.item_images[0]?.link} alt=""
+                    />
                 <p
                     className=' text-white font-bold '
                 >
@@ -104,6 +105,7 @@ export default function ReservationItemDetailPage() {
                 <p>
                     Quantity Available Estimation: {Item.quantity}</p>
                 <form
+
                     onSubmit={handleSubmit}
                     className='flex flex-col gap-[1rem] text-white font-bold  rounded'
                 >
@@ -181,7 +183,7 @@ export default function ReservationItemDetailPage() {
                     </button>
                 </form>
             </div>
-        </Guest>
+        </Guest >
     )
 }
 

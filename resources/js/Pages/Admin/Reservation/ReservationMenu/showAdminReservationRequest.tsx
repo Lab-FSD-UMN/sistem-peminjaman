@@ -10,6 +10,7 @@ export default function ReservationListPage() {
     const BookedRooms = usePage().props.booked_rooms;
     useEffect(() => {
         console.log("ItemBooked", BookedItems);
+        
     }, [])
 
 
