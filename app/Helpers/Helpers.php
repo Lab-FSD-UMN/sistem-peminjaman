@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 // use Exception;
+use Illuminate\Support\Facades\DB;
 
 function getMessage(string $string = '')
 {
