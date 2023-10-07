@@ -1,8 +1,8 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/General/Footer';
 import Navbar from '@/Components/General/Navbar/Navbar';
-import { Link } from '@inertiajs/react';
-import React, { PropsWithChildren, ReactNode } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import React, { PropsWithChildren, ReactNode, useEffect } from 'react';
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import NavLink from '@/Components/NavLink';
@@ -10,6 +10,11 @@ import Dropdown from '@/Components/Dropdown';
 
 export default function Guest({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = React.useState(false);
+    const Usepage: any = usePage().props;
+    const Role = Usepage.auth.user?.role ? Usepage.auth.user?.role : 'guest';
+    useEffect(() => {
+        console.log(Role);
+    }, [])
     return (
         <>
             <div className="min-h-screen bg-gray-100">
@@ -33,7 +38,53 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 {item.name}
                                             </NavLink>
                                         ))
+
                                     }
+
+                                    {
+                                        Role === "guest" ?
+
+                                            <NavLink href={route('login')} active={route().current('login')}>
+                                                Login
+                                            </NavLink>
+                                            :
+                                            <NavLink
+                                                active={route().current('logout')}
+                                                method="post" href={route('logout')} as="button">
+                                                Log Out
+                                            </NavLink>
+                                    }
+                                    <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
+                                        <div className="pt-2 pb-3 space-y-1">
+                                            {
+                                                Route.map((item, index) => (
+                                                    <ResponsiveNavLink href={item.path} active={route().current(item.path)} key={index}>
+                                                        {item.name}
+                                                    </ResponsiveNavLink>
+                                                ))
+                                            }
+
+                                        </div>
+
+                                        <div className="pt-4 pb-1 border-t border-gray-200">
+                                            <div className="px-4">
+                                                <div className="font-medium text-base text-gray-800">
+                                                    {/* {user.name} */}
+                                                    user
+                                                </div>
+                                                <div className="font-medium text-sm text-gray-500">
+                                                    {/* {user.email} */}
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-3 space-y-1">
+                                                <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
+                                                <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                                                    Log Out
+                                                </ResponsiveNavLink>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -87,7 +138,6 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                     {/* {user.email} */}
                                 </div>
                             </div>
-
                             <div className="mt-3 space-y-1">
                                 <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
                                 <ResponsiveNavLink method="post" href={route('logout')} as="button">
@@ -118,29 +168,29 @@ const Route = [
         path: '/',
         route: 'home'
     },
-    {
-        name: 'Products',
-        path: '/product',
-        route: 'product'
-    },
-    {
-        name: 'Gallery',
-        path: '/gallery',
-        route: 'gallery'
-    },
-    {
-        name: 'Contact',
-        path: '/contact',
-        route: 'contact'
-    },
+    // {
+    //     name: 'Products',
+    //     path: '/product',
+    //     route: 'product '
+    // },
+    // {
+    //     name: 'Gallery',
+    //     path: '/gallery',
+    //     route: 'gallery'
+    // },
+    // {
+    //     name: 'Contact',
+    //     path: '/contact',
+    //     route: 'contact'
+    // },
     {
         name: 'Reservation',
         path: '/reservation',
         route: 'reservation'
     },
-    {
-        name: 'Login',
-        path: '/login',
-        route: 'login'
-    }
+    // {
+    //     name: 'Login',
+    //     path: '/login',
+    //     route: 'login'
+    // }
 ]

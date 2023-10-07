@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReservationController;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendMail;
@@ -37,18 +38,21 @@ Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.ema
 // Reservation System Route Start [Edited by Ivan]
 // USER
 // API for create new Item
-Route::post('/item', [ReservationController::class, 'createItem']); //  create item
+Route::post('/item', [ItemController::class, 'createItem']); //  create item
 Route::put('/item', [ReservationController::class, 'roomReserve']);
 Route::delete('/item', [ReservationController::class, 'roomReserve']);
 // API for search item
-Route::post('/search/item', [ReservationController::class, 'searchItemData']);
+Route::post('/search/item', [ItemController::class, 'searchItemData']);
 
 Route::post('/room', [ReservationController::class, 'roomReserve']);
 
 Route::post('/reservation/item', [ReservationController::class, 'reserveItem']);
 
 // ADMIN
-Route::post('/reservation/list/item/status', [ReservationController::class, 'ChangeItemStatus']);
-// addNewReservatioItem
+Route::post('/reservation/list/item/status', [ReservationController::class, 'ChangeItemReservationStatus']);
+// api for adding new reservation item
 Route::post('/admin/reservation/item', [ReservationController::class, 'addNewReservatioItem']);
+// api for searcing history
+Route::post('/search/history', [ItemController::class, 'searchHistoryData']);
+
 // Reservation System Route End

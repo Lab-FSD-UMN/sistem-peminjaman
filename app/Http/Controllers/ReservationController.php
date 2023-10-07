@@ -22,13 +22,13 @@ class ReservationController extends Controller
 {
     // USER //
     // [Reservation/] Show User Reservation Dashboard Page (GET)
-    public function showUserReservatioPage()
+    public function showUserReservationPage()
     {
         // if the user is not logged in, redirect to the login page
         if (auth()->user() == null) {
             return redirect()->route('login');
         }
-        return Inertia::render('Reservation/showUserReservatioPage');
+        return Inertia::render('Reservation/showUserReservationPage');
     }
 
 
@@ -58,9 +58,10 @@ class ReservationController extends Controller
     {
 
         // return item data with image
-        $items = Item::with('item_images')->get();
+        // with pagination and eager loading
+        $items = Item::with('item_images')->paginate(10);
         return Inertia::render('Reservation/ReservationGroup/Item/ReservationItemPage', [
-            'items' => $items
+            'items' => $items,
         ]);
     }
 
@@ -68,40 +69,11 @@ class ReservationController extends Controller
     {
         $item = Item::find($id)->with('item_images')->first();
         return Inertia::render('Reservation/ReservationGroup/Item/ReservationItemDetailPage', [
-            'item' => $item
+            'item' => $item,
         ]);
     }
 
-    // function for item searching
-    public function searchItemData(Request $request)
-    {
-        $keyword = $request->input('keyword');
-        $perPage = $request->input('per_page', 10);
-        $sortBy = $request->input('sort_by', 'name');
-        $sortDirection = $request->input('sort_direction', 'asc');
 
-        $cacheKey = 'item_search_' . md5($keyword . $perPage . $sortBy . $sortDirection);
-
-        try {
-            // Attempt to retrieve data from cache
-            $items = Cache::remember($cacheKey, 60, function () use ($keyword, $perPage, $sortBy, $sortDirection) {
-                $query = Item::where('name', 'like', '%' . $keyword . '%')->with('item_images');
-                // You can add additional search criteria here if needed.
-                // For example:
-                // $query->where('category_id', '=', $categoryId);
-
-                return $query->orderBy($sortBy, $sortDirection)->paginate($perPage);
-            });
-
-            return response()->json([
-                'items' => $items,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'An error occurred while searching for items.',
-            ], 500);
-        }
-    }
 
 
     // function for item reservation
@@ -141,6 +113,8 @@ class ReservationController extends Controller
                 throw ReservationException::Custom("Insufficient quantity. try to reserve $available_quantity or less.");
             }
 
+
+
             // Validation: check if the user has already reserved the item in that given time
             // check if the user has already reserved the item in that given time
             if ($Booked_item::where('user_id', $request->user_id)
@@ -179,7 +153,6 @@ class ReservationController extends Controller
             // Insert the reservation into the database within the transaction
             $Booked_item->create([
                 'item_id' => $request->item_id,
-                // 'user_id' => auth()->user()->id,
                 'user_id' => $request->user_id,
                 'quantity' => $request->quantity,
                 'reservation_start_time' => $startDateTime,
@@ -211,12 +184,12 @@ class ReservationController extends Controller
     public function showAdminReservationDashboardPage()
     {
         return Inertia::render(
-            'Admin/Reservation/ReservationDashboardPage',
+            'Admin/Reservation/showAdminReservationDashboardPage',
         );
     }
 
     // [Reservation/List] Show Update of User Reservation (GET)
-    public function showAdminReservationListPage()
+    public function showAdminReservationRequest()
     {
         // get all booked items
         // $booked_items = Booked_item::with('user')->with('item')->get();
@@ -224,7 +197,7 @@ class ReservationController extends Controller
         // get all booked rooms 
         $booked_rooms = Booked_room::with('user')->with('room')->get();
         return Inertia::render(
-            'Admin/Reservation/ReservationMenu/ReservationListPage',
+            'Admin/Reservation/ReservationMenu/showAdminReservationRequest.tsx',
             [
                 'booked_items' => $booked_items,
                 'booked_rooms' => $booked_rooms
@@ -232,7 +205,7 @@ class ReservationController extends Controller
         );
     }
     // function for approve / reject item loan request
-    public function ChangeItemStatus(Request $request)
+    public function ChangeItemReservationStatus(Request $request)
     {
         try {
             DB::beginTransaction();
@@ -269,10 +242,22 @@ class ReservationController extends Controller
 
 
     // [Reservation/Item/schedule] Show Item Schedule in time series
-    public function ShowAdminReservationItemCurrentReservationPage()
+    public function showAdminReservationItemMonitoringSchedule()
     {
+        $item_schedule = Booked_item::with('user')->with('item')->get();
+        // group by month and add month name
+        $item_schedule = $item_schedule->groupBy(function ($item) {
+            return Carbon::parse($item->reservation_start_time)->format('F');
+        });
+        $item_schedule = $item_schedule->toArray();
+
+        // convert to array
+
         return Inertia::render(
-            'Admin/Reservation/ReservationMenu/Submenu/Item/ShowAdminReservationItemCurrentReservationPage'
+            'Admin/Reservation/ReservationMenu/Submenu/Item/showAdminReservationItemMonitoringSchedule',
+            [
+                'item_schedule' => $item_schedule,
+            ]
         );
     }
 
@@ -280,7 +265,7 @@ class ReservationController extends Controller
     // [Reservation/Item/data] Show & Configure Reservation Data 
     public function showAdminReservationItemDataPage()
     {
-        $item = Item::all();
+        $item = Item::with('item_images')->get();
         return Inertia::render(
             'Admin/Reservation/ReservationMenu/Submenu/Item/ShowAdminReservationItemDataPage',
             [
@@ -289,75 +274,8 @@ class ReservationController extends Controller
         );
     }
 
-    // function for create new item
-    public function createItem(Request $request)
-    {
-        try {
 
-            DB::beginTransaction();
-            $request->validate([
-                'name' => 'required',
-                'image' => 'required',
-                'quantity' => 'required',
-            ]);
-
-            // declare variable for image
-            $item = new Item();
-            $image_title = null;
-            $image_link = null;
-            $image_item_id = Uuid::uuid4()->toString();
-
-            // check image extension
-            $extension = $request->file('image')->getClientOriginalExtension();
-            if (!in_array($extension, ['jpg', 'png', 'jpeg'])) {
-                throw ReservationException::Custom('Invalid image extension. Please upload a JPG or PNG image.');
-            }
-
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $image_title = imgExtention($image);
-                $image = Storage::putFileAs(
-                    'public/images/items',
-                    $request->file('image'),
-                    $image_title
-                );
-                $image_link = $image;
-            }
-
-            $image = Item_image::create([
-                'title' => $image_title,
-                'link' => $image_link,
-                'item_id' => $image_item_id,
-            ]);
-
-            $item->create([
-                'id' => $image_item_id,
-                'name' => $request->name,
-                'quantity' => $request->quantity,
-                'description' => $request->description,
-            ]);
-
-            DB::commit();
-
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'message' => 'Item has been created',
-                ], 200);
-            }
-            return redirect()->back();
-        } catch (CustomException $e) {
-            // Handle exceptions (e.g., log the error)
-            DB::rollBack(); // Rollback the transaction in case of an exception
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error' => $e->getMessage(),
-                ], $e->getCode());
-            }
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-
-
+    // show history page
     public function showAdminReservationHistoryPage()
     {
         $booked_items = Booked_item::with('user')->with('item')->where('status', '!=', 0)->get();
@@ -369,5 +287,33 @@ class ReservationController extends Controller
                 'booked_rooms' => $booked_rooms
             ]
         );
+    }
+
+    public function searchHistoryData(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $search_type = $request->input('search_type', 0); //0 for all, 1 for items only, 2 for rooms only
+        $perPage = $request->input('per_page', 10);
+        $sortBy = $request->input('sort_by', 'name');
+        $sortDirection = $request->input('sort_direction', 'asc');
+        $cacheKey = 'item_search_' . md5($keyword . $perPage . $sortBy . $sortDirection);
+        try {
+            // Attempt to retrieve data from cache
+            // if ($search_type == 0) {
+            // }
+            // TODO: add logic to decide whether want to search for both, or spesific type
+            $items = Cache::remember($cacheKey, 60, function () use ($keyword, $perPage, $sortBy, $sortDirection) {
+                $query = Item::where('name', 'like', '%' . $keyword . '%')->with('item_images');
+                return $query->orderBy($sortBy, $sortDirection)->paginate($perPage);
+            });
+            return response()->json([
+                'items' => $items,
+            ], 200);
+        } catch (ReservationException $e) {
+            return response()->json([
+                'error' => 'An error occurred while searching for items.',
+                // 'exception' => $e->get
+            ], 500);
+        }
     }
 }

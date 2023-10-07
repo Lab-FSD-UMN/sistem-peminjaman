@@ -33,6 +33,13 @@ class UserSeeder extends Seeder
                 'password' =>  Hash::make('dadargulung'),
                 'role' => 0
             ]);
+            $User->insert([
+                "id" => Uuid::uuid4()->toString(),
+                'name' => 'ujang',
+                'email' => 'ujang@user.com',
+                'password' =>  Hash::make('dadargulung'),
+                'role' => 0
+            ]);
         }
     }
 }

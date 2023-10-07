@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
@@ -44,30 +45,30 @@ Route::get('/product/{slug}', [ProductController::class, 'ProductDetail'])->name
 
 Route::get('/gallery', GalleryController::class)->name('gallery');
 
-
-
-Route::middleware(['auth', 'role:user'])->group(function () {
-    // User Reservation System Route Start
-    // [Reservation/] Show Reservation Dashboard Page for user (GET)
-    Route::get('/reservation', [ReservationController::class, 'showUserReservatioPage'])->name('reservation');
-    // [Reservation/Myreservation] Show all item and room reservation of user (GET)
-    Route::get('/reservation/myreservation', [ReservationController::class, 'showUserReservationListAndStatusPage'])->name('reservation.myreservation');
-
-    // [Reservation/Room] Show All Room for reservation (GET)
-    Route::get('/reservation/room', [ReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
-    // [Reservation/Room/{id}] Show Room Reservation Detail Page (GET)
-    Route::get('/reservation/room/{id}', [ReservationController::class, 'showRoomReservationDetailPage']);
-
-    // [Reservation/Item] Show All Item for reservation (GET)
-    Route::get('/reservation/item', [ReservationController::class, 'showItemReservationPage'])->name('reservation.item');
-    // [Reservation/Item/{id}] Show Item Reservation Detail Page (GET)
-    Route::get('/reservation/item/{id}', [ReservationController::class, 'showItemReservationDetailPage']);
-    // Reservation System Route End 
-});
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware([
+//     'auth', 'role:admin, user',
+// ])->group(function () {
+// User Reservation System Route Start
+// [Reservation/] Show Reservation Dashboard Page for user (GET)
+Route::get('/reservation', [ReservationController::class, 'showUserReservationPage'])->name('reservation');
+// [Reservation/Myreservation] Show all item and room reservation of user (GET)
+Route::get('/reservation/myreservation', [ReservationController::class, 'showUserReservationListAndStatusPage'])->name('reservation.myreservation');
+
+// [Reservation/Room] Show All Room for reservation (GET)
+Route::get('/reservation/room', [ReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
+// [Reservation/Room/{id}] Show Room Reservation Detail Page (GET)
+Route::get('/reservation/room/{id}', [ReservationController::class, 'showRoomReservationDetailPage']);
+
+// [Reservation/Item] Show All Item for reservation (GET)
+Route::get('/reservation/item', [ReservationController::class, 'showItemReservationPage'])->name('reservation.item');
+// [Reservation/Item/{id}] Show Item Reservation Detail Page (GET)
+Route::get('/reservation/item/{id}', [ReservationController::class, 'showItemReservationDetailPage']);
+// Reservation System Route End 
+// });
 
 
 
@@ -77,7 +78,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/reservation', [ReservationController::class, 'showAdminReservationDashboardPage'])->name('admin.reservation.index');
 
     // [Reservation/List] Show Update of User Reservation (GET)
-    Route::get('/admin/reservation/list', [ReservationController::class, 'showAdminReservationListPage'])->name('admin.reservation.list');
+    Route::get('/admin/reservation/list', [ReservationController::class, 'showAdminReservationRequest'])->name('admin.reservation.request');
 
     // [Reservation/History] Show History of User Reservation (GET)
     Route::get('/admin/reservation/history', [ReservationController::class, 'showAdminReservationHistoryPage'])->name('admin.reservation.history');
@@ -88,10 +89,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         'showAdminReservationItemPage'
     ]); //get
 
-    Route::post('/item', [ReservationController::class, 'createItem']); //  create item
+    Route::post('/item', [ItemController::class, 'createItem']); //  create item
 
     // [Reservation/Item/schedule] Show Item Schedule in time series
-    Route::get('/admin/reservation/item/schedule', [ReservationController::class, 'ShowAdminReservationItemCurrentReservationPage']); //get
+    Route::get('/admin/reservation/item/schedule', [ReservationController::class, 'showAdminReservationItemMonitoringSchedule']); //get
 
     // [Reservation/Item/data] Show & Configure Reservation Data 
     Route::prefix('/admin/reservation/item/data')->group(function () {
@@ -117,8 +118,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationSubMenuRoomPage']); //get
 
 
-    // Room
-    Route::get('/admin/reservation/room', [ReservationController::class, 'adminReservationRoomPage']);
+    // Room : show room reservation page
+    Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
 
     // Room data functon
     Route::prefix('/admin/reservation/room/data')->group(function () {
@@ -171,5 +172,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::fallback(function () {
     return Inertia::render('ErrorPage');
 })->name('fallback');
+
 
 require __DIR__ . '/auth.php';

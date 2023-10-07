@@ -12,7 +12,7 @@ export default function ShowAdminReservationItemDataPage() {
     return (
         <AdminLayout>
             <section
-                className='flex flex-col gap-[1rem] relative'
+                className='flex flex-col gap-[1rem] relative p-[1rem]'
             >
                 <h1
                     className='text-2xl font-bold w-full text-center'
@@ -29,59 +29,80 @@ export default function ShowAdminReservationItemDataPage() {
                 <div
                     className='grid grid-cols-4 gap-4'
                 >
-                    {ItemData.map((item: any) => (
-                        <div
-                            key={item.id}
-                            className='flex flex-col gap-[1rem] p-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4 w-full text-center'
-                        >
-                            <div>
-                                <img
-                                    className='w-[100%] h-[100%]'
-                                    src={item.image}
-                                    alt={item.name}
-                                />
-                            </div>
+                    {ItemData.map((item: any) => {
+                        useEffect(() => {
+                            console.log(item.item_images)
+                        }, [])
+                        return (
                             <div
-                                className='flex flex-col gap-[1rem] p-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4 w-full text-center'
                                 key={item.id}
+                                className='flex flex-col gap-[1rem] p-[0.5rem] bg-blue-700 text-white font-bold w-full text-center'
                             >
-                                <h1
-                                    className='text-2xl font-bold w-full text-center'
-                                >
-                                    {item.name}
-                                </h1>
-                                <div
-                                    className='flex flex-col gap-[1rem] p-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4 w-full text-center'
-                                >
-                                    <p
-                                        className='text-2xl font-bold w-full text-center'
-                                    >
-                                        {item.description}
-                                    </p>
-                                    <p
-                                        className='text-2xl font-bold w-full text-center'
-                                    >
-                                        {item.price}
-                                    </p>
-                                    <p
-                                        className='text-2xl font-bold w-full text-center'
-                                    >
-                                        Status : {item.is_available ? "Available" : "Unavailable"}
-                                    </p>
+
+                                <div>
+                                    {
+                                        item.item_images.length > 0 ?
+                                            <img
+
+                                                src={item.item_images[0].link}
+                                                alt=""
+                                                className='w-full object-cover h-[10rem]'
+                                                onError={(e: any) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = "https://via.placeholder.com/150"
+                                                }}
+                                            />
+                                            :
+                                            <img
+                                                src="https://via.placeholder.com/150"
+                                                alt=""
+                                                className='w-full object-cover h-[10rem]'
+
+                                            />
+                                    }
                                 </div>
+                                <div
+                                    className='flex flex-col gap-[0.5rem] px-[0.5rem] bg-blue-700 text-white font-bold  w-full text-center'
+                                    key={item.id}
+                                >
+                                    <h1
+                                        className='text-2xl font-bold w-full text-center'
+                                    >
+                                        {item.name}
+                                    </h1>
+                                    <div
+                                        className='flex flex-col gap-[1rem] bg-blue-700 text-white font-bold w-full text-center'
+                                    >
+                                        <p
+                                            className='text-2xl font-bold w-full text-center'
+                                        >
+                                            {item.description}
+                                        </p>
+                                        <p
+                                            className='text-2xl font-bold w-full text-center'
+                                        >
+                                            {item.price}
+                                        </p>
+                                        <p
+                                            className='text-2xl font-bold w-full text-center'
+                                        >
+                                            Status : {item.is_available ? "Available" : "Unavailable"}
+                                        </p>
+                                    </div>
+                                </div>
+                                <button
+                                    className='bg-blue-100 hover:bg-blue-200 text-black font-bold py-2 px-4 rounded w-full'
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full'
+                                >
+                                    Delete
+                                </button>
                             </div>
-                            <button
-                                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full'
-                            >
-                                Edit
-                            </button>
-                            <button
-                                className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full'
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </section>
         </AdminLayout>
@@ -115,9 +136,6 @@ const CreateItemModalComponent = () => {
             [key]: value,
         }))
     }
-
-
-
 
 
     useEffect(() => {

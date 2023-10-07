@@ -3,14 +3,8 @@ import { Link, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 
 export default function ReservationPage() {
-    const pageInfo = usePage().props
-    const Info = usePage()
-
-    useEffect(() => {
-        console.log("Page Info", Info)
-        console.log("Page Info", pageInfo)
-    }, [])
-
+    // const pageInfo = usePage().props
+    // const Info = usePage()
     return (
         <Guest>
             <div

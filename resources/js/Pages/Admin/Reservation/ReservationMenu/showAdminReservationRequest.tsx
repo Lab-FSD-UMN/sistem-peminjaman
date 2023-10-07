@@ -1,8 +1,8 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import React, { useEffect } from 'react'
 import { usePage } from '@inertiajs/react'
-import axios from 'axios';
 import axiosClient from '@/Services/axiosClient';
+
 
 
 export default function ReservationListPage() {
@@ -49,7 +49,10 @@ export default function ReservationListPage() {
 
     return (
         <AdminLayout>
-            <section>
+            <section
+                className='p-[1rem] gap-[1rem font-bold py-[1rem] px-4 w-full text-center'
+            >
+                {/* TODO: add back button */}
                 <h1
                     className='text-2xl font-bold w-full text-center'
                 >
@@ -60,7 +63,7 @@ export default function ReservationListPage() {
                 >
                     {BookedItems.map((item: any) => {
                         return (
-                            <Card
+                            <ReservationListCard
                                 key={item.id}
                             >
                                 <h3
@@ -97,17 +100,25 @@ export default function ReservationListPage() {
                                         Reject
                                     </button>
                                 </div>
-                            </Card>
+                            </ReservationListCard>
                         )
                     }
                     )
+                    }
+                    {
+                        BookedItems.length == 0 &&
+                        <h1
+                            className='text-[1.5rem]'
+                        >
+                            No Item Request
+                        </h1>
                     }
                 </div>
             </section>
         </AdminLayout>
     )
 }
-const Card = ({ children }: any) => {
+const ReservationListCard = ({ children }: any) => {
     return (
         <div
             className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'

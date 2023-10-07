@@ -91,9 +91,11 @@ export default function ReservationItemDetailPage() {
                     className='capitalize text-[2rem]'
                 >{Item.name}</h1>
                 {/* <p>{Item.description}</p> */}
+
+                {/* TODO: Nanti jangan lupa dikasih fallback ketika image not found (suggestion, use svg) */}
                 <img
                     className='w-[20rem] h-[20rem] object-cover'
-                    src={Item.item_images[0].link} alt="" />
+                    src={Item.item_images[0]?.link} alt="" />
                 <p
                     className=' text-white font-bold '
                 >
@@ -184,7 +186,6 @@ export default function ReservationItemDetailPage() {
 }
 
 // Reservation/ReservationGroup/Item/ReservationItemDetailPage
-
 function CalculateTime({ dateStart, dateEnd, timeStart, timeEnd }: any) {
     const startDateTime: any = new Date(`${dateStart}T${timeStart}`);
     const endDateTime: any = new Date(`${dateEnd}T${timeEnd}`);

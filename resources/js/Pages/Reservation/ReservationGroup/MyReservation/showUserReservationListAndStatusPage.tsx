@@ -12,11 +12,21 @@ export default function MyReservationPage() {
     return (
         <Guest>
             <div
-                className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'
+                className='flex flex-col p-[1rem] gap-[1rem] font-bold py-[1rem] px-4 text-center align-middle
+                min-h-screen justify-center
+                '
             >
                 <h1>
                     My Reservation
                 </h1>
+                {
+                    userReservation.length === 0 ?
+                        <h1
+                            className='text-black uppercase text-[2rem] font-bold py-2 rounded'
+                        >
+                            OOOPS! No Reservation Data Found
+                        </h1> : null
+                }
                 {
                     userReservation.map((reservation: any) => {
                         const { text, color } = statusToString(reservation.status); // Declare variables here

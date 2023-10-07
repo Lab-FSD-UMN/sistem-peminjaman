@@ -5,9 +5,9 @@ import React, { useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
 
 export default function ReservationItemPage() {
-    const pageInfo = usePage().props;
-    const Items: any = pageInfo.items;
-    
+    const pageInfo: any = usePage().props.items;
+    const Items: any = pageInfo.data;
+
 
     // [searching logic]
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -49,7 +49,7 @@ export default function ReservationItemPage() {
 
 
     useEffect(() => {
-
+        console.log("Page Info: ", pageInfo);
         console.log("Search Result: ", searchResults);
     }, [searchResults])
     return (
@@ -60,6 +60,13 @@ export default function ReservationItemPage() {
                 <h1
                     className='text-black uppercase text-[2rem] font-bold py-2 rounded'
                 >
+                    <button
+                        onClick={() => {
+                            window.history.back()
+                        }}
+                    >
+                        {"<"}
+                    </button>
                     Item Reservation
                 </h1>
                 <div
@@ -71,27 +78,31 @@ export default function ReservationItemPage() {
                         className='w-full text-black font-bold py-2 px-4 rounded'
                     />
                 </div>
-                {
-                    searchResults ?
-                        searchResults.length == 0 ?
-                            <h1
-                                className='text-black uppercase text-[2rem] font-bold py-2 rounded'
-                            >
-                                OOOPS! No Item Found
-                            </h1> :
-                            searchResults.map((item: any) => (
+                <div id='Content-Section'
+                    className='flex flex-col gap-[1rem]'
+                >
+                    {
+                        searchResults ?
+                            searchResults.length == 0 ?
+                                <h1
+                                    className='text-black uppercase text-[2rem] font-bold py-2 rounded'
+                                >
+                                    OOOPS! No Item Found
+                                </h1> :
+                                searchResults.map((item: any) => (
+                                    <ItemCard
+                                        {...item}
+                                    />
+                                ))
+
+                            :
+                            Items.map((item: any) => (
                                 <ItemCard
                                     {...item}
                                 />
                             ))
-
-                        :
-                        Items.map((item: any) => (
-                            <ItemCard
-                                {...item}
-                            />
-                        ))
-                }
+                    }
+                </div>
             </div>
         </Guest>
     )
@@ -124,11 +135,13 @@ const ItemCard = ({ ...item }: any) => {
                             src="https://via.placeholder.com/150" alt="" />
                 }
                 <div
-                    className='flex flex-col gap-[0.4rem]'
+                    className='flex flex-col gap-[0.4rem] align-top h-full'
                 >
                     <h1
                         className='text-white font-bold py-2 rounded'
-                    >{item.name}</h1>
+                    >
+                        {item.name}
+                    </h1>
                     <p
                         className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 '
                     >{item.is_available ? "available" : "unavailable"}</p>
