@@ -30,6 +30,10 @@ class ReservationTest extends TestCase
         $response = $this->actingAs($user)->get('/reservation');
 
         $response->assertStatus(200);
+
+        $response->assertInertia(function (Assert $page) {
+            $page->component('Reservation/showUserReservationPage');
+        });
     }
 
     public function test_showUserReservationListAndStatusPage()

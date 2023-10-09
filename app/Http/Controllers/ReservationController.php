@@ -24,6 +24,7 @@ class ReservationController extends Controller
     // [Reservation/] Show User Reservation Dashboard Page (GET)
     public function showUserReservationPage()
     {
+        // TODO: check if user is logged in middleware
         // if the user is not logged in, redirect to the login page
         if (auth()->user() == null) {
             return redirect()->route('login');
@@ -31,14 +32,24 @@ class ReservationController extends Controller
         return Inertia::render('Reservation/showUserReservationPage');
     }
 
-
     // [Reservation/Myreservation] Show all item and room reservation of user (GET)
     public function showUserReservationListAndStatusPage()
     {
-        $userReservation = Booked_item::where('user_id', auth()->user()->id)->with('item')->get();
-        return Inertia::render('Reservation/ReservationGroup/MyReservation/showUserReservationListAndStatusPage', [
-            'userReservation' => $userReservation
-        ]);
+        // $Booked_item = Booked_item::where('user_id', auth()->user()->id)->with('item')->get();
+        // Don't use auth()->user()->id, because it will return null if the user is not logged in
+        $Booked_item = Booked_item::where('user_id', auth()->id())
+            ->with('item')
+            ->get();
+
+        // Data to be sent to the view and JSON
+        $data = [
+            'userReservation' => $Booked_item,
+        ];
+        // Wants JSON
+        if (request()->wantsJson()) {
+            return response()->json($data, 200);
+        }
+        return Inertia::render('Reservation/ReservationGroup/MyReservation/showUserReservationListAndStatusPage', $data);
     }
 
 
@@ -289,6 +300,8 @@ class ReservationController extends Controller
         );
     }
 
+
+    // to search data from history page
     public function searchHistoryData(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -297,23 +310,20 @@ class ReservationController extends Controller
         $sortBy = $request->input('sort_by', 'name');
         $sortDirection = $request->input('sort_direction', 'asc');
         $cacheKey = 'item_search_' . md5($keyword . $perPage . $sortBy . $sortDirection);
-        try {
-            // Attempt to retrieve data from cache
-            // if ($search_type == 0) {
-            // }
-            // TODO: add logic to decide whether want to search for both, or spesific type
-            $items = Cache::remember($cacheKey, 60, function () use ($keyword, $perPage, $sortBy, $sortDirection) {
-                $query = Item::where('name', 'like', '%' . $keyword . '%')->with('item_images');
-                return $query->orderBy($sortBy, $sortDirection)->paginate($perPage);
-            });
-            return response()->json([
-                'items' => $items,
-            ], 200);
-        } catch (ReservationException $e) {
-            return response()->json([
-                'error' => 'An error occurred while searching for items.',
-                // 'exception' => $e->get
-            ], 500);
-        }
+
+        // TODO: add logic to decide whether want to search for both, or spesific type
+        return Cache::remember($cacheKey, 60, function () use ($keyword, $perPage, $sortBy, $sortDirection) {
+            try {
+                // TODO: add logic to decide whether want to search for both, or spesific type
+                return Item::where('name', 'like', '%' . $keyword . '%')
+                    ->with('item_images')
+                    ->orderBy($sortBy, $sortDirection)
+                    ->paginate($perPage);
+            } catch (ReservationException $e) {
+                return response()->json([
+                    'error' => 'An error occurred while searching for items.',
+                ], 500);
+            }
+        });
     }
 }

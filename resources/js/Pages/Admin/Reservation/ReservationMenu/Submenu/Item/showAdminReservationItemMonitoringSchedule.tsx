@@ -23,25 +23,25 @@ export default function ShowAdminReservationItemMonitoringSchedule() {
                         November
                     </h3>
                     {
-                        Nov.map((schedule: any) => {
-                            return (
-                                <div>
-                                    <h4>
-                                        {schedule.reservation_date_start}
-                                    </h4>
-                                    <h4>
-                                        {schedule.reservation_time_start}
-                                    </h4>
-                                    <h4>
-                                        {schedule.reservation_date_end}
-                                    </h4>
-                                    <h4>
-                                        {schedule.reservation_time_end}
-                                    </h4>
-                                </div>
-                            )
-                        }
-                        )
+                        // Nov.map((schedule: any) => {
+                        //     return (
+                        //         <div>
+                        //             <h4>
+                        //                 {schedule.reservation_date_start}
+                        //             </h4>
+                        //             <h4>
+                        //                 {schedule.reservation_time_start}
+                        //             </h4>
+                        //             <h4>
+                        //                 {schedule.reservation_date_end}
+                        //             </h4>
+                        //             <h4>
+                        //                 {schedule.reservation_time_end}
+                        //             </h4>
+                        //         </div>
+                        //     )
+                        // }
+                        // )
                     }
                 </div>
             </section>

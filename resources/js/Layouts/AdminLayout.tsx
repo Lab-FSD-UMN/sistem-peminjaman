@@ -149,7 +149,7 @@ const Route = [
     {
         name: 'Dashboard',
         path: '/admin',
-        route: 'admin'
+        route: 'admin.index'
     },
     {
         name: 'Web Config',

@@ -19,9 +19,21 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
+        // foreach ($guards as $guard) {
+        //     if (Auth::guard($guard)->check()) {
+        //         return redirect(RouteServiceProvider::HOME);
+        //     }
+        // }
+        // Set the default redirect path for admin and non-admin users
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // Check if the authenticated user is an admin
+                if (Auth::user()->role_id == 1) {
+                    return redirect('/admin');
+                }
+
+                // If not an admin, redirect to home
+                return redirect('/');
             }
         }
 

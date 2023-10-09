@@ -14,6 +14,13 @@ use Ramsey\Uuid\Uuid;
 
 class ItemController extends Controller
 {
+
+    public function showAllItemPage()
+    {
+        return response()->json([
+            'items' => Item::all(),
+        ], 200);
+    }
     // function for create new item
     public function createItem(Request $request)
     {

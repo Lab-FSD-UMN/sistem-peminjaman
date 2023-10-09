@@ -38,10 +38,17 @@ Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.ema
 // Reservation System Route Start [Edited by Ivan]
 // USER
 // API for create new Item
-Route::post('/item', [ItemController::class, 'createItem']); //  create item
-Route::put('/item', [ReservationController::class, 'roomReserve']);
-Route::delete('/item', [ReservationController::class, 'roomReserve']);
-// API for search item
+Route::get('/request', [ReservationController::class, 'showUserReservationListAndStatusPage']); // get all item
+
+// item route
+Route::prefix('item')->group(function () {
+    Route::get('/', [ItemController::class, 'showAllItemPage']); //  create item
+    Route::post('/', [ItemController::class, 'createItem']); //  create item
+    Route::put('/', [ReservationController::class, 'roomReserve']);
+    Route::delete('/', [ReservationController::class, 'roomReserve']);
+    // API for search item
+});
+
 Route::post('/search/item', [ItemController::class, 'searchItemData']);
 
 Route::post('/room', [ReservationController::class, 'roomReserve']);
