@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('event_content_images', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->string('event_id');
+            $table->unsignedBigInteger('event_id');
             $table->timestamps();
 
             $table->foreign('event_id')

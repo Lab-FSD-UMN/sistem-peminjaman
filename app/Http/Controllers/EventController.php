@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\EventContentImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,22 +33,36 @@ class EventController extends Controller
             );
 
             // content processing
+            $thumbnailImage = $request->file('thumbnail_image');
+            $thumbnailPath = $thumbnailImage->storeAs('event/thumbnails', $thumbnailImageName, 'public');
+
             Event::insert([
-                'thumbnail_image' => $request->thumbnail_image,
+                'thumbnail_image' => $thumbnailPath,
                 'title' => $request->title,
                 'content' => $request->content
             ]);
 
-            $thumbnailImage = $request->file('thumbnail_image');
-            $thumbnailImageName = $thumbnailImage->getClientOriginalName();
-            $thumbnailImage->storeAs('event/thumbnails', $thumbnailImageName, 'public');
+            $eventID = DB::getPdo()->lastInsertId();
 
             // images processing
-
+            $imageLinks = [];
+            foreach ($request->images as $image){
+                $imageName = $image->getClientOriginalName();
+                $imagePath = $image->storeAs('event/images', $imageName, 'public');
+                array_push($imageLinks, ['url' => $imagePath, 'event_id' => $eventID]);
+            }
+            EventContentImages::insert($imageLinks);
 
             DB::commit();
+            return response()->json([
+                'message' => "Event created successfully."
+            ], 201);
+
         } catch (Exception $e){
             DB::rollBack();
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
