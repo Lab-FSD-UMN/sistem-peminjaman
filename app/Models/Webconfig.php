@@ -46,7 +46,6 @@ class Webconfig extends Model
             },
             set: function ($value) {
                 if ($this->type == 'image') {
-                    return $this->attributes['value'] = Str::slug($value);
                 } else {
                     return $this->attributes['value'] = $value;
                 }
