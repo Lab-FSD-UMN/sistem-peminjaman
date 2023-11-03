@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\EventContentImages;
+use App\Exceptions\EventException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -78,7 +80,6 @@ class EventController extends Controller
             ], 200);
 
         } catch (Exception $e){
-            DB::rollBack();
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
@@ -90,11 +91,95 @@ class EventController extends Controller
 
             $post = Event::find($id);
 
+            if (!$post){
+                throw EventException::notFound();
+            }
+
             return response()->json([
                 'message' => "Successfully fetched all event posts data.",
                 'data' => $post
             ], 200);
 
+        } catch (Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // public function updateEventPost(Request $request, $id){
+    //     try {
+
+    //         DB::beginTransaction();
+
+    //         $request->validate(
+    //             [
+    //                 'thumbnail_image' => 'mimes:jpg,jpeg,png,gif',
+    //                 'title' => 'required',
+    //                 'content' => 'required',
+    //                 'images' => 'array',
+    //                 'images.*' => 'image|mimes:jpg,jpeg,png,gif',
+    //             ],
+    //             [
+    //                 'thumbnail_image.required'  => 'Foto thumbnail tidak boleh kosong.',
+    //                 'thumbnail_image.mimes' => 'Format thumbnail harus berekstensi .jpg, .jpeg, .gif, atau .png.',
+    //                 'title.required' => 'Judul tidak boleh kosong.',
+    //                 'content.required' => 'Konten tidak boleh kosong.',
+    //                 'images.array' => 'Foto harus dikirim dalam bentuk array.',
+    //                 'images.*.*' => "Foto harus berekstensi .jpg, .jpeg, .gif, atau .png."
+    //             ]
+    //         );
+
+
+
+
+    //         DB::commit();
+    //         return response()->json([
+    //             'message' => "Event updated successfully."
+    //         ], 201);
+
+    //     } catch (Exception $e){
+    //         DB::rollBack();
+    //         return response()->json([
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+    public function deleteEventPost($id){
+        try {
+            DB::beginTransaction();
+
+            $post = Event::find($id);
+
+            if (!$post){
+                throw EventException::notFound();
+            }
+
+            // clean up the related images
+
+            // thumbnail image
+            $thumbnailImage = $post->thumbnail_image;
+
+            if (Storage::disk('public')->exists($thumbnailImage)) {
+                Storage::disk('public')->delete($thumbnailImage);
+            }
+
+            // content images
+            $contentImages = $post->images;
+            foreach($contentImages as $image){
+                $imagePath = $image->url ?? "";
+                if (Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                }
+            }
+
+            $post->delete();
+
+            DB::commit();
+            return response()->json([
+                'message' => "Event deleted successfully."
+            ], 201);
         } catch (Exception $e){
             DB::rollBack();
             return response()->json([
