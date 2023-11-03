@@ -12,14 +12,14 @@ export default function HeroSection({
     heroDescription,
 }: Props) {
     return (
-        <div className="HeroSection bg-black flex items-center justify-end w-full h-screen px-6 relative overflow-hidden">
+        <div className="HeroSection bg-black flex items-center justify-center w-full h-screen px-6 relative overflow-hidden">
             <img
                 src="https://res.cloudinary.com/dakp66ddf/image/upload/v1692149904/marshlands-8176000_fndgne.webp"
                 className="absolute inset-0 w-full h-full object-cover object-center
                 z-[0] filter brightness-[0.4]
                 isolate"
             />
-            <div className="max-w-3xl text-center md:text-left text-white z-[10]">
+            <div className="max-w-3xl text-center md:text-center text-white z-[10]">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-8">
                     {heroTitle}
                 </h1>
