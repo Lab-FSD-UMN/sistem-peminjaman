@@ -32,7 +32,7 @@ class Webconfig extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
-
+    
     protected function value(): Attribute
     {
         return Attribute::make(
@@ -40,14 +40,10 @@ class Webconfig extends Model
             get: function () {
                 if ($this->type == 'image') {
                     return Storage::url($this->attributes['value']);
+                } else if ($this->type == 'file') {
+                    return Storage::url($this->attributes['value']);
                 } else {
                     return $this->attributes['value'];
-                }
-            },
-            set: function ($value) {
-                if ($this->type == 'image') {
-                } else {
-                    return $this->attributes['value'] = $value;
                 }
             }
         );
