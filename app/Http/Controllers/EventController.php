@@ -66,4 +66,23 @@ class EventController extends Controller
         }
     }
 
+
+    public function getAllEventPosts(){
+        try {
+
+            $posts = Event::all();
+
+            return response()->json([
+                'message' => "Successfully fetched all event posts data.",
+                'data' => $posts
+            ], 200);
+
+        } catch (Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }
