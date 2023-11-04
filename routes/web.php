@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
@@ -38,6 +39,8 @@ Route::get('/testing', function () {
     return Inertia::render('Testing/TestingPage');
 })->name('testing');
 Route::get('/contact', ContactController::class)->name('contact');
+
+Route::get('/about', AboutController::class)->name('about');
 
 Route::get('/product', ProductController::class)->name('product');
 Route::get('/product/{slug}', [ProductController::class, 'ProductDetail'])->name('product.detail');
