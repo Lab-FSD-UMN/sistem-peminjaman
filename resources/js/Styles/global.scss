@@ -1,7 +1,15 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900;1000&display=swap');
+
+// fonts
+@font-face {
+    font-family: 'Nexa';
+    font-style: normal;
+    src: url('../Styles/Fonts/Nexa-Demo-Bold.ttf.woff') format('woff');
+}
 
 // color
 $primaryColor: #ffffff;
@@ -62,6 +70,6 @@ $globalBorder: 0.1rem solid rgb(255, 46, 46);
 }
 
 * {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-weight: 400;
 }
