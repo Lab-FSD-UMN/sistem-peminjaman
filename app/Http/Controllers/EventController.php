@@ -7,6 +7,8 @@ use App\Models\EventContentImages;
 use App\Exceptions\EventException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -16,26 +18,26 @@ class EventController extends Controller
         try {
             DB::beginTransaction();
 
-            $request->validate(
-                [
-                    'thumbnail_image' => 'required|mimes:jpg,jpeg,png,gif',
-                    'title' => 'required',
-                    'content' => 'required',
-                    'images' => 'array',
-                    'images.*' => 'image|mimes:jpg,jpeg,png,gif',
-                ],
-                [
-                    'thumbnail_image.required'  => 'Foto thumbnail tidak boleh kosong.',
-                    'thumbnail_image.mimes' => 'Format thumbnail harus berekstensi .jpg, .jpeg, .gif, atau .png.',
-                    'title.required' => 'Judul tidak boleh kosong.',
-                    'content.required' => 'Konten tidak boleh kosong.',
-                    'images.array' => 'Foto harus dikirim dalam bentuk array.',
-                    'images.*.*' => "Foto harus berekstensi .jpg, .jpeg, .gif, atau .png."
-                ]
-            );
+            Log::info($request->all());
+
+            $request->validate([
+                'thumbnail_image' => 'required|mimes:jpg,jpeg,png,gif',
+                'title' => 'required',
+                'content' => 'required',
+                'images' => 'array',
+                'images.*' => 'image|mimes:jpg,jpeg,png,gif',
+            ], [
+                'thumbnail_image.required' => 'Foto thumbnail tidak boleh kosong.',
+                'thumbnail_image.mimes' => 'Format thumbnail harus berekstensi .jpg, .jpeg, .gif, atau .png.',
+                'title.required' => 'Judul tidak boleh kosong.',
+                'content.required' => 'Konten tidak boleh kosong.',
+                'images.array' => 'Foto harus dikirim dalam bentuk array.',
+                'images.*.mimes' => "Foto harus berekstensi .jpg, .jpeg, .gif, atau .png."
+            ]);
 
             // content processing
             $thumbnailImage = $request->file('thumbnail_image');
+            $thumbnailImageName = time() . '_' . Str::random(10) . '.' . $thumbnailImage->getClientOriginalExtension();
             $thumbnailPath = $thumbnailImage->storeAs('event/thumbnails', $thumbnailImageName, 'public');
 
             Event::insert([
@@ -48,7 +50,8 @@ class EventController extends Controller
 
             // images processing
             $imageLinks = [];
-            foreach ($request->images as $image){
+            $images = $request->file('images') ?? [];
+            foreach ($images as $image){
                 $imageName = $image->getClientOriginalName();
                 $imagePath = $image->storeAs('event/images', $imageName, 'public');
                 array_push($imageLinks, ['url' => $imagePath, 'event_id' => $eventID]);
@@ -107,44 +110,44 @@ class EventController extends Controller
         }
     }
 
-    // public function updateEventPost(Request $request, $id){
-    //     try {
+    public function updateEventPost(Request $request, $id){
+        // try {
 
-    //         DB::beginTransaction();
+        //     DB::beginTransaction();
 
-    //         $request->validate(
-    //             [
-    //                 'thumbnail_image' => 'mimes:jpg,jpeg,png,gif',
-    //                 'title' => 'required',
-    //                 'content' => 'required',
-    //                 'images' => 'array',
-    //                 'images.*' => 'image|mimes:jpg,jpeg,png,gif',
-    //             ],
-    //             [
-    //                 'thumbnail_image.required'  => 'Foto thumbnail tidak boleh kosong.',
-    //                 'thumbnail_image.mimes' => 'Format thumbnail harus berekstensi .jpg, .jpeg, .gif, atau .png.',
-    //                 'title.required' => 'Judul tidak boleh kosong.',
-    //                 'content.required' => 'Konten tidak boleh kosong.',
-    //                 'images.array' => 'Foto harus dikirim dalam bentuk array.',
-    //                 'images.*.*' => "Foto harus berekstensi .jpg, .jpeg, .gif, atau .png."
-    //             ]
-    //         );
-
-
+        //     $request->validate(
+        //         [
+        //             'thumbnail_image' => 'mimes:jpg,jpeg,png,gif',
+        //             'title' => 'required',
+        //             'content' => 'required',
+        //             'images' => 'array',
+        //             'images.*' => 'image|mimes:jpg,jpeg,png,gif',
+        //         ],
+        //         [
+        //             'thumbnail_image.required'  => 'Foto thumbnail tidak boleh kosong.',
+        //             'thumbnail_image.mimes' => 'Format thumbnail harus berekstensi .jpg, .jpeg, .gif, atau .png.',
+        //             'title.required' => 'Judul tidak boleh kosong.',
+        //             'content.required' => 'Konten tidak boleh kosong.',
+        //             'images.array' => 'Foto harus dikirim dalam bentuk array.',
+        //             'images.*.*' => "Foto harus berekstensi .jpg, .jpeg, .gif, atau .png."
+        //         ]
+        //     );
 
 
-    //         DB::commit();
-    //         return response()->json([
-    //             'message' => "Event updated successfully."
-    //         ], 201);
 
-    //     } catch (Exception $e){
-    //         DB::rollBack();
-    //         return response()->json([
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+
+        //     DB::commit();
+        //     return response()->json([
+        //         'message' => "Event updated successfully."
+        //     ], 201);
+
+        // } catch (Exception $e){
+        //     DB::rollBack();
+        //     return response()->json([
+        //         'error' => $e->getMessage()
+        //     ], 500);
+        // }
+    }
 
     public function deleteEventPost($id){
         try {

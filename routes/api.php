@@ -3,6 +3,7 @@
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\Auth\APIAuthController;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendMail;
@@ -52,7 +53,36 @@ Route::prefix('auth')
         Route::post('/register', 'register');
 });
 
+// Admin protected API Routes
+Route::middleware(['auth:sanctum', 'role-api:admin'])
+    ->group(function(){
 
+        Route::prefix('event')
+            ->controller(EventController::class)
+            ->group(function(){
+                Route::post('create', 'createEventPost');
+                Route::post('update/{id}', 'updateEventPost');
+                Route::delete('delete/{id}', 'deleteEventPost');
+            });
+
+});
+
+// User protected API Routes
+Route::middleware(['auth:sanctum', 'role-api:user'])
+    ->group(function(){
+
+});
+
+
+
+// Guest Routes
+
+Route::prefix('event')
+    ->controller(EventController::class)
+    ->group(function(){
+        Route::get('/', 'getAllEventPosts');
+        Route::get('/id/{id}', 'getSpecificEventPost');
+});
 
 // API for create new Item
 Route::get('/request', [ReservationController::class, 'showUserReservationListAndStatusPage']); // get all item
