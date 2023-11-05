@@ -3,6 +3,7 @@
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\Auth\APIAuthController;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendMail;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.email');
 
 // Route::post('send-email', function (Request $request) {
@@ -37,6 +39,21 @@ Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.ema
 
 // Reservation System Route Start [Edited by Ivan]
 // USER
+
+Route::prefix('auth')
+    ->controller(APIAuthController::class)
+    ->group(function(){
+
+        Route::middleware(['auth:sanctum'])->group(function(){
+            Route::post('/logout', 'logout');
+        });
+
+        Route::post('/login', 'login');
+        Route::post('/register', 'register');
+});
+
+
+
 // API for create new Item
 Route::get('/request', [ReservationController::class, 'showUserReservationListAndStatusPage']); // get all item
 
