@@ -31,7 +31,7 @@ class APIAuthController extends Controller
             }
 
             $user = User::where('email', $request->email)
-                ->where('role', 'user')
+                // ->where('role', 'user')
                 ->first();
 
             if (!$user || !Hash::check($request->password, $user->password)) {
