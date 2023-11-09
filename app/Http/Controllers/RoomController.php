@@ -16,6 +16,8 @@ use Ramsey\Uuid\Uuid;
 class RoomController extends Controller
 {
 
+
+
     // show / get all room data with pagination
     public function showAllRoom() // this function is for show all room on database
     {
@@ -86,6 +88,7 @@ class RoomController extends Controller
         try {
             // Validation
             $validator = Validator::make($request->all(), [
+
                 'name' => 'required|unique:rooms,name', // Use 'title' for the unique rule
                 'description' => 'required',
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
@@ -120,7 +123,7 @@ class RoomController extends Controller
             }
 
             $item = Room::create([
-                'id' => Uuid::uuid4()->toString(),
+                'id' => Uuid::uuid4()->toString(), // Generate a new UUID
                 'name' => $request->input('name'),
                 'quantity' => $request->input('quantity'),
                 'description' => $request->input('description'),
