@@ -12,8 +12,10 @@ class Room extends Model
 
 
     protected $fillable = [
+        'id',
         'image',
         'name',
+        'image',
         'is_available',
         'description',
     ];
@@ -24,15 +26,19 @@ class Room extends Model
 
 
     // room image
-    public function room_image(): HasMany
-    {
-        return $this->hasMany(Room_Image::class);
-    }
+    // public function room_image(): HasMany
+    // {
+    //     return $this->hasMany(Room_Image::class);
+    // }
+    //mutator
+
 
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true);
     }
+
+
 
     public function scopeUnavailable($query)
     {

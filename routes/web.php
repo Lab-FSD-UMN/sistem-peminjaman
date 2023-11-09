@@ -59,7 +59,7 @@ Route::prefix('reservation')->group(function () {
         Route::get('/', [ReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
         Route::get('/{id}', [ReservationController::class, 'showRoomReservationDetailPage']);
     });
-
+    
     Route::prefix('item')->group(function () {
         Route::get('/', [ReservationController::class, 'showItemReservationPage'])->name('reservation.item');
         Route::get('/{id}', [ReservationController::class, 'showItemReservationDetailPage']);
@@ -75,7 +75,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/', function () {
             return Inertia::render('Admin/AdminPage');
         })->name('index');
-        
+
         // Reservation System
         Route::prefix('/reservation')->name('reservation.')->group(function () {
             Route::get('/', [ReservationController::class, 'showAdminReservationDashboardPage'])->name('index');
@@ -92,6 +92,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
                     Route::put('/{id}', [ReservationController::class, 'updateItemData'])->name('update');
                 });
             });
+
+            Route::prefix('/room')->name('room.')->group(function () {
+                // Room : show room reservation page
+                Route::get('/', [ReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
+            });
         });
 
         // 
@@ -103,12 +108,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 
-    // [Reservation/] Show Room Menu page
-    Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationSubMenuRoomPage']); //get
 
-
-    // Room : show room reservation page
-    Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
 
     // Room data functon
     Route::prefix('/admin/reservation/room/data')->group(function () {

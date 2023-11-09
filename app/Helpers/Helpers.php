@@ -29,3 +29,14 @@ function FormatDate($date)
     $human_readable_date = $carbon_date->diffForHumans();
     return $human_readable_date;
 }
+
+
+function CombineDateTime(
+    $date,
+    $time
+) {
+    $date = Carbon::parse($date);
+    $time = Carbon::parse($time);
+    $combined_date_time = $date->format('Y-m-d') . ' ' . $time->format('H:i:s');
+    return $combined_date_time;
+}

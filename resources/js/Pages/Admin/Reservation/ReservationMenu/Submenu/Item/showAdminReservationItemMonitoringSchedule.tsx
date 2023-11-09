@@ -4,11 +4,11 @@ import React, { useEffect } from 'react'
 
 
 export default function ShowAdminReservationItemMonitoringSchedule() {
-    const item_schedule: any = usePage().props.item_schedule;
+    const item_schedule: any = usePage().props;
     // const schedule: any = JSON.parse(item_schedule);
     const Nov = item_schedule.November;
     useEffect(() => {
-        console.log("Monitoring Props :", Nov);
+        console.log("Monitoring Props :", item_schedule);
     }, [])
     return (
         <AdminLayout>

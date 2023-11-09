@@ -13,6 +13,7 @@ use App\Exceptions\ReservationException;
 use App\Models\Booked_item;
 use App\Models\Booked_room;
 use App\Models\Item_image;
+use App\Models\Room;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -55,13 +56,25 @@ class ReservationController extends Controller
 
     public function showRoomReservationPage()
     {
-        return Inertia::render('Reservation/ReservationGroup/Room/ReservationRoomPage');
+
+        $rooms = Room::paginate(10);
+        return Inertia::render(
+            'Reservation/ReservationGroup/Room/showRoomReservationPage',
+            [
+                'rooms' => $rooms,
+            ]
+        );
     }
 
     public function showRoomReservationDetailPage($id)
     {
-
-        return Inertia::render('Reservation/ReservationGroup/Room/ReservationRoomDetailPage');
+        $room = Room::findOrFail($id);
+        return Inertia::render(
+            'Reservation/ReservationGroup/Room/showReservationRoomDetailPage',
+            [
+                'room' => $room,
+            ]
+        );
     }
 
 
@@ -76,6 +89,7 @@ class ReservationController extends Controller
         ]);
     }
 
+
     public function showItemReservationDetailPage($id)
     {
         $item = Item::find($id)->with('item_images')->first();
@@ -83,8 +97,6 @@ class ReservationController extends Controller
             'item' => $item,
         ]);
     }
-
-
 
 
     // function for item reservation
@@ -110,7 +122,6 @@ class ReservationController extends Controller
                 throw ReservationException::Custom('Invalid quantity. Please enter a positive number greater than zero.');
             }
 
-
             // Validation: Check if the item is available in that given time and given quantity
             // check if available quantity - booked quantity > requested quantity in that given time
             $booked_quantity = $Booked_item::where('item_id', $request->item_id)
@@ -123,9 +134,6 @@ class ReservationController extends Controller
             if ($request->quantity > $available_quantity) {
                 throw ReservationException::Custom("Insufficient quantity. try to reserve $available_quantity or less.");
             }
-
-
-
             // Validation: check if the user has already reserved the item in that given time
             // check if the user has already reserved the item in that given time
             if ($Booked_item::where('user_id', $request->user_id)
@@ -138,7 +146,6 @@ class ReservationController extends Controller
             ) {
                 throw ReservationException::Custom('You have already reserved this item in that given time.');
             }
-
             // Validation: check if the reservation time is valid
             // Process the incoming request data
             // Combine date and time strings to create timestamps
@@ -177,7 +184,7 @@ class ReservationController extends Controller
             DB::commit();
             // return redirect()->route('reservation.item')->with('success', 'Item has been reserved');
             return response()->json([
-                'message' => 'Item has been reserved',
+                'mes    sage' => 'Item has been reserved',
             ], 200);
         } catch (ReservationException $e) {
             // Handle exceptions (e.g., log the error)
@@ -188,9 +195,9 @@ class ReservationController extends Controller
         }
     }
 
+
+
     // ADMIN //
-
-
     // [Reservation/] Show Admin Reservation Dashboard Page (GET)
     public function showAdminReservationDashboardPage()
     {
@@ -252,17 +259,30 @@ class ReservationController extends Controller
     }
 
 
+    //[Method for get all item based on schedule] 
+    public function showItemScheduleFromDate(Request $request)
+    {
+        $request->validate([
+            'reservation_start_time' => 'required',
+            'reservation_end_time' => 'required',
+        ]);
+        $start_time = $request->reservation_start_time;
+        $end_time = $request->reservation_end_time;
+
+        $Booked_item = Booked_item::where('reservation_start_time', '>=', $start_time)
+            ->where('reservation_end_time', '<=', $end_time)
+            ->get();
+
+        return response()->json([
+            'booked_items' => $Booked_item,
+        ], 200);
+    }
+
+
     // [Reservation/Item/schedule] Show Item Schedule in time series
     public function showAdminReservationItemMonitoringSchedule()
     {
-        $item_schedule = Booked_item::with('user')->with('item')->get();
-        // group by month and add month name
-        $item_schedule = $item_schedule->groupBy(function ($item) {
-            return Carbon::parse($item->reservation_start_time)->format('F');
-        });
-        $item_schedule = $item_schedule->toArray();
-
-        // convert to array
+        $item_schedule = Booked_item::all();
 
         return Inertia::render(
             'Admin/Reservation/ReservationMenu/Submenu/Item/showAdminReservationItemMonitoringSchedule',
@@ -278,7 +298,7 @@ class ReservationController extends Controller
     {
         $item = Item::with('item_images')->get();
         return Inertia::render(
-            'Admin/Reservation/ReservationMenu/Submenu/Item/ShowAdminReservationItemDataPage',
+            'Admin/Reservation/ReservationMenu/Submenu/Item/showAdminReservationItemDataPage',
             [
                 'items' => $item
             ]
@@ -304,6 +324,7 @@ class ReservationController extends Controller
     // to search data from history page
     public function searchHistoryData(Request $request)
     {
+        // 
         $keyword = $request->input('keyword');
         $search_type = $request->input('search_type', 0); //0 for all, 1 for items only, 2 for rooms only
         $perPage = $request->input('per_page', 10);
