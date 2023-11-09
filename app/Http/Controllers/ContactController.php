@@ -17,6 +17,7 @@ class ContactController extends Controller
 
     public function SendEmail() 
     {
+        // TODO: change email
         $email = new SendMail();
         Mail::to('aureliusivanwijaya@gmail.com')->send($email);
     }

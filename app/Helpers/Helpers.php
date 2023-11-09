@@ -16,19 +16,15 @@ function getMessage(string $string = '')
 }
 
 
-// Cache Helper
-// function Cache(string $key)
-// {
-//     $ProductData = Cache::rememberForever($key, function () {
-//         $ProductData = new Product();
-//         $ProductData = $ProductData->paginate(5);
-//         foreach ($ProductData as $product) {
-//             $product->image = Storage::url($product->image);
-//         }
-//         return $ProductData;
-//     });
-//     return $ProductData;
-// }
+function imgExtention($image)
+{
+    // Replace spaces with hyphens
+    $image_name =  pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . time() . "." . $image->getClientOriginalExtension();
+    $image_extention = preg_replace('/\s+/', '-', $image_name);
+    // Convert to lowercase
+    $image_extention = strtolower($image_extention);
+    return $image_extention;
+}
 
 function FormatDate($date)
 {
@@ -39,6 +35,15 @@ function FormatDate($date)
 }
 
 
+function CombineDateTime(
+    $date,
+    $time
+) {
+    $date = Carbon::parse($date);
+    $time = Carbon::parse($time);
+    $combined_date_time = $date->format('Y-m-d') . ' ' . $time->format('H:i:s');
+    return $combined_date_time;
+}
 function uploadImage($image, $destination_path = "", $table, $metadata){
     try {
         if (!$image){

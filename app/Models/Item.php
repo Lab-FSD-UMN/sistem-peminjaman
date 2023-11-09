@@ -8,6 +8,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException as ExceptionUnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
 
@@ -25,20 +26,28 @@ class Item extends Model
         'quantity',
         'is_available',
         'description',
+        'id'
     ];
 
     protected $casts = [
         'is_available' => 'boolean',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($model) {
-            $model->id = Uuid::uuid4()->toString();
-        });
+    // has many item_images
+    public function item_images(): HasMany
+    {
+        return $this->hasMany(Item_image::class);
     }
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::creating(function ($model) {
+    //         $model->id = Uuid::uuid4()->toString();
+    //     });
+    // }
 
     // usage: Item::available()->get();
     public function scopeAvailable($query)

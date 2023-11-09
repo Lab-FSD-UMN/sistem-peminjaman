@@ -20,16 +20,23 @@ class UserSeeder extends Seeder
             $User->where('email', 'admin')->doesntExist()
         ) {
             $User->insert([
-                "id" => Uuid::uuid4()->toString(),
+                "id" => '1',
                 'name' => 'admin',
                 'email' => 'admin@admin.com',
-                'password' =>   Hash::make('dadargulung'),
+                'password' => Hash::make('dadargulung'),
                 'role' => 1
             ]);
             $User->insert([
                 "id" => Uuid::uuid4()->toString(),
                 'name' => 'user',
                 'email' => 'user@user.com',
+                'password' =>  Hash::make('dadargulung'),
+                'role' => 0
+            ]);
+            $User->insert([
+                "id" => Uuid::uuid4()->toString(),
+                'name' => 'ujang',
+                'email' => 'ujang@user.com',
                 'password' =>  Hash::make('dadargulung'),
                 'role' => 0
             ]);

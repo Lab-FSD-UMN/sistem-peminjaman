@@ -15,6 +15,10 @@ php artisan migrate:fresh --seed --seeder=CallAllSeeder
 php artisan serve (in terminal 1)
 yarn start (in terminal 2)
 
+<!-- alternatif run -->
+yarn serve
+npm run serve 
+
 <h1>Step to Deploy</h1>
 <!-- build -->
 yarn build (in local)

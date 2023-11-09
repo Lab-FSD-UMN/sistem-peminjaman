@@ -75,7 +75,9 @@ export default function ProductAddCard(ProductData: any) {
                     className='w-full max-w-sm h-1/4'
                     src={
                         URL.createObjectURL(data.image)
-                    } alt={data.image} />
+                    } alt={data.image}
+                    
+                    />
             }
             <button
                 type="submit"

@@ -32,7 +32,6 @@ class ProductController extends Controller
     // ADMIN FUNCTION
     public function AdminPage(Product $product)
     {
-
         $ProductData = $product->getAllProductWithCache();
         return inertia('Admin/Product/ProductPage', [
             'ProductData' => $ProductData,
