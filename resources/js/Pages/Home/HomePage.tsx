@@ -6,9 +6,13 @@ import { Head, usePage } from '@inertiajs/react';
 import React, { useEffect } from 'react';
 import HeroSection from './Section/HeroSection';
 import DescriptionSection from './Section/DescriptionSection';
+import InNumbersSection from './Section/InNumbers';
 import TestimonySection from './Section/TestimonySection';
 import Slider from '@/Components/General/Slider';
 // import { SwiperSlide } from 'swiper/vue';
+import { SwiperSlide } from 'swiper/vue';
+import FacilitySection from './Section/FacilitySection';
+import HowToSection from './Section/HowToSection';
 
 
 export default function HomePage({ auth, WebconfigData, cache, helper, testimonies }: PageProps<{ WebconfigData: any, cache: any, helper: string, testimonies: any }>) {
@@ -27,19 +31,28 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
                 <meta name="keywords" content="" />
             </Head>
             <Guest>
-                <div
-                    className='flex flex-col justify-center items-center'
-                >
+                <div className='flex flex-col justify-center items-center'>
                     <HeroSection
-                        companyName={companyData.company_name}
-                        companyDescription={companyData.company_description}
+                        heroTitle={companyData.hero_title}
+                        heroSubTitle={companyData.hero_subtitle}
+                        heroDescription={companyData.hero_description}
                     />
                     <DescriptionSection
-                        companyDescription={companyData.company_description}
+                        sectionTitle={companyData.section1_title}
+                        sectionDescription={companyData.section1_description}
                     />
-                    <TestimonySection
+                    <InNumbersSection
+                        sectionTitle={companyData.section2_title}
+                        sectionDescription={companyData.section2_description}
+                    />
+                    <FacilitySection />
+                    <HowToSection 
+                        sectionTitle={companyData.section3_title}
+                        sectionDescription={companyData.section3_description}
+                    />
+                    {/* <TestimonySection
                         {...testimonies}
-                    />
+                    /> */}
                     <div>
                         {/* {
                             WebconfigData.map((webconfig: any) => {
