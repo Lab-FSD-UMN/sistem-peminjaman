@@ -15,6 +15,13 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'biru_umn' : '#005596',
+                'biru_muda' : '#0F9EED',
+                'orange' : '#F28A15',
+                'purple' : '#904992',
+                'teal' : '#1C968F',
+            }
         },
     },
     plugins: [forms],

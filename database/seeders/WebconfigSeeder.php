@@ -75,6 +75,13 @@ class WebconfigSeeder extends Seeder
             // Home
             [
                 'category' => 'home',
+                'title' => 'home_bg',
+                'alias' => 'hero_bg_img',
+                'type' => 'image',
+                'value' => 'logo.svg',
+            ],
+            [
+                'category' => 'home',
                 'title' => 'hero_title',
                 'alias' => 'Judul Hero',
                 'type' => 'text',

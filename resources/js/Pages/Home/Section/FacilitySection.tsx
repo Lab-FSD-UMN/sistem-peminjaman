@@ -14,7 +14,7 @@ function FacilitySection() {
     const FacilityData: any = usePage().props.rooms;
 
     return (
-        <div className="FacilitySection flex items-center justify-end w-full h-screen relative overflow-hidden">
+        <div className="FacilitySection flex items-center justify-end w-full h-96 md:h-screen relative overflow-hidden">
             <Slider
                 className="w-full h-full"
                 autoplay={{
@@ -37,15 +37,15 @@ function FacilitySection() {
                             <img
                                 // src={facility.image}
                                 src="https://res.cloudinary.com/dakp66ddf/image/upload/v1692149904/marshlands-8176000_fndgne.webp"
-                                className="absolute inset-0 w-full h-screen object-cover object-center z-[0] filter brightness-[0.4]"
+                                className="absolute inset-0 w-full h-96 md:h-screen object-cover object-center z-[0] filter brightness-[1]"
                             />
-                            <div className="absolute flex justify-center items-center h-screen px-16 md:px-40 text-white">
+                            <div className="absolute flex justify-center items-center h-96 md:h-screen px-16 md:px-40 text-white bg-biru_umn bg-opacity-70">
                                 <div>
-                                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-8">
+                                    <h1 className="text-2xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 md:mb-8">
                                         {/* {facility.name} */}
                                         Lab Photography
                                     </h1>
-                                    <p className="w-full lg:w-3/5 text-md md:text-xl lg:text-xl text-gray-200 mb-12">
+                                    <p className="w-full lg:w-3/5 text-sm md:text-xl lg:text-xl text-gray-200 mb-4 md:mb-12">
                                         {/* {facility.testimony} */}
                                         Lorem ipsum dolor sit amet, consectetur
                                         adipiscing elit, sed do eiusmod tempor
@@ -54,7 +54,15 @@ function FacilitySection() {
                                         nostrud exercitation ullamco laboris
                                         nisi ut aliquip ex ea commodo consequat.
                                     </p>
-                                    <PrimaryButton className="px-5 py-3 bg-gray-600">Read more...</PrimaryButton>
+                                    <PrimaryButton className="px-5 py-3 bg-g-500">
+                                        Read more
+                                        <span><img src="https://i.ibb.co/GFRFKQg/arrow-pendek.png" className="ml-3"/></span>
+                                    </PrimaryButton>
+                                </div>
+                                <div className="hidden md:block">
+                                    <a>
+                                        <img src="https://i.ibb.co/GFRFKQg/arrow-pendek.png" className="w-20 hover:opacity-70 duration-150 hover:cursor-pointer"/>
+                                    </a>
                                 </div>
                                 {/* <button
                                     type="button"
