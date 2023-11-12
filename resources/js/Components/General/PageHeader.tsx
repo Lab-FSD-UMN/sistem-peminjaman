@@ -14,20 +14,20 @@ export function PageHeaderV1({
     pageDescription,
 }: Props) {
     return (
-        <div className="PageHeader relative bg-biru_muda flex items-center w-full h-80 md:h-screen px-6 sm:px-10 md:px-24 relative overflow-hidden">
+        <div className="PageHeader relative bg-biru_muda flex items-center w-full h-full md:h-screen px-6 py-20 md:py-auto sm:px-10 md:px-24 relative overflow-hidden">
             <img
                 src={pageImage}
                 className="absolute inset-0 w-full h-full object-cover object-center
                 z-[0] isolate"
             />
-            <div className="text-center md:text-left text-white z-[10]">
+            <div className="text-left text-white z-[10]">
                 <p className="text-sm md:text-lg lg:text-xl mb-3 md:mb-6 text-sky-800 font-bold font-nunito-sans tracking-[5px]">
                     {pageSubTitle}
                 </p>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-nexa md:leading-[50px] lg:leading-[70px] mb-4 md:mb-8">
                     {pageTitle}
                 </h1>
-                <p className="text-sm md:text-md lg:text-xl md:font-semibold font-nunito-sans md:leading-[20px] lg:leading-[30px]">
+                <p className="text-md lg:text-xl md:font-semibold font-nunito-sans md:leading-[20px] lg:leading-[30px]">
                     {pageDescription}
                 </p>
             </div>
