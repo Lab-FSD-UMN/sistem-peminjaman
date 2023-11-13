@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomReservationController;
+use App\Http\Controllers\ItemReservationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\WebconfigController;
 use App\Models\Image;
@@ -53,16 +55,22 @@ Route::get('/dashboard', function () {
 
 Route::prefix('reservation')->group(function () {
     Route::get('/', [ReservationController::class, 'showUserReservationPage'])->name('reservation');
+
     Route::get('/myreservation', [ReservationController::class, 'showUserReservationListAndStatusPage'])->name('reservation.myreservation');
 
+
     Route::prefix('room')->group(function () {
-        Route::get('/', [ReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
-        Route::get('/{id}', [ReservationController::class, 'showRoomReservationDetailPage']);
+        Route::get('/', [RoomReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
+
+        Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationDetailPage']);
+
     });
 
     Route::prefix('item')->group(function () {
-        Route::get('/', [ReservationController::class, 'showItemReservationPage'])->name('reservation.item');
-        Route::get('/{id}', [ReservationController::class, 'showItemReservationDetailPage']);
+        Route::get('/', [ItemReservationController::class, 'showItemReservationPage'])->name('reservation.item');
+
+        Route::get('/{id}', [ItemReservationController::class, 'showItemReservationDetailPage']);
+
     });
 });
 
@@ -75,26 +83,38 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/', function () {
             return Inertia::render('Admin/AdminPage');
         })->name('index');
-        
+
         // Reservation System
         Route::prefix('/reservation')->name('reservation.')->group(function () {
             Route::get('/', [ReservationController::class, 'showAdminReservationDashboardPage'])->name('index');
+
             Route::get('/list', [ReservationController::class, 'showAdminReservationRequest'])->name('request');
+
             Route::get('/history', [ReservationController::class, 'showAdminReservationHistoryPage'])->name('history');
 
+
             Route::prefix('/item')->name('item.')->group(function () {
-                Route::get('/', [ReservationController::class, 'showAdminReservationItemPage'])->name('index');
-                Route::get('/schedule', [ReservationController::class, 'showAdminReservationItemMonitoringSchedule'])->name('schedule');
+                Route::get('/', [ItemReservationController::class, 'showAdminReservationItemPage'])->name('index');
+
+                Route::get('/schedule', [ItemReservationController::class, 'showAdminReservationItemMonitoringSchedule'])->name('schedule');
+
                 Route::prefix('/data')->name('data.')->group(function () {
-                    Route::get('/', [ReservationController::class, 'showAdminReservationItemDataPage'])->name('index');
-                    Route::get('/{id}', [ReservationController::class, 'showAdminReservationItemDataDetailPage'])->name('show');
-                    Route::post('/{id}', [ReservationController::class, 'createItemData'])->name('store');
-                    Route::put('/{id}', [ReservationController::class, 'updateItemData'])->name('update');
+                    Route::get('/', [ItemReservationController::class, 'showAdminReservationItemDataPage'])->name('index');
+
+                    // blm ada
+                    Route::get('/{id}', [ItemReservationController::class, 'showAdminReservationItemDataDetailPage'])->name('show');
+
+                    // blm ada
+                    Route::post('/{id}', [ItemReservationController::class, 'createItemData'])->name('store');
+
+                    // blm ada
+                    Route::put('/{id}', [ItemReservationController::class, 'updateItemData'])->name('update');
+
                 });
             });
         });
 
-        // 
+        //
     });
 
     Route::post('/item', [ItemController::class, 'createItem']); //  create item
@@ -104,32 +124,40 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
     // [Reservation/] Show Room Menu page
-    Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationSubMenuRoomPage']); //get
+    Route::get('/admin/reservation/room', [RoomReservationController::class, 'showAdminReservationSubMenuRoomPage']); //get
+
 
 
     // Room : show room reservation page
-    Route::get('/admin/reservation/room', [ReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
+    Route::get('/admin/reservation/room', [RoomReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
+
 
     // Room data functon
     Route::prefix('/admin/reservation/room/data')->group(function () {
         // Display the room data page
-        Route::get('/', [ReservationController::class, 'adminReservationRoomPage'])->name('admin.reservation.room.data.index');
+        Route::get('/', [RoomReservationController::class, 'adminReservationRoomPage'])->name('admin.reservation.room.data.index');
+
 
         // Display room details (GET)
-        Route::get('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.show');
+        Route::get('/{id}', [RoomReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.show');
+
 
         // Create a new room (POST)
-        Route::post('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.store');
+        Route::post('/{id}', [RoomReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.store');
+
 
         // Update room details (PUT)
-        Route::put('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.update');
+        Route::put('/{id}', [RoomReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.update');
+
 
         // Delete a room (DELETE)
-        Route::delete('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.destroy');
+        Route::delete('/{id}', [RoomReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.destroy');
+
     });
 
     // Room schedule function
-    Route::get('/admin/reservation/room/schedule', [ReservationController::class, 'adminReservationRoomPage']);
+    Route::get('/admin/reservation/room/schedule', [RoomReservationController::class, 'adminReservationRoomPage']);
+
 
     // Reservation System END
     Route::get('/admin/webconfig', WebconfigController::class)->name('admin.webconfig');

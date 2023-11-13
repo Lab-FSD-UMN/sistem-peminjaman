@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\RoomReservationController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
