@@ -101,6 +101,11 @@ class EventController extends Controller
                 'data' => $post
             ], 200);
 
+        } catch (ResponseException $e){
+            return response()->json([
+                "code" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
         } catch (Exception $e){
             return response()->json([
                 'error' => $e->getMessage()
@@ -187,6 +192,11 @@ class EventController extends Controller
                 'message' => "Event updated successfully."
             ], 201);
 
+        } catch (ResponseException $e){
+            return response()->json([
+                "code" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
         } catch (Exception $e){
             DB::rollBack();
             return response()->json([

@@ -76,7 +76,8 @@ Route::middleware(['auth:sanctum', 'role-api:admin'])
                 Route::prefix('reservation')
                     ->controller(ItemReservationController::class)
                     ->group(function(){
-                        Route::get('/list/status', 'ChangeItemReservationStatus');
+                        Route::get('/find/{id}', 'adminGetReservationDetail');
+                        Route::post('/list/status', 'ChangeItemReservationStatus');
                     });
             });
 
@@ -96,6 +97,10 @@ Route::middleware(['auth:sanctum', 'role-api:user'])
                     ->controller(ItemReservationController::class)
                     ->group(function(){
                         Route::post('/', 'reserveItem');
+
+                        Route::get('/myreservations', 'viewAllSelfReservations');
+                        Route::get('/myreservations/{id}', 'userGetReservationDetail');
+                        Route::delete('/cancel/{id}', 'deleteReservation');
                     });
 
 

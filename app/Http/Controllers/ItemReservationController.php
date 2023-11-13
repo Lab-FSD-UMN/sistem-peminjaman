@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use App\Exceptions\CustomException;
 use App\Exceptions\ReservationException;
+use App\Exceptions\ResponseException;
 use App\Models\Booked_item;
 use App\Models\Booked_room;
 use App\Models\Item_image;
@@ -151,6 +152,11 @@ class ItemReservationController extends Controller
 
 
             $booked_item = Booked_item::find($request->id);
+
+            if (!$booked_item){
+                throw new ResponseException(404, "Requested reservation does not exist.");
+            }
+
             $booked_item->status = $request->status;
             $booked_item->save();
             DB::commit();
@@ -158,6 +164,11 @@ class ItemReservationController extends Controller
             return response()->json([
                 'message' => 'status has been changed',
             ], 200);
+        }  catch (ResponseException $e){
+            return response()->json([
+                "code" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
         } catch (CustomException $e) {
             // Handle exceptions (e.g., log the error)
             DB::rollBack(); // Rollback the transaction in case of an exception
@@ -202,6 +213,110 @@ class ItemReservationController extends Controller
                 'items' => $item
             ]
         );
+    }
+
+    public function viewAllSelfReservations()
+    {
+        try {
+
+            $user = auth()->user();
+
+            $reservations = Booked_item::where('user_id', $user->id)->get();
+
+            return response()->json([
+                'code' => 200,
+                'message' => "Successfully fetched user's reservations.",
+                'data' => $reservations
+            ], 200);
+
+        } catch (Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+    }
+
+    public function userGetReservationDetail($id){
+        try {
+
+            $user = auth()->user();
+
+            $reservation = Booked_item::where('id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$reservation){
+                throw new ResponseException(404, "Reservation data does not exist.");
+            }
+
+            return response()->json([
+                'code' => 200,
+                'message' => "Successfully fetched user's reservation detail.",
+                'data' => $reservation
+            ], 200);
+
+        } catch (ResponseException $e){
+            return response()->json([
+                "code" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
+        } catch (Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function adminGetReservationDetail($id){
+        try {
+
+            $reservation = Booked_item::where('id', $id)->first();
+
+            if (!$reservation){
+                throw new ResponseException(404, "Reservation data does not exist.");
+            }
+
+            return response()->json([
+                'code' => 200,
+                'message' => "Successfully fetched user's reservation detail.",
+                'data' => $reservation
+            ], 200);
+
+        } catch (ResponseException $e){
+            return response()->json([
+                "code" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
+        } catch (Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function updateReservation()
+    {
+        // requirement blm psti
+    }
+
+    public function deleteReservation($id)
+    {
+        try {
+
+            $success = Booked_item::where('id', $id)->delete();
+
+            return response()->json([
+                'code' => $success ? 200 : 404,
+                'message' => $success ? "Successfully canceled reservation." : "Requested reservation does not exist."
+            ], 200);
+
+        } catch (Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 }
