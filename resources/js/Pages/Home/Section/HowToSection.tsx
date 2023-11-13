@@ -13,23 +13,26 @@ type StepProps = {
 
 function HowToSection({ sectionTitle, sectionDescription }: Props) {
     return (
-        <div className="InNumbersSection py-16 w-4/5">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight mb-8 text-center text-biru_umn">
-                {sectionTitle}
-            </h1>
-            <p className="w-full text-md md:text-xl lg:text-xl mb-8 text-justify text-gray-600">
-                {sectionDescription}. Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat.
-            </p>
-            <div className="flex flex-col md:flex-row items-center mt-20">
-                {/* nanti mapping di sini */}
-                <Step key={0} title="Lab Rules" color="bg-sky-400"/>
-                <Step key={1} title="Reservation Flow" color="bg-sky-600"/>
-                <Step key={2} title="Reserve Now" color="bg-sky-800"/>
+        <div className="InNumbersSection pt-20 pb-28 md:pb-96 w-full flex justify-center relative w-full bg-white">
+            <div className="w-4/5">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight mb-8 text-center text-biru_umn">
+                    {sectionTitle}
+                </h1>
+                <p className="w-full text-md md:text-xl lg:text-xl mb-8 text-justify text-gray-600">
+                    {sectionDescription}. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.
+                </p>
+                <div className="flex flex-col md:flex-row items-center mt-20">
+                    {/* nanti mapping di sini */}
+                    <Step key={0} title="Lab Rules" color="bg-sky-400"/>
+                    <Step key={1} title="Reservation Flow" color="bg-sky-600"/>
+                    <Step key={2} title="Reserve Now" color="bg-sky-800"/>
+                </div>
             </div>
+            <img src="https://i.ibb.co/k3Qk3Dd/Supergrafis-1.png" className="bottom-0 md:-mb-16 absolute w-full"/>
         </div>
     );
 }

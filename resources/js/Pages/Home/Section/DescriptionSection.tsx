@@ -16,10 +16,9 @@ export default function DescriptionSection({
     const navigationprevref = useRef(null);
     const navigationnextref = useRef(null);
 
-    return (
-        <div className="AboutSection flex justify-center h-96 lg:h-screen mb-32 md:mb-0 lg:mb-10">
-            <img src="https://i.ibb.co/NTp7tCk/Group-2254.png" className="align-top absolute w-full h-44 object-cover"/>
-            <div className="flex items-center flex-col justify-center py-16 w-4/5 absolute">
+    return ( 
+        <div className="AboutSection flex justify-center h-96 lg:h-screen mb-32 md:mb-0 lg:mb-10 w-full bg-white">
+            <div className="flex items-center flex-col justify-center pt-20 pb-16 w-4/5 absolute">
                 <div className="flex justify-center items-center">
                     <div className="flex h-96 lg:h-screen justify-center">
                         <div className="hidden lg:block flex flex-col justify-between">

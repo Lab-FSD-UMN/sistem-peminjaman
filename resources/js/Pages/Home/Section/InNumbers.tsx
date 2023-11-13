@@ -10,38 +10,41 @@ type CardProps = {
 
 function InNumbersSection({ sectionTitle, sectionDescription }: Props) {
     return (
-        <div className="InNumbersSection py-16 w-4/5">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-8 text-center text-biru_umn">
-                {sectionTitle}
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-14 whitespace-pre-wrap text-justify">
-                {sectionDescription}. Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
-            </p>
-            <div className="flex flex-col">
-                {/* nanti mapping di bawah sini.. mungkin(?) */}
-                <div className="flex flex-col lg:flex-row">
-                    <Card
-                        title="Headings"
-                        description="Lorem ipsum dolor sit amet."
-                    />
-                    <Card
-                        title="Headingo"
-                        description="Lorem ipsum dolor sit amet."
-                    />
-                </div>
-                <div className="flex flex-col lg:flex-row">
-                    <Card
-                        title="Headings"
-                        description="Lorem ipsum dolor sit amet."
-                    />
-                    <Card
-                        title="Headingo"
-                        description="Lorem ipsum dolor sit amet."
-                    />
+        <div className="InNumbersSection mt-32 pb-32 md:pb-72 w-full flex justify-center relative bg-white">
+            <div className="w-4/5">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-8 text-center text-biru_umn">
+                    {sectionTitle}
+                </h1>
+                <p className="text-lg md:text-xl text-gray-600 mb-14 whitespace-pre-wrap text-justify">
+                    {sectionDescription}. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua.
+                </p>
+                <div className="flex flex-col">
+                    {/* nanti mapping di bawah sini.. mungkin(?) */}
+                    <div className="flex flex-col lg:flex-row">
+                        <Card
+                            title="Headings"
+                            description="Lorem ipsum dolor sit amet."
+                        />
+                        <Card
+                            title="Headingo"
+                            description="Lorem ipsum dolor sit amet."
+                        />
+                    </div>
+                    <div className="flex flex-col lg:flex-row">
+                        <Card
+                            title="Headings"
+                            description="Lorem ipsum dolor sit amet."
+                        />
+                        <Card
+                            title="Headingo"
+                            description="Lorem ipsum dolor sit amet."
+                        />
+                    </div>
                 </div>
             </div>
+            <img src="https://i.ibb.co/SX2GgRq/Supergrafis.png" className="bottom-0 md:-mb-36 absolute w-full"/>
         </div>
     );
 }

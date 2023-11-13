@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/General/Footer';
+import Credits from '@/Components/General/Credits';
 import Navbar from '@/Components/General/Navbar/Navbar';
 import { Link } from '@inertiajs/react';
 import React, { PropsWithChildren, ReactNode } from 'react';
@@ -18,8 +19,8 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
     };
     return (
         <>
-            <div className="min-h-screen bg-gray-100">
-                <nav className="bg-biru_umn py-2" style={{ position: "fixed", width: "100%", top: 0, zIndex: 100 }}>
+            <div className="min-h-screen bg-white">
+                <nav className="bg-biru_umn py-2 fixed w-full top-0 z-50">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:w-5/6">
                         <div className="flex justify-between h-16">
                             <div className="flex items-center">
@@ -28,14 +29,15 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                         <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                                     </Link>
                                 </div> */}
+                                {/* <ApplicationLogo /> */}
                                 <div className="flex items-center">
                                     <a href="/home">
-                                        <img src="https://i.ibb.co/4T01gt4/Logo-1-1.png" className="w-3/4"/>
+                                        <ApplicationLogo/>
+                                        {/* <img src="https://i.ibb.co/4T01gt4/Logo-1-1.png" className="w-3/4"/> */}
                                     </a>
                                 </div>
                             </div>
                             <div className="flex">
-
                                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                     {
                                         Route.map((item, index) => (
@@ -105,7 +107,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                     </div>
 
                     <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                        <div className="pt-2 pb-3 space-y-1">
+                        <div className="pt-14 pb-3 space-y-1">
                             {
                                 Route.map((item, index) => (
                                     <ResponsiveNavLink href={item.path} active={route().current(item.path)} key={index}>
@@ -113,33 +115,33 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                     </ResponsiveNavLink>
                                 ))
                             }
-                            <div className="px-4">
-                                <div className="font-medium text-white pt-2 pb-5">
-                                    <a href="/">ABOUT</a>
+                            <div className="pb-2">
+                                <div className="w-full flex flex-col justify-center items-center text-white mb-5 py-4 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">
+                                    <a href="/" className="font-medium">ABOUT</a>
                                 </div>
-                                <div className="font-medium text-white pb-2">
-                                    <a href="/">RESERVATION</a>
+                                <div className="mx-4 mt-2 font-medium text-white py-2 bg-white bg-opacity-50 flex justify-center rounded-full">
+                                    <a href="/" className="font-extrabold">RESERVATION</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="pt-4 pb-1 border-t border-gray-200">
+                        <div className="pb-14">
                             <div className="px-4 pt-3">
-                                <div className="font-medium text-base text-white">
+                                <div className="font-medium text-base text-white bg-orange flex justify-center py-2 rounded-full">
                                     {/* {user.name} */}
-                                    <a href="/">USER</a>
+                                    <a href="/" className="font-extrabold">USER</a>
                                 </div>
                                 <div className="font-medium text-sm text-white">
                                     {/* {user.email} */}
                                 </div>
                             </div>
 
-                            <div className="mt-3 space-y-1">
+                            {/* <div className="mt-3 space-y-1">
                                 <ResponsiveNavLink href={route('profile.edit')}>PROFILE</ResponsiveNavLink>
                                 <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                     Log Out
                                 </ResponsiveNavLink>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </nav>
@@ -152,6 +154,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
 
                 <main>{children}</main>
             </div>
+            <Credits />
             <Footer />
         </>
     );

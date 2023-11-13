@@ -21,6 +21,11 @@ export default {
                 'orange' : '#F28A15',
                 'purple' : '#904992',
                 'teal' : '#1C968F',
+                'grey_footer' : '#333333',
+                'grey_copyrights' : '#222222',
+            },
+            fontSize: {
+                xxs: '0.5rem'
             }
         },
     },
