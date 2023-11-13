@@ -65,18 +65,42 @@ Route::middleware(['auth:sanctum', 'role-api:admin'])
                 Route::delete('delete/{id}', 'deleteEventPost');
             });
 
+        Route::prefix('item')
+            ->controller(ItemController::class)
+            ->group(function(){
+                Route::post('/', [ItemController::class, 'createItem']);
+            });
+
 });
 
 // User protected API Routes
 Route::middleware(['auth:sanctum', 'role-api:user'])
     ->group(function(){
 
+        Route::prefix('reservation')
+            ->controller(ReservationController::class)
+            ->group(function(){
+
+                Route::get('/list/item/status', 'ChangeItemReservationStatus');
+
+                Route::prefix('item')
+                    ->group(function(){
+                        Route::post('/', 'reserveItem');
+                    });
+
+                Route::prefix('room')
+                    ->group(function(){
+                        Route::post('/', 'roomReserve'); // haven't exist
+                    });
+
+            });
+
 });
 
 
 
 // Guest Routes
-
+// -----------------------------------
 Route::prefix('event')
     ->controller(EventController::class)
     ->group(function(){
@@ -87,23 +111,18 @@ Route::prefix('event')
 // API for create new Item
 Route::get('/request', [ReservationController::class, 'showUserReservationListAndStatusPage']); // get all item
 
-// item route
-Route::prefix('item')->group(function () {
-    Route::get('/', [ItemController::class, 'showAllItemPage']); //  create item
-    Route::post('/', [ItemController::class, 'createItem']); //  create item
-    Route::put('/', [ReservationController::class, 'roomReserve']);
-    Route::delete('/', [ReservationController::class, 'roomReserve']);
-    // API for search item
+// Item route
+Route::prefix('item')
+    ->controller(ItemController::class)
+    ->group(function () {
+        Route::get('/', 'showAllItemPage'); //  create item
+        Route::post('/search', 'searchItemData');
 });
 
-Route::post('/search/item', [ItemController::class, 'searchItemData']);
 
-Route::post('/room', [ReservationController::class, 'roomReserve']);
-
-Route::post('/reservation/item', [ReservationController::class, 'reserveItem']);
 
 // ADMIN
-Route::post('/reservation/list/item/status', [ReservationController::class, 'ChangeItemReservationStatus']);
+
 // api for adding new reservation item
 Route::post('/admin/reservation/item', [ReservationController::class, 'addNewReservatioItem']);
 // api for searcing history
