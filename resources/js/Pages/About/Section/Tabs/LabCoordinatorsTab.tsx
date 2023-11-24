@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import listCoor from "../CoorData";
+import listCoor from "./CoorData";
 
 function Coordinators() {
     return (
@@ -65,7 +65,7 @@ function LabCard({ coorName, coorFaculty }: LabProps) {
             try {
                 // import image based on their first name
                 const module = await import(
-                    `../../../../../public/images/labCoor/${imageName}LabCoorImage.png`
+                    `../../../../../../public/images/labCoor/${imageName}LabCoorImage.png`
                 );
                 setImageSrc(module.default);
             } catch (error) {
