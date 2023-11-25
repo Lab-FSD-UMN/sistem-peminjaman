@@ -28,10 +28,10 @@ type SliderProps = {
         };
     };
     className?: string;
+    swiperRef: React.MutableRefObject<any>;
 };
 
-export default function Slider({ children, ...props }: SliderProps) {
-    const swiperRef = useRef();
+export default function Slider({ children, swiperRef, ...props }: SliderProps) {
     return (
         <Swiper
             slidesPerView={2}

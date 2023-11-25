@@ -103,6 +103,27 @@ class WebconfigSeeder extends Seeder
             ],
             [
                 'category' => 'home',
+                'title' => 'photo_labHead',
+                'alias' => 'Photo Lab Head',
+                'type' => 'image',
+                'value' => '/public/assets/logoFSD.png',
+            ],
+            [
+                'category' => 'home',
+                'title' => 'name_labHead',
+                'alias' => 'Name Lab Head',
+                'type' => 'text',
+                'value' => 'Hendie Daffa Silvia',
+            ],
+            [
+                'category' => 'home',
+                'title' => 'position_labHead',
+                'alias' => 'Position Lab Head',
+                'type' => 'text',
+                'value' => 'Lab Head Coordinator',
+            ],
+            [
+                'category' => 'home',
                 'title' => 'section1_title',
                 'alias' => 'Judul Section 1',
                 'type' => 'text',
@@ -142,6 +163,36 @@ class WebconfigSeeder extends Seeder
                 'alias' => 'Deskripsi Section 3',
                 'type' => 'text',
                 'value' => 'Deskripsi untuk Section 3',
+            ],
+            [
+                'category' => 'home',
+                'title' => 'labRules_desc',
+                'alias' => 'Lab Rules Desc',
+                'type' => 'text',
+                'value' => 'Lorem ipsum dolor sit amet, 
+                    consectetur adipiscing elit, sed do 
+                    eiusmod tempor incididunt ut labore 
+                    et dolore magna aliqua.',
+            ],
+            [
+                'category' => 'home',
+                'title' => 'reservationFlow_desc',
+                'alias' => 'Reservation Flow Desc',
+                'type' => 'text',
+                'value' => 'Lorem ipsum dolor sit amet, 
+                    consectetur adipiscing elit, sed do 
+                    eiusmod tempor incididunt ut labore 
+                    et dolore magna aliqua.',
+            ],
+            [
+                'category' => 'home',
+                'title' => 'reserveNow_desc',
+                'alias' => 'Reserve Now Desc',
+                'type' => 'text',
+                'value' => 'Lorem ipsum dolor sit amet, 
+                    consectetur adipiscing elit, sed do 
+                    eiusmod tempor incididunt ut labore 
+                    et dolore magna aliqua.',
             ],
             // Contact
             [

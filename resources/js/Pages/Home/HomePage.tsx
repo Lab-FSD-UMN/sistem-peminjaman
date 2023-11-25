@@ -31,9 +31,13 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
             <Guest>
                 <div className='flex flex-col justify-center items-center'>
                     <HeroSection
+                        homeBackground={companyData.home_bg}
                         heroTitle={companyData.hero_title}
                         heroSubTitle={companyData.hero_subtitle}
                         heroDescription={companyData.hero_description}
+                        labCoorPhoto={companyData.photo_labHead}
+                        labCoorName={companyData.name_labHead}
+                        labCoorPosition={companyData.position_labHead}
                     />
                     <DescriptionSection
                         sectionTitle={companyData.section1_title}
@@ -47,6 +51,9 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
                     <HowToSection 
                         sectionTitle={companyData.section3_title}
                         sectionDescription={companyData.section3_description}
+                        labRules_desc={companyData.labRules_desc}
+                        reservationFlow_desc={companyData.reservationFlow_desc}
+                        reserveNow_desc={companyData.reserveNow_desc}
                     />
                     {/* <TestimonySection
                         {...testimonies}

@@ -1,3 +1,5 @@
+import supergrafis1 from "/public/assets/Supergrafis1.png"
+
 type Props = {
     sectionTitle: string;
     sectionDescription: string;
@@ -10,7 +12,7 @@ type CardProps = {
 
 function InNumbersSection({ sectionTitle, sectionDescription }: Props) {
     return (
-        <div className="InNumbersSection mt-32 pb-32 md:pb-72 w-full flex justify-center relative bg-white">
+        <div className="InNumbersSection mt-24 pb-32 md:pb-72 w-full flex justify-center relative bg-greyBG">
             <div className="w-4/5">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-8 text-center text-biru_umn">
                     {sectionTitle}
@@ -44,7 +46,7 @@ function InNumbersSection({ sectionTitle, sectionDescription }: Props) {
                     </div>
                 </div>
             </div>
-            <img src="https://i.ibb.co/SX2GgRq/Supergrafis.png" className="bottom-0 md:-mb-36 absolute w-full"/>
+            <img src={supergrafis1} className="bottom-0 md:-mb-16 absolute w-full"/>
         </div>
     );
 }

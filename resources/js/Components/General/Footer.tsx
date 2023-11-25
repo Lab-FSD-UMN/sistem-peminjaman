@@ -7,7 +7,7 @@ export default function Footer() {
     const [companyData, setCompanyData] = React.useState<any>(pageInfo?.props?.companyData)
     return (
         // style={{ position: "fixed", width: "100%", bottom: 0, zIndex: -100 }}
-        <footer className="">
+        <footer className="-mb-5">
             <div className="md:h-24"></div>
             <div className="bg-grey_footer text-white md:fixed w-full bottom-0 md:-z-20">
                 <div className="mx-auto w-4/5 max-w-screen-xl py-14">

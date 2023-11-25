@@ -3,37 +3,46 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/General/Footer';
 import Credits from '@/Components/General/Credits';
 import Navbar from '@/Components/General/Navbar/Navbar';
-import { Link } from '@inertiajs/react';
-import React, { PropsWithChildren, ReactNode } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import React, { PropsWithChildren, ReactNode, useEffect } from 'react';
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import NavLink from '@/Components/NavLink';
 import Dropdown from '@/Components/Dropdown';
+import logoFSD from "/public/assets/logoFSD.png"
 
 export default function Guest({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = React.useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
+    const Usepage: any = usePage().props;
+    const Role = Usepage.auth.user?.role ? Usepage.auth.user?.role : 'guest';
+    useEffect(() => {
+        console.log(Role);
+    }, [])
 
+    const [showDropdown, setShowDropdown] = useState(false);
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
     return (
         <>
-            <div className="min-h-screen bg-white">
-                <nav className="bg-biru_umn py-2 fixed w-full top-0 z-50">
+            <div className="min-h-screen bg-greyBG">
+                <div className="bg-biru_navbar flex justify-center py-2">
+                    <div className="w-4/5 flex flex-row space-x-5 justify-center md:justify-end">
+                        <div><p className='text-gray-100 text-sm font-medium'>UMN</p></div>
+                        <div><p className='text-gray-100 text-sm font-medium'>FSD</p></div>
+                        <div><p className='text-gray-100 text-sm font-medium'>DKV</p></div>
+                        <div><p className='text-gray-100 text-sm font-medium'>FILM</p></div>
+                        <div><p className='text-gray-100 text-sm font-medium'>ARS</p></div>
+                    </div>
+                </div>
+                <nav className="bg-biru_umn py-2 sticky top-0 z-50">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:w-5/6">
                         <div className="flex justify-between h-16">
                             <div className="flex items-center">
-                                {/* <div className="shrink-0 flex items-center pr-2">
-                                    <Link href="/" className="flex items-center h-5/6">
-                                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                    </Link>
-                                </div> */}
-                                {/* <ApplicationLogo /> */}
                                 <div className="flex items-center">
                                     <a href="/home">
-                                        <ApplicationLogo/>
-                                        {/* <img src="https://i.ibb.co/4T01gt4/Logo-1-1.png" className="w-3/4"/> */}
+                                        {/* <ApplicationLogo/> */}
+                                        <img src={logoFSD}/>
                                     </a>
                                 </div>
                             </div>
@@ -72,9 +81,21 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 <Link href="/product" className='font-semibold text-white'>RESERVATION</Link>
                                             </div>
                                         </div>
-                                        <div className='font-medium leading-5 transition duration-150 ease-in-out focus:outline-none
-                                            bg-orange px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
-                                            <Link href='/product' className='font-semibold text-white'>LOGIN</Link>
+                                        <div className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
+                                            {
+                                                Role === "guest" ?
+
+                                                    <NavLink href={route('login')} active={route().current('login')}>
+                                                        <a className="text-black font-bold">LOGIN</a>
+                                                    </NavLink>
+                                                    :
+                                                    <NavLink
+                                                        active={route().current('logout')}
+                                                        method="post" href={route('logout')} as="button">
+                                                        <a className="text-black font-bold">LOG OUT</a>
+                                                    </NavLink>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -107,41 +128,53 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                     </div>
 
                     <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                        <div className="pt-14 pb-3 space-y-1">
-                            {
-                                Route.map((item, index) => (
-                                    <ResponsiveNavLink href={item.path} active={route().current(item.path)} key={index}>
-                                        {item.name}
-                                    </ResponsiveNavLink>
-                                ))
-                            }
-                            <div className="pb-2">
-                                <div className="w-full flex flex-col justify-center items-center text-white mb-5 py-4 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">
-                                    <a href="/" className="font-medium">ABOUT</a>
-                                </div>
-                                <div className="mx-4 mt-2 font-medium text-white py-2 bg-white bg-opacity-50 flex justify-center rounded-full">
-                                    <a href="/" className="font-extrabold">RESERVATION</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="pb-14">
-                            <div className="px-4 pt-3">
-                                <div className="font-medium text-base text-white bg-orange flex justify-center py-2 rounded-full">
-                                    {/* {user.name} */}
-                                    <a href="/" className="font-extrabold">USER</a>
-                                </div>
-                                <div className="font-medium text-sm text-white">
-                                    {/* {user.email} */}
+                        <div className="h-screen">
+                            <div className="pt-14 pb-3 space-y-1">
+                                {
+                                    Route.map((item, index) => (
+                                        <ResponsiveNavLink href={item.path} active={route().current(item.path)} key={index}>
+                                            {item.name}
+                                        </ResponsiveNavLink>
+                                    ))
+                                }
+                                <div className="pb-2">
+                                    <div className="w-full flex flex-col justify-center items-center text-white mb-5 py-4 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">
+                                        <a href="/" className="font-medium">ABOUT</a>
+                                    </div>
+                                    <div className="mx-4 mt-2 font-medium text-white py-2 bg-white bg-opacity-50 flex justify-center rounded-full">
+                                        <a href="/" className="font-extrabold">RESERVATION</a>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route('profile.edit')}>PROFILE</ResponsiveNavLink>
-                                <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                    Log Out
-                                </ResponsiveNavLink>
-                            </div> */}
+                            <div>
+                                <div className="px-4">
+                                    <div className="font-medium text-base text-white bg-orange flex justify-center py-2 rounded-full">
+                                        {/* {user.name} */}
+                                        <a href="/" className="font-extrabold">USER</a>
+                                    </div>
+                                    <div className="font-medium text-sm text-white">
+                                        {/* {user.email} */}
+                                    </div>
+                                </div>
+
+                                <div className="mt-3 space-y-1">
+                                    <ResponsiveNavLink href={route('profile.edit')}>PROFILE</ResponsiveNavLink>
+                                    {
+                                        Role === "guest" ?
+
+                                        <ResponsiveNavLink href={route('login')} active={route().current('login')}>
+                                            LOGIN
+                                        </ResponsiveNavLink>
+                                        :
+                                        <ResponsiveNavLink
+                                            active={route().current('logout')}
+                                            method="post" href={route('logout')} as="button">
+                                            LOGOUT
+                                        </ResponsiveNavLink>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </nav>
