@@ -21,16 +21,25 @@ class TestimonySeeder extends Seeder
                 'name' => 'John Doe',
                 'position' => 'CEO',
                 'testimony' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget',
+                'image' => asset('/assets/umn background.png'),
             ],
             [
-                'name' => 'John Doe',
+                'name' => 'John Uhuy',
                 'position' => 'CEO',
                 'testimony' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget',
+                'image' => asset('/assets/hutan.jpg'),
             ],
             [
                 'name' => 'Rudy',
                 'position' => 'Customer',
                 'testimony' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget',
+                'image' => asset('/assets/bonjovi.jpg'),
+            ],
+            [
+                'name' => 'John Lamo',
+                'position' => 'CEO',
+                'testimony' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget',
+                'image' => asset('/assets/hutan.jpg'),
             ],
         ]);
     }

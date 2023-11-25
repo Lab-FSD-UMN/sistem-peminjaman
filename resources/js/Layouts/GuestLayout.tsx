@@ -40,9 +40,9 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                         <div className="flex justify-between h-16">
                             <div className="flex items-center">
                                 <div className="flex items-center">
-                                    <a href="/home">
-                                        {/* <ApplicationLogo/> */}
-                                        <img src={logoFSD}/>
+                                    <a href="/">
+                                        <ApplicationLogo/>
+                                        {/* <img src={logoFSD}/> */}
                                     </a>
                                 </div>
                             </div>
@@ -51,7 +51,8 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                     {
                                         Route.map((item, index) => (
                                             <NavLink
-                                                key={index} href={route(item.route)} active={route().current(item.route)}>
+                                                key={index} href={route(item.route)} active={route().current(item.route)}
+                                                className='pt-1'>
                                                 {item.name}
                                             </NavLink>
                                         ))
@@ -62,14 +63,14 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                             <div className="flex flex-row items-center hover:opacity-50 leading-5 transition duration-150 ease-in-out">
                                                 <button onClick={toggleDropdown}
                                                     className="text-sm text-white font-semibold bg-transparent border-none focus:outline-none">
-                                                    ABOUT</button>
+                                                    About</button>
                                                 <span><img src="https://i.ibb.co/d5ZCxkj/dropdown-icon.png" className='pl-2'/></span>
                                             </div>
                                             {showDropdown && (
                                                 <div className="absolute mt-44 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                                <a href="/product" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
-                                                <a href="/product" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
-                                                <a href="/product" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
+                                                <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
+                                                <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
+                                                <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
                                                 </div>
                                             )}
                                         </div>
@@ -79,7 +80,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 <img src="https://i.ibb.co/gdzWDbZ/Vector.png" />
                                             </div>
                                             <div>
-                                                <Link href="/product" className='font-semibold text-white'>RESERVATION</Link>
+                                                <Link href="/reservation" className='font-semibold text-white'>Reservation</Link>
                                             </div>
                                         </div>
                                         <div className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
@@ -88,13 +89,13 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 Role === "guest" ?
 
                                                     <NavLink href={route('login')} active={route().current('login')}>
-                                                        <a className="text-black font-bold">LOGIN</a>
+                                                        <a className="text-black font-bold">Login</a>
                                                     </NavLink>
                                                     :
                                                     <NavLink
                                                         active={route().current('logout')}
                                                         method="post" href={route('logout')} as="button">
-                                                        <a className="text-black font-bold">LOG OUT</a>
+                                                        <a className="text-black font-bold">Log Out</a>
                                                     </NavLink>
                                             }
                                         </div>
@@ -140,10 +141,10 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                 }
                                 <div className="pb-2">
                                     <div className="w-full flex flex-col justify-center items-center text-white mb-5 py-4 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">
-                                        <a href="/" className="font-medium">ABOUT</a>
+                                        <a href="/" className="font-medium">About</a>
                                     </div>
                                     <div className="mx-4 mt-2 font-medium text-white py-2 bg-white bg-opacity-50 flex justify-center rounded-full">
-                                        <a href="/" className="font-extrabold">RESERVATION</a>
+                                        <a href="/reservation" className="font-extrabold">Reservation</a>
                                     </div>
                                 </div>
                             </div>
@@ -152,7 +153,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                 <div className="px-4">
                                     <div className="font-medium text-base text-white bg-orange flex justify-center py-2 rounded-full">
                                         {/* {user.name} */}
-                                        <a href="/" className="font-extrabold">USER</a>
+                                        <a href="/" className="font-extrabold">User</a>
                                     </div>
                                     <div className="font-medium text-sm text-white">
                                         {/* {user.email} */}
@@ -160,18 +161,18 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                 </div>
 
                                 <div className="mt-3 space-y-1">
-                                    <ResponsiveNavLink href={route('profile.edit')}>PROFILE</ResponsiveNavLink>
+                                    <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
                                     {
                                         Role === "guest" ?
 
                                         <ResponsiveNavLink href={route('login')} active={route().current('login')}>
-                                            LOGIN
+                                            Login
                                         </ResponsiveNavLink>
                                         :
                                         <ResponsiveNavLink
                                             active={route().current('logout')}
                                             method="post" href={route('logout')} as="button">
-                                            LOGOUT
+                                            Log Out
                                         </ResponsiveNavLink>
                                     }
                                 </div>
@@ -197,15 +198,15 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
 
 const Route = [
     {
-        name: 'HOME',
+        name: 'Home',
         path: '/',
         route: 'home'
     },
-    // {
-    //     name: 'Products',
-    //     path: '/product',
-    //     route: 'product '
-    // },
+    {
+        name: 'Facility',
+        path: '/',
+        route: 'product'
+    },
     // {
     //     name: 'Gallery',
     //     path: '/gallery',
@@ -216,11 +217,11 @@ const Route = [
     //     path: '/contact',
     //     route: 'contact'
     // },
-    {
-        name: 'Reservation',
-        path: '/reservation',
-        route: 'reservation'
-    },
+    // {
+    //     name: 'Reservation',
+    //     path: '/reservation',
+    //     route: 'reservation'
+    // },
     // {
     //     name: 'Login',
     //     path: '/login',

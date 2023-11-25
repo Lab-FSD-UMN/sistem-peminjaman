@@ -10,6 +10,7 @@ type SliderProps = {
     children: React.ReactNode;
     slidesPerView?: number;
     spaceBetween?: number;
+    centeredSlides?: boolean;
     loop?: boolean;
     autoplay?: boolean | {
         delay: number
@@ -25,6 +26,7 @@ type SliderProps = {
         [key: number]: {
             slidesPerView: number;
             spaceBetween: number;
+            // centeredSlides: boolean;
         };
     };
     className?: string;
@@ -39,6 +41,7 @@ export default function Slider({ children, swiperRef, ...props }: SliderProps) {
             loop={true}
             pagination={{
                 clickable: true,
+                dynamicBullets: true,
             }}
             onSwiper={(swiper: any) => {
                 if (swiper) {
@@ -51,6 +54,7 @@ export default function Slider({ children, swiperRef, ...props }: SliderProps) {
                 0: {
                     slidesPerView: 1,
                     spaceBetween: 20,
+                    // centeredSlides: true,
                 },
                 768: {
                     slidesPerView: 2,

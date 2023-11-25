@@ -4,13 +4,12 @@ import { useState, useRef } from "react";
 import { SwiperSlide } from "swiper/react";
 import { Swiper } from "swiper";
 import arrow from "/public/assets/arrow.png"
-
 import PrimaryButton from "@/Components/PrimaryButton";
 
-type Props = {
-    facilityTitle: string;
-    facilityDescription: string;
-};
+// type Props = {
+//     facilityTitle: string;
+//     facilityDescription: string;
+// };
 
 function FacilitySection() {
     const TestimoniesData: any = usePage().props.testimonies;
@@ -38,9 +37,11 @@ function FacilitySection() {
                 breakpoints={{
                     0: {
                         slidesPerView: 1,
-                        spaceBetween: 0,
+                        spaceBetween: 20,
+                        // centeredSlides: true,
                     },
                 }}
+
             >
                 {/* nanti yang di map url image */}
                 {TestimoniesData.map((facility: any) => {
@@ -50,11 +51,11 @@ function FacilitySection() {
                             className="relative w-full"
                         >
                             <img
-                                // src={facility.image}
-                                src="https://res.cloudinary.com/dakp66ddf/image/upload/v1692149904/marshlands-8176000_fndgne.webp"
+                                src={facility.image}
+                                // src="https://res.cloudinary.com/dakp66ddf/image/upload/v1692149904/marshlands-8176000_fndgne.webp"
                                 className="absolute inset-0 w-full h-96 md:h-screen object-cover object-center z-[0] filter brightness-[1]"
                             />
-                            <div className="absolute flex items-center justify-center h-96 md:h-screen px-16 md:px-40 text-white bg-biru_umn bg-opacity-60 bg-gradient-to-r from-biru_umn to-transparent">
+                            <div className="absolute flex items-center justify-center h-96 md:h-screen px-16 md:px-40 text-white bg-biru_umn bg-opacity-50 bg-gradient-to-r from-biru_umn to-transparent">
                                 <div>
                                     <h1 className="text-2xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 md:mb-8">
                                         {facility.name}

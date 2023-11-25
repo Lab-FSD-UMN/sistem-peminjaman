@@ -1,5 +1,5 @@
 import React from "react";
-import heroLogo from "/public/assets/Cube FSD 2.png"
+// import heroLogo from "/public/assets/Cube FSD 2.png"
 import heroBg from "/public/assets/umn background.png"
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
     labCoorPhoto : string;
     labCoorName: string;
     labCoorPosition: string;
+    heroLogo: string;
 };
 
 export default function HeroSection({
@@ -20,12 +21,13 @@ export default function HeroSection({
     labCoorPhoto,
     labCoorName,
     labCoorPosition,
+    heroLogo,
 }: Props) {
     return (
         <div className="flex flex-col HeroSection items-center justify-center w-full relative overflow-hidden">
             <img id="hero"
-                // src={homeBackground}
-                src={heroBg}
+                src={homeBackground}
+                // src={heroBg}
                 className="absolute inset-0 w-full h-full object-cover object-center
                 z-[0] filter brightness-[0.6]"
             />
@@ -39,7 +41,8 @@ export default function HeroSection({
                     </h4>
                 </div>
             </div>
-            <img src={heroLogo}
+            <img 
+                src={heroLogo}
                 className="z-[10] absolute w-4/6 md:w-1/3 lg:w-3/5"/>
             <div className="flex justify-center text-justify text-white z-[9] h-96 lg:h-screen w-full bg-biru_muda bg-opacity-70">
                 <div className="w-5/6 md:w-4/6 mt-28 lg:mt-72">

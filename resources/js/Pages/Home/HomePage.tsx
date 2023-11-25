@@ -34,6 +34,7 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
                 <div className='flex flex-col justify-center items-center'>
                     <HeroSection
                         homeBackground={companyData.home_bg}
+                        heroLogo={companyData.hero_logo}
                         heroTitle={companyData.hero_title}
                         heroSubTitle={companyData.hero_subtitle}
                         heroDescription={companyData.hero_description}
@@ -42,17 +43,17 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
                         labCoorPosition={companyData.position_labHead}
                     />
                     <DescriptionSection
-                        sectionTitle={companyData.section1_title}
-                        sectionDescription={companyData.section1_description}
+                        sectionTitle={companyData.description_title}
+                        sectionDescription={companyData.description_desc}
                     />
                     <InNumbersSection
-                        sectionTitle={companyData.section2_title}
-                        sectionDescription={companyData.section2_description}
+                        sectionTitle={companyData.inNumbers_title}
+                        sectionDescription={companyData.inNumbers_desc}
                     />
                     <FacilitySection />
                     <HowToSection 
-                        sectionTitle={companyData.section3_title}
-                        sectionDescription={companyData.section3_description}
+                        sectionTitle={companyData.HowTo_title}
+                        sectionDescription={companyData.HowTo_desc}
                         labRules_desc={companyData.labRules_desc}
                         reservationFlow_desc={companyData.reservationFlow_desc}
                         reserveNow_desc={companyData.reserveNow_desc}
