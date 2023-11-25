@@ -8,7 +8,7 @@ import React, { useEffect } from 'react'
 export default function ReservationItemDetailPage() {
     const pageInfo: any = usePage().props
     const Item: any = pageInfo.item
-
+    const [setMessages, messages] = React.useState<any>([])
 
     // Form Values
     // ✨ form logic
@@ -37,12 +37,13 @@ export default function ReservationItemDetailPage() {
     function handleSubmit(e: any) {
         e.preventDefault();
         console.log("Form Data", data)
-        
         axiosClient.post(`/reservation/item`, data).then((res) => {
             console.log("Success", res)
+            alert("Reservation Success")
         }
         ).catch((err) => {
             console.log("Error", err)
+            alert(err.response.data.error)
         })
     }
 
@@ -56,7 +57,7 @@ export default function ReservationItemDetailPage() {
     }
 
     useEffect(() => {
-        console.log("Form Data", data)
+        console.log("Item", Item)
         const { hours } = CalculateTime({
             dateStart: data.reservation_date_start,
             dateEnd: data.reservation_date_end,
@@ -73,17 +74,40 @@ export default function ReservationItemDetailPage() {
             <div
                 className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-2 px-4'
             >
-                <h1>{Item.name}</h1>
-                <p>{Item.description}</p>
+                <div
+                    className='flex flex-row justify-between items-center'
+                // onClick={() => router.back()}
+                >
+                    <button
+                        onClick={() =>
+                            window.history.back()
+                        }
+                        className='bg-blue-500 hover:bg-blue-700 font-light text-white px-[0.5rem] rounded text-[2rem]'
+                    >
+                        {'<'}
+                    </button>
+                </div>
+                <h1
+                    className='capitalize text-[2rem]'
+                >{Item.name}</h1>
+                {/* <p>{Item.description}</p> */}
+
+                {/* TODO: Nanti jangan lupa dikasih fallback ketika image not found (suggestion, use svg) */}
+                <img
+                    className='w-[20rem] h-[20rem] object-cover'
+                    src={Item.item_images[0]?.link} alt=""
+                    />
                 <p
                     className=' text-white font-bold '
                 >
                     Available: {Item.is_available ? "Yes" : "No"}
                 </p>
-                <p>Quantity Available: {Item.quantity}</p>
+                <p>
+                    Quantity Available Estimation: {Item.quantity}</p>
                 <form
+
                     onSubmit={handleSubmit}
-                    className='flex flex-col p-[1rem] gap-[1rem] text-white font-bold  rounded'
+                    className='flex flex-col gap-[1rem] text-white font-bold  rounded'
                 >
                     <input
                         type="number"
@@ -153,18 +177,17 @@ export default function ReservationItemDetailPage() {
                     ></textarea>
                     <button
                         type="submit"
-                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                        className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
                     >
                         Submit
                     </button>
                 </form>
             </div>
-        </Guest>
+        </Guest >
     )
 }
 
 // Reservation/ReservationGroup/Item/ReservationItemDetailPage
-
 function CalculateTime({ dateStart, dateEnd, timeStart, timeEnd }: any) {
     const startDateTime: any = new Date(`${dateStart}T${timeStart}`);
     const endDateTime: any = new Date(`${dateEnd}T${timeEnd}`);

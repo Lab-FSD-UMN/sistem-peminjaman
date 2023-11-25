@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
@@ -44,32 +45,93 @@ Route::get('/product/{slug}', [ProductController::class, 'ProductDetail'])->name
 
 Route::get('/gallery', GalleryController::class)->name('gallery');
 
-
-// Reservation System Route Start
-Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
-Route::get('/admin/reservation', [ReservationController::class, 'admindashboard'])->name('admin.reservation.index');
-
-Route::get('/reservation/myreservation', [ReservationController::class, 'myReservation'])->name('reservation.myreservation');
-
-Route::get('/reservation/room', [ReservationController::class, 'room'])->name('reservation.room');
-Route::get('/reservation/room/{id}', [ReservationController::class, 'roomDetail'])->name('reservation.room.detail');
-Route::post('/reservation/room}', [ReservationController::class, 'roomDetail'])->name('reservation.reserve.room');
-
-Route::get('/reservation/item', [ReservationController::class, 'item'])->name('reservation.item');
-Route::get('/reservation/item/{id}', [ReservationController::class, 'itemDetail'])->name('reservation.item.detail');
-Route::post('/reservation/item', [ReservationController::class, 'itemReserve']);
-
-// Reservation System Route End 
-
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+
+Route::prefix('reservation')->group(function () {
+    Route::get('/', [ReservationController::class, 'showUserReservationPage'])->name('reservation');
+    Route::get('/myreservation', [ReservationController::class, 'showUserReservationListAndStatusPage'])->name('reservation.myreservation');
+
+    Route::prefix('room')->group(function () {
+        Route::get('/', [ReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
+        Route::get('/{id}', [ReservationController::class, 'showRoomReservationDetailPage']);
+    });
+    
+    Route::prefix('item')->group(function () {
+        Route::get('/', [ReservationController::class, 'showItemReservationPage'])->name('reservation.item');
+        Route::get('/{id}', [ReservationController::class, 'showItemReservationDetailPage']);
+    });
+});
+
+
+
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', function () {
-        return Inertia::render('Admin/AdminPage');
-    })->name('admin');
+    // [Reservation System START]
+    // ADMIN
+    Route::prefix('/admin')->name('admin.')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Admin/AdminPage');
+        })->name('index');
+
+        // Reservation System
+        Route::prefix('/reservation')->name('reservation.')->group(function () {
+            Route::get('/', [ReservationController::class, 'showAdminReservationDashboardPage'])->name('index');
+            Route::get('/list', [ReservationController::class, 'showAdminReservationRequest'])->name('request');
+            Route::get('/history', [ReservationController::class, 'showAdminReservationHistoryPage'])->name('history');
+
+            Route::prefix('/item')->name('item.')->group(function () {
+                Route::get('/', [ReservationController::class, 'showAdminReservationItemPage'])->name('index');
+                Route::get('/schedule', [ReservationController::class, 'showAdminReservationItemMonitoringSchedule'])->name('schedule');
+                Route::prefix('/data')->name('data.')->group(function () {
+                    Route::get('/', [ReservationController::class, 'showAdminReservationItemDataPage'])->name('index');
+                    Route::get('/{id}', [ReservationController::class, 'showAdminReservationItemDataDetailPage'])->name('show');
+                    Route::post('/{id}', [ReservationController::class, 'createItemData'])->name('store');
+                    Route::put('/{id}', [ReservationController::class, 'updateItemData'])->name('update');
+                });
+            });
+
+            Route::prefix('/room')->name('room.')->group(function () {
+                // Room : show room reservation page
+                Route::get('/', [ReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
+            });
+        });
+
+        // 
+    });
+
+    Route::post('/item', [ItemController::class, 'createItem']); //  create item
+
+
+
+
+
+
+
+    // Room data functon
+    Route::prefix('/admin/reservation/room/data')->group(function () {
+        // Display the room data page
+        Route::get('/', [ReservationController::class, 'adminReservationRoomPage'])->name('admin.reservation.room.data.index');
+
+        // Display room details (GET)
+        Route::get('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.show');
+
+        // Create a new room (POST)
+        Route::post('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.store');
+
+        // Update room details (PUT)
+        Route::put('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.update');
+
+        // Delete a room (DELETE)
+        Route::delete('/{id}', [ReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.destroy');
+    });
+
+    // Room schedule function
+    Route::get('/admin/reservation/room/schedule', [ReservationController::class, 'adminReservationRoomPage']);
+
+    // Reservation System END
     Route::get('/admin/webconfig', WebconfigController::class)->name('admin.webconfig');
     Route::post('/admin/webconfig', [WebconfigController::class, 'UpdateWebconfig'])->name('admin.webconfig.update');
 
@@ -78,14 +140,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/product/{id}', [ProductController::class, 'UpdateProduct'])->name('admin.product.update');
     Route::delete('/admin/product/{id}', [ProductController::class, 'DeleteProduct'])->name('admin.product.delete');
     Route::post('/admin/product', [ProductController::class, 'AddProduct'])->name('admin.product.add');
-
     // GALLERY
     Route::get('/admin/gallery', [GalleryController::class, 'AdminPage'])->name('admin.gallery');
-
     // PROFILE
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 });
 
 
@@ -95,5 +157,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::fallback(function () {
     return Inertia::render('ErrorPage');
 })->name('fallback');
+
 
 require __DIR__ . '/auth.php';

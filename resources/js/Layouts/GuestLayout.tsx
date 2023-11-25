@@ -55,6 +55,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 {item.name}
                                             </NavLink>
                                         ))
+
                                     }
                                     <div className="flex items-center pt-1">
                                         <div className="flex items-center pr-6">
@@ -201,23 +202,27 @@ const Route = [
         route: 'home'
     },
     // {
-    //     name: 'ABOUT',
+    //     name: 'Products',
     //     path: '/product',
-    //     route: 'product'
+    //     route: 'product '
+    // },
+    // {
+    //     name: 'Gallery',
+    //     path: '/gallery',
+    //     route: 'gallery'
+    // },
+    // {
+    //     name: 'Contact',
+    //     path: '/contact',
+    //     route: 'contact'
     // },
     {
-        name: 'EVENT',
-        path: '/gallery',
-        route: 'gallery'
+        name: 'Reservation',
+        path: '/reservation',
+        route: 'reservation'
     },
-    {
-        name: 'FACILITY',
-        path: '/contact',
-        route: 'contact'
-    },
-
     // {
-    //     name: 'LOGIN',
+    //     name: 'Login',
     //     path: '/login',
     //     route: 'login'
     // }

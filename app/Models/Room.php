@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Room extends Model
 {
@@ -11,8 +12,10 @@ class Room extends Model
 
 
     protected $fillable = [
+        'id',
         'image',
         'name',
+        'image',
         'is_available',
         'description',
     ];
@@ -21,10 +24,21 @@ class Room extends Model
         'is_available' => 'boolean',
     ];
 
+
+    // room image
+    // public function room_image(): HasMany
+    // {
+    //     return $this->hasMany(Room_Image::class);
+    // }
+    //mutator
+
+
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true);
     }
+
+
 
     public function scopeUnavailable($query)
     {
@@ -35,5 +49,4 @@ class Room extends Model
     {
         return $query->where('name', 'like', '%' . $search . '%');
     }
-
 }

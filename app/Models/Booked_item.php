@@ -19,17 +19,20 @@ class Booked_item extends Model
         'reservation_end_time',
         'note',
     ];
-
+    
     protected $casts = [
-        'reservation_start_time' => 'datetime',
-        'reservation_end_time' => 'datetime',
+        'reservation_start_time' => 'datetime:l, Y-m-d H:i:s', // l represents the full day name
+        'reservation_end_time' => 'datetime:l, Y-m-d H:i:s',
+        'created_at' => 'datetime:l, Y-m-d H:i:s',
+        'updated_at' => 'datetime:l, Y-m-d H:i:s',
     ];
+
 
     protected function Status(): Attribute
     {
         return Attribute::make(
             // convert value to storage link
-            get: fn ($value) => ["pending", "approved", "rejected"][$value],
+            // get: fn ($value) => ["pending", "approved", "rejected"][$value],
         );
     }
 
@@ -63,4 +66,7 @@ class Booked_item extends Model
             });
         });
     }
+
+    // return model that clash with the new reservation
+    
 }
