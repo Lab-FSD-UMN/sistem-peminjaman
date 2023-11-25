@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import plugin from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -13,7 +14,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                'nunito-sans': ['Nunito Sans', 'sans'],
+                'nexa': ['Nexa', 'sans'],
             },
             colors: {
                 'biru_umn' : '#005596',
@@ -31,6 +34,9 @@ export default {
                 xxs: '0.5rem'
             }
         },
+    },
+    variants: {
+        extend: {},
     },
     plugins: [forms],
 };

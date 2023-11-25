@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GalleryController;
@@ -42,6 +43,8 @@ Route::get('/testing', function () {
 Route::get('/contact', ContactController::class)->name('contact');
 
 Route::get('/facility', FacilityController::class)->name('facility');
+
+Route::get('/about', AboutController::class)->name('about');
 
 Route::get('/product', ProductController::class)->name('product');
 Route::get('/product/{slug}', [ProductController::class, 'ProductDetail'])->name('product.detail');

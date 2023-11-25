@@ -207,6 +207,11 @@ const Route = [
         path: '/facility',
         route: 'facility'
     },
+    {
+        name: 'About',
+        path: '/about',
+        route: 'about'
+    },
     // {
     //     name: 'Gallery',
     //     path: '/gallery',
