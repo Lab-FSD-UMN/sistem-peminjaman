@@ -204,8 +204,8 @@ const Route = [
     },
     {
         name: 'Facility',
-        path: '/',
-        route: 'product'
+        path: '/facility',
+        route: 'facility'
     },
     // {
     //     name: 'Gallery',
