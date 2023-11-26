@@ -12,6 +12,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 
 function HighlightsSection() {
     const TestimoniesData: any = usePage().props.testimonies;
+    const FacilitiesData: any = usePage().props.facilities;
     const FacilityData: any = usePage().props.rooms;
     const swiperRef = useRef<Swiper | null>(null);
     const [currentFacilityIndex, setCurrentFacilityIndex] = useState(0);
@@ -44,7 +45,7 @@ function HighlightsSection() {
                 // }}
                 breakpoints={{
                     0: {
-                        slidesPerView: 2,
+                        slidesPerView: 1.5,
                         spaceBetween: 20,
                         centeredSlides: true,
                     },
@@ -57,7 +58,7 @@ function HighlightsSection() {
 
             >
                 {/* nanti yang di map url image */}
-                {TestimoniesData.map((facility: any) => {
+                {FacilitiesData.map((facility: any) => {
                     return (
                         <SwiperSlide
                             key={facility.id}

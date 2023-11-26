@@ -16,6 +16,7 @@ import { GoArrowLeft } from "react-icons/go";
 
 function ActRoom1Section() {
     const TestimoniesData: any = usePage().props.testimonies;
+    const FacilitiesData: any = usePage().props.facilities;
     const FacilityData: any = usePage().props.rooms;
     const swiperRef = useRef<Swiper | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -68,7 +69,7 @@ function ActRoom1Section() {
 
                 >
                     {/* nanti yang di map url image */}
-                    {TestimoniesData.map((facility: any, index: any) => {
+                    {FacilitiesData.map((facility: any, index: any) => {
                         return (
                             <SwiperSlide
                                 key={facility.id}
@@ -78,11 +79,8 @@ function ActRoom1Section() {
                                     {activeIndex === index && (
                                         <div className="md:w-2/5 md:pr-5 hidden md:block">
                                             <p className="text-base text-sky-500">Kode Ruangan</p>
-                                            <h1 className="text-2xl font-semibold text-biru_umn">Judul Ruangan</h1>
-                                            <p>
-                                                Description Ruan gan Descr iption Ruan gan Descri ption Ruan gan Descri ption Ruan gan Descri ption Ruan
-                                                gan Descri ption Ruan gan Descri ption Ruan gan
-                                            </p>
+                                            <h1 className="text-2xl font-semibold text-biru_umn">{facility.name}</h1>
+                                            <p>{facility.description}</p>
                                             <div className="space-x-2 mt-5 flex flex-row items-center mr-5">
                                                 <button onClick={prevSlide} 
                                                     className="w-1/5 text-biru_umn rounded-md border-2 border-biru_umn">
