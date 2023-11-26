@@ -3,6 +3,7 @@ import React from "react";
 import heroBg from "/public/assets/FacilityHeroBG.png"
 import ornament1 from "/public/assets/ornament1.png"
 import supergrafis1 from "/public/assets/Supergrafis1.png"
+import SuperGraphics from "@/Components/SuperGraphics";
 
 type Props = {
     heroTitle: string;
@@ -34,10 +35,10 @@ export default function HeroSection({
                     className="absolute inset-0 w-full h-full object-cover object-center
                     z-[0] filter brightness-[0.6]"
                 />
-                <img src={ ornament1 } className="absolute right-0 -mt-32 md:-mt-48 z-[2] w-10 md:w-auto"/>
+                <img src={ ornament1 } className="hidden md:block absolute right-0 -mt-32 md:-mt-48 z-[2] w-10 md:w-auto"/>
                 <div className="flex justify-center items-center w-full text-start text-white z-[1] h-96 lg:h-screen bg-biru_umn bg-opacity-50">
                     <div className="w-5/6">
-                        <h1 className="text-md md:text-2xl lg:text-xl leading-tight mb-5 lg:mb-7 text-sky-500 font-medium">
+                        <h1 className="text-md md:text-2xl lg:text-xl leading-tight mb-5 lg:mb-7 text-sky-300 font-medium">
                             {heroTitle}
                         </h1>
                         <h4 className="text-xl md:text-4xl lg:text-6xl font-semibold mb-5 lg:mb-7 text-white">
@@ -53,7 +54,12 @@ export default function HeroSection({
                     </div>
                 </div>
             </div>
-            <img src={supergrafis1} className="w-full -mt-10 md:-mt-32 lg:-mt-56"/>
+            <div className="h-1/2 w-full overflow-y-hidden mb-10 md:mb-20">
+                <SuperGraphics
+                    style="fill-color"
+                    className="w-full opacity-20"
+                />
+            </div>
         </div>
     );
 }

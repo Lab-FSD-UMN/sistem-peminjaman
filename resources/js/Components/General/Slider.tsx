@@ -11,12 +11,14 @@ type SliderProps = {
     slidesPerView?: number;
     spaceBetween?: number;
     centeredSlides?: boolean;
+    onSlideChange?: (swiper: any) => void
     loop?: boolean;
     autoplay?: boolean | {
         delay: number
     }
     pagination?: boolean | {
-        clickable: boolean
+        clickable: boolean,
+        el: string
     },
     // navigation?: {
     //     prevel: HTMLElement | null;
@@ -26,7 +28,7 @@ type SliderProps = {
         [key: number]: {
             slidesPerView: number;
             spaceBetween: number;
-            // centeredSlides: boolean;
+            centeredSlides: boolean;
         };
     };
     className?: string;
@@ -41,7 +43,6 @@ export default function Slider({ children, swiperRef, ...props }: SliderProps) {
             loop={true}
             pagination={{
                 clickable: true,
-                dynamicBullets: true,
             }}
             onSwiper={(swiper: any) => {
                 if (swiper) {
@@ -54,7 +55,7 @@ export default function Slider({ children, swiperRef, ...props }: SliderProps) {
                 0: {
                     slidesPerView: 1,
                     spaceBetween: 20,
-                    // centeredSlides: true,
+                    centeredSlides: true,
                 },
                 768: {
                     slidesPerView: 2,

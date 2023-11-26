@@ -68,9 +68,9 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                             </div>
                                             {showDropdown && (
                                                 <div className="absolute mt-44 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                                <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
-                                                <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
-                                                <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
+                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
+                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
+                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
                                                 </div>
                                             )}
                                         </div>
@@ -141,7 +141,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                 }
                                 <div className="pb-2">
                                     <div className="w-full flex flex-col justify-center items-center text-white mb-5 py-4 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">
-                                        <a href="/" className="font-medium">About</a>
+                                        <a href="/about" className="font-medium">About</a>
                                     </div>
                                     <div className="mx-4 mt-2 font-medium text-white py-2 bg-white bg-opacity-50 flex justify-center rounded-full">
                                         <a href="/reservation" className="font-extrabold">Reservation</a>
@@ -207,11 +207,11 @@ const Route = [
         path: '/facility',
         route: 'facility'
     },
-    {
-        name: 'About',
-        path: '/about',
-        route: 'about'
-    },
+    // {
+    //     name: 'About',
+    //     path: '/about',
+    //     route: 'about'
+    // },
     // {
     //     name: 'Gallery',
     //     path: '/gallery',

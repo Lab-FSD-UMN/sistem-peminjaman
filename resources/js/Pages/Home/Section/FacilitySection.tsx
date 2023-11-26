@@ -5,6 +5,7 @@ import { SwiperSlide } from "swiper/react";
 import { Swiper } from "swiper";
 import arrow from "/public/assets/arrow.png"
 import PrimaryButton from "@/Components/PrimaryButton";
+import { GoArrowRight } from "react-icons/go";
 
 // type Props = {
 //     facilityTitle: string;
@@ -27,7 +28,8 @@ function FacilitySection() {
     }
 
     return (
-        <div className="FacilitySection flex items-center justify-end w-full h-96 md:h-screen relative overflow-hidden">
+        <div className="FacilitySection flex items-center justify-end w-full h-96 md:h-screen 
+            relative overflow-hidden">
             <Slider
                 swiperRef={swiperRef}
                 className="w-full h-full"
@@ -38,7 +40,7 @@ function FacilitySection() {
                     0: {
                         slidesPerView: 1,
                         spaceBetween: 20,
-                        // centeredSlides: true,
+                        centeredSlides: false,
                     },
                 }}
 
@@ -57,24 +59,24 @@ function FacilitySection() {
                             />
                             <div className="absolute flex items-center justify-center h-96 md:h-screen px-16 md:px-40 text-white bg-biru_umn bg-opacity-50 bg-gradient-to-r from-biru_umn to-transparent">
                                 <div>
+                                    <div className="py-2 border-2 w-20 text-center text-xs rounded-3xl opacity-70 mb-5 md:mb-14">Highlights</div>
                                     <h1 className="text-2xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 md:mb-8">
                                         {facility.name}
                                     </h1>
-                                    <p className="w-4/5 lg:w-3/5 text-sm md:text-xl lg:text-xl text-gray-200 mb-4 md:mb-12">
+                                    <p className="w-4/5 lg:w-3/5 text-xs md:text-xl lg:text-xl text-gray-200 mb-4 md:mb-12">
                                         {facility.testimony}
                                         Lorem ipsum dolor sit amet, consectetur
                                         adipiscing elit, sed do eiusmod tempor
                                         incididunt ut labore et dolore magna.
                                     </p>
-                                    <PrimaryButton className="px-5 py-3 bg-g-500">
+                                    <PrimaryButton className="md:px-5 md:py-3 bg-sky-600">
                                         Read more
                                         <span><img src="https://i.ibb.co/GFRFKQg/arrow-pendek.png" className="ml-3"/></span>
                                     </PrimaryButton>
                                 </div>
                                 <div>
                                     <button onClick={nextSlide}>
-                                        <img src={arrow}
-                                        className="w-32 hover:opacity-70 duration-150 hover:cursor-pointer"/>
+                                        <GoArrowRight size={30} className="hover:opacity-70 duration-150 hover:cursor-pointer" />
                                     </button>
                                 </div>
                                 {/* <button
