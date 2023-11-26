@@ -1,7 +1,6 @@
 type Coordinator = {
     name: string,
     faculty: string,
-    file ?: string,
 }
 
 const listCoor : Coordinator[] = [

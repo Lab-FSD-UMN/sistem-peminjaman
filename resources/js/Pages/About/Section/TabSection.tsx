@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Structure from "./OrganizationStructureTab";
-import Coordinators from "./LabCoordinatorsTab";
+import Structure from "./Tabs/OrganizationStructureTab";
+import Coordinators from "./Tabs/LabCoordinatorsTab";
 
 function TabSection() {
     const [tab, setTab] = useState(2);

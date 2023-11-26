@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import listCoor from "../CoorData";
+import listCoor from "./CoorData";
 
 function Coordinators() {
     return (
-        <div className="Structure px-8 md:px-28 flex-col justify-start items-center gap-5 md:gap-10 inline-flex">
+        <div className="Coordiinators px-8 md:px-28 flex-col justify-start items-center gap-5 md:gap-10 inline-flex">
             <div className="text-biru_umn text-3xl md:text-4xl font-bold font-nexa">
                 Lab Coordinators
             </div>
@@ -65,7 +65,7 @@ function LabCard({ coorName, coorFaculty }: LabProps) {
             try {
                 // import image based on their first name
                 const module = await import(
-                    `../../../../../public/images/labCoor/${imageName}LabCoorImage.png`
+                    `../../../../../../public/images/labCoor/${imageName}LabCoorImage.png`
                 );
                 setImageSrc(module.default);
             } catch (error) {
