@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EventContentImages;
 use App\Exceptions\ResponseException;
+use App\Exceptions\EventException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -212,7 +213,7 @@ class EventController extends Controller
             $post = Event::find($id);
 
             if (!$post){
-                throw EventException::notFound();
+                throw new ResponseException(404, "Event post is not found.");
             }
 
             // clean up the related images
@@ -239,6 +240,11 @@ class EventController extends Controller
             return response()->json([
                 'message' => "Event deleted successfully."
             ], 201);
+        } catch (ResponseException $e){
+            return response()->json([
+                "code" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
         } catch (Exception $e){
             DB::rollBack();
             return response()->json([
