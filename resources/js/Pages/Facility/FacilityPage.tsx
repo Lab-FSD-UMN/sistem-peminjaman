@@ -9,6 +9,8 @@ import HighlightsSection from './Section/HighlightsSection';
 import ActRoom1Section from './Section/ActRoom1Section';
 import ActRoom2Section from './Section/ActRoom2Section';
 import ActRoom3Section from './Section/ActRoom3Section';
+import ActRoom4Section from './Section/ActRoom4Section';
+import ActRoom5Section from './Section/ActRoom5Section';
 import ornament3 from '/public/assets/ornament3.png';
 
 export default function FacilityPage({ auth, WebconfigData, cache, helper, testimonies }: PageProps<{ WebconfigData: any, cache: any, helper: string, testimonies: any }>) {
@@ -54,6 +56,8 @@ export default function FacilityPage({ auth, WebconfigData, cache, helper, testi
                     <ActRoom1Section />
                     <ActRoom2Section />
                     <ActRoom3Section />
+                    <ActRoom4Section />
+                    <ActRoom5Section />
                 </div>
             </Guest>
         </>

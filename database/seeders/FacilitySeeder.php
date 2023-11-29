@@ -60,7 +60,7 @@ class FacilitySeeder extends Seeder
             [
                 'name' => 'John Doe',
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget',
-                'image' => asset('/assets/umn background.png'),
+                'image' => asset('/assets/hutan.jpg'),
             ],
             [
                 'name' => 'John Uhuy',

@@ -14,7 +14,7 @@ import { GoHorizontalRule } from "react-icons/go";
 //     facilityDescription: string;
 // };
 
-function ActRoom2Section() {
+function ActRoom4Section() {
     const TestimoniesData: any = usePage().props.testimonies;
     const FacilityData: any = usePage().props.rooms;
     const swiperRef = useRef<Swiper | null>(null);
@@ -65,7 +65,7 @@ function ActRoom2Section() {
         }
     };
     
-    const filteredTestimonies = TestimoniesData.filter((facility: any) => facility.name === "John Uhuy");
+    const filteredTestimonies = TestimoniesData.filter((facility: any) => facility.name === "Rudy");
 
     return (
         <div className="FacilitySection flex flex-col md:flex-row items-center justify-end w-4/5 relative overflow-hidden mb-5 md:mb-16">
@@ -125,4 +125,4 @@ function ActRoom2Section() {
     );
 }
 
-export default ActRoom2Section;
+export default ActRoom4Section;

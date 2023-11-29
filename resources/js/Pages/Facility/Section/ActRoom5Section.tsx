@@ -14,21 +14,12 @@ import { GoHorizontalRule } from "react-icons/go";
 //     facilityDescription: string;
 // };
 
-function ActRoom2Section() {
+function ActRoom5Section() {
     const TestimoniesData: any = usePage().props.testimonies;
     const FacilityData: any = usePage().props.rooms;
     const swiperRef = useRef<Swiper | null>(null);
     const [currentFacilityIndex, setCurrentFacilityIndex] = useState(0);
-
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //       if (swiperRef.current) {
-    //         swiperRef.current.slidePrev();
-    //       }
-    //     }, 5000);
-    //     return () => clearInterval(intervalId);
-    // }, [swiperRef]);
-
+    
     function nextSlide() {
         if (swiperRef.current) {
             swiperRef.current.slideNext();
@@ -65,10 +56,27 @@ function ActRoom2Section() {
         }
     };
     
-    const filteredTestimonies = TestimoniesData.filter((facility: any) => facility.name === "John Uhuy");
+    const filteredTestimonies = TestimoniesData.filter((facility: any) => facility.name === "John Doe");
 
     return (
         <div className="FacilitySection flex flex-col md:flex-row items-center justify-end w-4/5 relative overflow-hidden mb-5 md:mb-16">
+            <div className="md:w-2/3 md:pr-5 hidden md:block">
+                <p className="text-base text-sky-500">Kode Ruangan</p>
+                <h1 className="text-2xl font-semibold text-biru_umn">Judul Ruangan</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget</p>
+                <div className="space-x-2 mt-5 flex flex-row items-center mr-5">
+                    <button 
+                        onClick={prevSlide} 
+                        className="w-1/5 text-biru_umn rounded-md border-2 border-biru_umn">
+                        <GoArrowLeft size={25} className="text-center w-full"/></button>
+                    <button onClick={nextSlide}
+                        className="w-1/5 text-biru_umn rounded-md border-2 border-biru_umn">
+                    <GoArrowRight size={25} className="text-center w-full"/></button>
+                    <GoHorizontalRule size={30} className="text-sky-500"/>
+                    <p id="currentIndex" className="text-biru_umn">{currentFacilityIndex + 1}</p>
+                    <p className="text-orange">/ {filteredTestimonies.length}</p>
+                </div>
+            </div>
             <Slider
                 swiperRef={swiperRef}
                 className="w-full h-72 mt-5 md:mt-0"
@@ -77,7 +85,7 @@ function ActRoom2Section() {
                 }}
                 breakpoints={{
                     0: {
-                        slidesPerView: 1.2,
+                        slidesPerView: 1,
                         spaceBetween: 20,
                         centeredSlides: false,
                     },
@@ -104,7 +112,7 @@ function ActRoom2Section() {
                     );
                 })}
             </Slider>
-            <div className="md:w-2/3 pt-5 md:pl-5">
+            <div className="md:w-2/3 pt-5 block md:hidden">
                 <p className="text-base text-sky-500">Kode Ruangan</p>
                 <h1 className="text-2xl font-semibold text-biru_umn">Judul Ruangan</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget</p>
@@ -117,12 +125,12 @@ function ActRoom2Section() {
                         className="w-1/5 text-biru_umn rounded-md border-2 border-biru_umn">
                     <GoArrowRight size={25} className="text-center w-full"/></button>
                     <GoHorizontalRule size={30} className="text-sky-500"/>
-                    <p id="currentIndex" className="text-biru_umn">{currentFacilityIndex + 1}</p>
-                    <p className="text-orange">/ {filteredTestimonies.length}</p>
+                    <p id="currentIndex" className="text-biru_umn">{currentFacilityIndex}</p>
+                    <p className="text-orange">/ {filteredTestimonies.length-1}</p>
                 </div>
             </div>
         </div>
     );
 }
 
-export default ActRoom2Section;
+export default ActRoom5Section;
