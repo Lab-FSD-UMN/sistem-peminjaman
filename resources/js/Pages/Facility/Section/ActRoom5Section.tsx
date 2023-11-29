@@ -16,6 +16,7 @@ import { GoHorizontalRule } from "react-icons/go";
 
 function ActRoom5Section() {
     const TestimoniesData: any = usePage().props.testimonies;
+    const FacilitiesData: any = usePage().props.facilities;
     const FacilityData: any = usePage().props.rooms;
     const swiperRef = useRef<Swiper | null>(null);
     const [currentFacilityIndex, setCurrentFacilityIndex] = useState(0);
@@ -56,14 +57,14 @@ function ActRoom5Section() {
         }
     };
     
-    const filteredTestimonies = TestimoniesData.filter((facility: any) => facility.name === "John Doe");
+    const filteredTestimonies = FacilitiesData.filter((facility: any) => facility.kode === "CG287");
 
     return (
         <div className="FacilitySection flex flex-col md:flex-row items-center justify-end w-4/5 relative overflow-hidden mb-5 md:mb-16">
             <div className="md:w-2/3 md:pr-5 hidden md:block">
-                <p className="text-base text-sky-500">Kode Ruangan</p>
-                <h1 className="text-2xl font-semibold text-biru_umn">Judul Ruangan</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget</p>
+                <p className="text-base text-sky-500">{filteredTestimonies[currentFacilityIndex]?.kode}</p>
+                <h1 className="text-2xl font-semibold text-biru_umn">{filteredTestimonies[currentFacilityIndex]?.name}</h1>
+                <p>{filteredTestimonies[currentFacilityIndex]?.description}</p>
                 <div className="space-x-2 mt-5 flex flex-row items-center mr-5">
                     <button 
                         onClick={prevSlide} 
@@ -113,9 +114,9 @@ function ActRoom5Section() {
                 })}
             </Slider>
             <div className="md:w-2/3 pt-5 block md:hidden">
-                <p className="text-base text-sky-500">Kode Ruangan</p>
-                <h1 className="text-2xl font-semibold text-biru_umn">Judul Ruangan</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget</p>
+                <p className="text-base text-sky-500">{filteredTestimonies[currentFacilityIndex]?.kode}</p>
+                <h1 className="text-2xl font-semibold text-biru_umn">{filteredTestimonies[currentFacilityIndex]?.name}</h1>
+                <p>{filteredTestimonies[currentFacilityIndex]?.description}</p>
                 <div className="space-x-2 mt-5 flex flex-row items-center mr-5">
                     <button 
                         onClick={prevSlide} 

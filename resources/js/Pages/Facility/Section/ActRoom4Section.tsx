@@ -1,6 +1,6 @@
 import Slider from "@/Components/General/Slider";
 import { usePage } from "@inertiajs/react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SwiperSlide } from "swiper/react";
 import { Swiper } from "swiper";
 import arrow from "/public/assets/arrow.png"
@@ -16,18 +16,19 @@ import { GoHorizontalRule } from "react-icons/go";
 
 function ActRoom4Section() {
     const TestimoniesData: any = usePage().props.testimonies;
+    const FacilitiesData: any = usePage().props.facilities;
     const FacilityData: any = usePage().props.rooms;
     const swiperRef = useRef<Swiper | null>(null);
     const [currentFacilityIndex, setCurrentFacilityIndex] = useState(0);
 
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //       if (swiperRef.current) {
-    //         swiperRef.current.slidePrev();
-    //       }
-    //     }, 5000);
-    //     return () => clearInterval(intervalId);
-    // }, [swiperRef]);
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          if (swiperRef.current) {
+            swiperRef.current.slidePrev();
+          }
+        }, 5000);
+        return () => clearInterval(intervalId);
+    }, [swiperRef]);
 
     function nextSlide() {
         if (swiperRef.current) {
@@ -65,19 +66,19 @@ function ActRoom4Section() {
         }
     };
     
-    const filteredTestimonies = TestimoniesData.filter((facility: any) => facility.name === "Rudy");
+    const filteredTestimonies = FacilitiesData.filter((facility: any) => facility.kode === "FN621");
 
     return (
         <div className="FacilitySection flex flex-col md:flex-row items-center justify-end w-4/5 relative overflow-hidden mb-5 md:mb-16">
             <Slider
                 swiperRef={swiperRef}
                 className="w-full h-72 mt-5 md:mt-0"
-                autoplay={{
-                    delay: 5000
-                }}
+                // autoplay={{
+                //     delay: 5000
+                // }}
                 breakpoints={{
                     0: {
-                        slidesPerView: 1.2,
+                        slidesPerView: 1,
                         spaceBetween: 20,
                         centeredSlides: false,
                     },
@@ -105,9 +106,9 @@ function ActRoom4Section() {
                 })}
             </Slider>
             <div className="md:w-2/3 pt-5 md:pl-5">
-                <p className="text-base text-sky-500">Kode Ruangan</p>
-                <h1 className="text-2xl font-semibold text-biru_umn">Judul Ruangan</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget</p>
+                <p className="text-base text-sky-500">{filteredTestimonies[currentFacilityIndex]?.kode}</p>
+                <h1 className="text-2xl font-semibold text-biru_umn">{filteredTestimonies[currentFacilityIndex]?.name}</h1>
+                <p>{filteredTestimonies[currentFacilityIndex]?.description}</p>
                 <div className="space-x-2 mt-5 flex flex-row items-center mr-5">
                     <button 
                         onClick={prevSlide} 

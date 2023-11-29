@@ -29,7 +29,7 @@ export default function FacilityPage({ auth, WebconfigData, cache, helper, testi
                 <meta name="keywords" content="" />
             </Head>
             <Guest>
-                <div className='flex flex-col justify-center items-center'>
+                <div className='flex flex-col justify-center items-center pb-10 md:pb-0'>
                     <HeroSection
                         homeBackground={companyData.home_bg}
                         heroLogo={companyData.hero_logo}
@@ -41,7 +41,7 @@ export default function FacilityPage({ auth, WebconfigData, cache, helper, testi
                         labCoorPosition={companyData.position_labHead}
                     />
                     <HighlightsSection />
-                    <div className='relative w-full pt-10 pb-20 flex flex-col items-center justify-center'>
+                    <div className='relative w-full pt-5 md:pt-10 pb-10 md:pb-20 flex flex-col items-center justify-center'>
                         <div className='w-4/5'>
                             <h1 className='text-center text-5xl text-biru_umn font-bold mb-10'>Laboratory List</h1>
                         </div>

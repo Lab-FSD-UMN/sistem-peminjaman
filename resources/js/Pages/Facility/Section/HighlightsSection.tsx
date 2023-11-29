@@ -36,10 +36,10 @@ function HighlightsSection() {
     // }
 
     return (
-        <div className="FacilitySection flex items-center justify-end w-full relative overflow-hidden">
+        <div className="FacilitySection flex items-center justify-end w-full relative overflow-hidden pt-5">
             <Slider
                 swiperRef={swiperRef}
-                className="w-full h-72 mb-5"
+                className="w-full h-80 mb-5"
                 // autoplay={{
                 //     delay: 5000
                 // }}
@@ -58,7 +58,7 @@ function HighlightsSection() {
 
             >
                 {/* nanti yang di map url image */}
-                {FacilitiesData.map((facility: any) => {
+                {TestimoniesData.map((facility: any) => {
                     return (
                         <SwiperSlide
                             key={facility.id}
