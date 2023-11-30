@@ -1,5 +1,5 @@
 import { PageProps } from '@/types'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from '@inertiajs/react'
 import { router } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
@@ -7,6 +7,11 @@ import { Popconfirm } from 'antd'
 
 
 export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: any }>) {
+    const [tipeCategory, setTipeCategory] = useState<string>('general');
+    const handleCategoryClick = (kategori: string) => {
+        setTipeCategory(kategori);
+    };
+
     return (
         <AdminLayout>
             <div
@@ -28,17 +33,52 @@ export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: an
                         Edit your website configurations here
                     </p>
                 </div>
+                <div className='flex space-x-4 mt-10 text-center'>
+                    <div
+                        id='general'
+                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'general' ? 
+                            'bg-blue-600' : ''}`}
+                        onClick={() => handleCategoryClick('general')}
+                    >
+                        general
+                    </div>
+                    <div
+                        id='home'
+                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'home' ? 
+                            'bg-blue-600' : ''}`}
+                        onClick={() => handleCategoryClick('home')}
+                    >
+                        home
+                    </div>
+                    <div
+                        id='reservation'
+                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'reservation' ? 
+                            'bg-blue-600' : ''}`}
+                        onClick={() => handleCategoryClick('reservation')}
+                    >
+                        reservation
+                    </div>
+                    <div
+                        id='contact'
+                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'contact' ? 
+                            'bg-blue-600' : ''}`}
+                        onClick={() => handleCategoryClick('contact')}
+                    >
+                        contact
+                    </div>
+                </div>
                 <div
                     className='bg-white overflow-hidden sm:rounded-lg
                     w-[50rem] m-10 flex flex-col shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'
                 >
                     {
                         webconfigs.map((webconfig: any) => {
-                            return (
-                                <WebconfigItemCard key={webconfig.id}
-                                    {...webconfig}
-                                />
-                            )
+                            if (webconfig.category === tipeCategory) {
+                                return (
+                                    <WebconfigItemCard key={webconfig.id} {...webconfig} />
+                                );
+                            }
+                            return null;
                         })
                     }
                 </div>
