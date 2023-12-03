@@ -150,7 +150,6 @@ class RoomController extends Controller
         }
     }
 
-
     public function updateRoom(Request $request)
     {
         try {

@@ -4,11 +4,11 @@ import { router, useForm, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useEffect } from 'react'
 
-
 export default function ReservationItemDetailPage() {
     const pageInfo: any = usePage().props
     const Item: any = pageInfo.item
     const [setMessages, messages] = React.useState<any>([])
+    
 
     // Form Values
     // ✨ form logic

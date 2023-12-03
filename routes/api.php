@@ -43,24 +43,25 @@ Route::prefix('room')->group(function () {
     Route::post('/create', [RoomController::class, 'createRoom']); //  create item
     Route::post('/update', [RoomController::class, 'updateRoom']); //
     Route::delete('/{id}/delete', [RoomController::class, 'deleteRoom']); //
-
     Route::post('/search', [RoomController::class, 'searchRoom']); //
-
 });
+
 
 Route::prefix('/reservation')->group(function () {
-    Route::get('/', [RoomReservationController::class, 'showAllRoomReservationStatusOnGoing']); //    
-    Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
-    Route::get('/history', [RoomReservationController::class, 'showRoomReservationHistory']); //
-    Route::get('/history/{id}', [RoomReservationController::class, 'showRoomReservationHistoryById']); //
-    Route::post('/', [RoomReservationController::class, 'reserveRoom']);
-    Route::post('/cancel', [RoomReservationController::class, 'cancelRoomReservation']);
-    Route::post('/delete', [RoomReservationController::class, 'deleteRoomReservation']);
-    Route::post('/update', [RoomReservationController::class, 'updateRoomReservation']);
-    Route::post('/extend', [RoomReservationController::class, 'extendRoomReservation']);
+    Route::prefix('/room')->group(function () {
+        Route::get('/', [RoomReservationController::class, 'showAllRoomReservationPending']); //    
+        Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
+        Route::get('/history', [RoomReservationController::class, 'showRoomReservationHistory']); //
+        Route::get('/history/{id}', [RoomReservationController::class, 'showRoomReservationHistoryById']); //
+        Route::post('/', [RoomReservationController::class, 'reserveRoom']);
+        Route::post('/cancel', [RoomReservationController::class, 'cancelRoomReservation']);
+        Route::post('/delete', [RoomReservationController::class, 'deleteRoomReservation']);
+        Route::post('/update', [RoomReservationController::class, 'updateRoomReservation']);
+        Route::post('/extend', [RoomReservationController::class, 'extendRoomReservation']);
+    });
 });
 
-Route::get('/reservation/{id}', [RoomReservationController::class, 'showUserReservationListAndStatus']); //
+// Route::get('/reservation/{id}', [RoomReservationController::class, 'showUserReservationListAndStatus']); //
 
 
 Route::post('/search/item', [ItemController::class, 'searchItemData']);
