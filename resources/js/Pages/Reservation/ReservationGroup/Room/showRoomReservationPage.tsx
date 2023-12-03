@@ -1,6 +1,6 @@
 import Guest from '@/Layouts/GuestLayout'
 import { Link } from '@inertiajs/react';
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import React, { useEffect } from 'react'
 
 export default function ReservationRoomPage({ rooms }: any) {

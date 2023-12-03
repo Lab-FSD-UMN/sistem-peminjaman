@@ -31,6 +31,7 @@
         "@emotion/css": "^11.11.2",
         "@emotion/react": "^11.11.1",
         "@stitches/react": "^1.2.8",
+        "@types/antd": "^1.0.0",
         "@types/react-responsive-masonry": "^2.1.0",
         "antd": "^5.7.3",
         "concurrently": "^8.2.1",

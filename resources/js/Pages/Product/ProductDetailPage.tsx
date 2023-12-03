@@ -2,7 +2,11 @@ import { PageProps } from '@/types'
 import React, { useEffect } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import Guest from '@/Layouts/GuestLayout'
-import { Button, notification, Space } from 'antd';
+import {
+    // Button,
+    notification,
+    Space
+} from 'antd';
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
