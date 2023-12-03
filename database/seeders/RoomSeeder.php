@@ -29,6 +29,6 @@ class RoomSeeder extends Seeder
             'name' => 'Room 2',
             'description' => 'Room 2',
             'is_available' => true,
-        ]);
+        ]);   
     }
 }
