@@ -12,7 +12,7 @@ class Booked_room extends Model
     protected $fillable = [
         'room_id',
         'user_id',
-        'status',
+        'status', // '0: pending, 1: approved, 2: rejected, 3: canceled'
         'reservation_start_time',
         'reservation_end_time',
         'note',

@@ -8,15 +8,18 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 
 class RoomControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $room_id;
+
     public function testCreateRoom()
     {
         Storage::fake('public'); // Use the 'public' disk for testing
-        
+
         $response = $this->json(
             'POST',
             '/api/room/create',
@@ -93,19 +96,20 @@ class RoomControllerTest extends TestCase
     public function testShowRoomById()
     {
         // Create a room in the database
+        $this->room_id = (string) Str::uuid(); // Generate a UUID
         $room = Room::create([
+            'id' => $this->room_id,
             'name' => 'New Room',
             'description' => 'Room description',
-            'image' => 'path/to/your/image.jpg', // You can specify an image path here
+            'image' => 'path/to/your/image.jpg',
         ]);
 
         // Simulate a GET request to retrieve the room by its ID
-        $response = $this->json('GET', '/api/room/' . $room->id);
-
+        $response = $this->json('GET', '/api/room/' . $this->room_id);
+        //dump 
+        // $response->dump();
         // Assertions
         $response->assertStatus(200);
-        //log the response
-        // $response->dump(); // Uncomment this line to dump the response
         $response->assertJsonStructure([
             'code',
             'data' => [
@@ -121,6 +125,7 @@ class RoomControllerTest extends TestCase
             'message',
         ]);
     }
+
 
     //search room
     public function testSearchRoom()

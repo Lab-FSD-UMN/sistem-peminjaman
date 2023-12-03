@@ -38,4 +38,3 @@ ln -s ../storage/app/public storage (on public dir)
 <!-- Referensi -->
 1. Send Email : https://www.youtube.com/watch?v=XywB2qtzSoM
 2. Middleware Auth : https://www.youtube.com/watch?v=vc4sXOdE4bQ
-

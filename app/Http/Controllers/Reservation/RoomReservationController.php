@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class RoomReservationController extends Controller
 {
-    public function showAllRoomReservationStatusOnGoing()
+
+    public function showAllRoomReservationPending()
     {
         //get all room reservation status on going for future user
-        $room_reservation = Booked_room::paginate(10);
-        // sort by reservation start time
+        $room_reservation = Booked_room::all()->where('status', 0);
+        //sort by reservation start time 
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         return response()->json([
             'code' => 200,
@@ -26,6 +27,10 @@ class RoomReservationController extends Controller
             'message' => 'Success',
         ]);
     }
+
+    
+
+
 
 
     public function reserveRoom(Request $request)
@@ -146,9 +151,16 @@ class RoomReservationController extends Controller
             $room_reservation = Booked_room::findOrFail($request->input('id'));
             $room_reservation->status = 3;
             $room_reservation->save();
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'room_reservation' => $room_reservation,
+                ],
+                'message' => 'Room reservation canceled successfully!',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
-                'code' => 500,
+                'code' => 422,
                 'error' => $e->getMessage(),
                 'message' => 'Room reservation failed to cancel!',
             ]);
