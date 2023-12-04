@@ -1,4 +1,4 @@
-import { Input } from 'antd'
+// import { input } from 'antd'
 import React, { useState } from 'react'
 import { router, useForm } from '@inertiajs/react'
 
@@ -38,7 +38,7 @@ export default function ProductAddCard(ProductData: any) {
             shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
             "
         >
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='title'
                 onChange={handleChange}
                 id='title'
@@ -50,20 +50,20 @@ export default function ProductAddCard(ProductData: any) {
                 id='description'
             >
             </textarea>
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='slug'
                 // defaultValue={data.slug}
                 onChange={handleChange}
                 id='slug'
             />
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='price'
                 // defaultValue={data.price}
                 onChange={handleChange}
                 id='price'
                 type='number'
             />
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='price'
                 id='image'
                 type='file'
