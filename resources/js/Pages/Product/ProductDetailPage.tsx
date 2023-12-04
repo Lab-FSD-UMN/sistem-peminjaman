@@ -2,13 +2,13 @@ import { PageProps } from '@/types'
 import React, { useEffect } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import Guest from '@/Layouts/GuestLayout'
-import {
-    // Button,
-    notification,
-    Space
-} from 'antd';
+// import {
+//     // Button,
+//     notification,
+//     Space
+// } from 'antd';
 
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
+// type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 
 
@@ -18,18 +18,18 @@ export default function ProductDetailPage({ auth, ProductData, RecommendedProduc
         console.log(RecommendedProduct)
     }, [])
 
-    const [api, contextHolder] = notification.useNotification();
+    // const [api, contextHolder] = notification.useNotification();
 
-    const openNotificationWithIcon = (type: NotificationType) => {
-        api[type]({
-            message: 'Copied to clipboard',
-            // descrPiption:
-            //     'Copied to clipboard',
-        });
-    };
+    // const openNotificationWithIcon = (type: NotificationType) => {
+    //     api[type]({
+    //         message: 'Copied to clipboard',
+    //         // descrPiption:
+    //         //     'Copied to clipboard',
+    //     });
+    // };
     return (
         <>
-            {contextHolder}
+            {/* {contextHolder} */}
             <Guest>
                 <div className="flex items-start min-h-screen bg-gray-100">
                     <div className="w-2/3 p-10">
@@ -59,7 +59,7 @@ export default function ProductDetailPage({ auth, ProductData, RecommendedProduc
                                 hover:bg-blue-300 transition-colors duration-300'
                                     onClick={() => {
                                         navigator.clipboard.writeText(window.location.href);
-                                        openNotificationWithIcon('success')
+                                        // openNotificationWithIcon('success')
                                     }}
                                 >
                                     Copy Link
