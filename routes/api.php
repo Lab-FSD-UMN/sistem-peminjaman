@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomReservationController;
 use App\Http\Controllers\ItemReservationController;
 use App\Http\Controllers\ReservationController;
@@ -135,6 +136,14 @@ Route::prefix('item')
         Route::get('/', 'showAllItemPage'); //  create item
         Route::post('/search', 'searchItemData');
 });
+
+// Room Route
+Route::prefix('room')
+    ->controller(RoomController::class)
+    ->group(function(){
+        Route::get('/', 'showAllRooms');
+        Route::get('/{id}', 'getRoomById');
+    });
 
 
 Route::post('/search/history', [ReservationController::class, 'searchHistoryData']);
