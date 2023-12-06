@@ -3,7 +3,7 @@ name: Deploy to Shared Hosting
 on:
   push:
     branches:
-      - main
+      - development
 
 jobs:
   deploy:
@@ -24,7 +24,7 @@ jobs:
         # delete the node_modules folder
       - name: Delete node_modules
         run: rm -rf node_modules
-        
+
       - name: Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
