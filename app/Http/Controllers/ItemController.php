@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CustomException;
 use App\Exceptions\ReservationException;
+use App\Exceptions\ResponseException;
 use App\Models\Item;
 use App\Models\Item_image;
 use Illuminate\Http\Request;
@@ -21,6 +22,21 @@ class ItemController extends Controller
             'items' => Item::all(),
         ], 200);
     }
+
+    public function getItemById($id)
+    {
+            $item = Item::find($id);
+
+            if (!$item){
+                throw new ResponseException(404, "Item is not found");
+            }
+
+            return response()->json([
+                'message' => "Successfully fetched room detail.",
+                'data' => $item
+            ], 200);
+    }
+
     // function for create new item
     public function createItem(Request $request)
     {
