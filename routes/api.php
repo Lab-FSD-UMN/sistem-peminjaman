@@ -118,6 +118,7 @@ Route::prefix('item')
     ->controller(ItemController::class)
     ->group(function () {
         Route::get('/', 'showAllItemPage'); //  create item
+        Route::get('/{id}', 'getItemById');
         Route::post('/search', 'searchItemData');
 });
 
