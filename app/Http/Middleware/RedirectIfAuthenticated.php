@@ -31,9 +31,8 @@ class RedirectIfAuthenticated
                 if (Auth::user()->role_id == 1) {
                     return redirect('/admin');
                 }
-
                 // If not an admin, redirect to home
-                return redirect('/');
+                return redirect('/reservation');
             }
         }
 

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 
 export default function ReservationPage() {
     // const pageInfo = usePage().props
-    // const Info = usePage()
+    // const Info = usePage(
     return (
         <Guest>
             <div

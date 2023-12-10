@@ -1,4 +1,4 @@
-import { StepsProps } from "antd";
+// import { StepsProps } from "antd";
 
 type Props = {
     sectionTitle: string;
@@ -33,9 +33,9 @@ function HowToSection({ sectionTitle, sectionDescription }: Props) {
     );
 }
 
-function Step({ key, title }: StepProps) {
+function Step({ title }: any) {
     return (
-        <div key={key} className="w-96 md:flex-grow flex flex-col items-center justify-center p-6 bg-gray-200 rounded-3xl overflow-hidden mb-6 lg:me-6">
+        <div className="w-96 md:flex-grow flex flex-col items-center justify-center p-6 bg-gray-200 rounded-3xl overflow-hidden mb-6 lg:me-6">
             <img
                 src="https://res.cloudinary.com/dakp66ddf/image/upload/v1692149904/marshlands-8176000_fndgne.webp"
                 className="inset-0 w-full h-80 rounded-2xl object-cover object-center mb-4"
