@@ -47,9 +47,11 @@ class ItemReservationController extends Controller
             DB::beginTransaction();
             // Validate the incoming request data
 
+            $userID = auth()->user()->id;
+
             $request->validate([
                 'item_id' => 'required',
-                'user_id' => 'required',
+                // 'user_id' => 'required',
                 'quantity' => 'required',
                 'reservation_date_start' => 'required',
                 'reservation_date_end' => 'required',
@@ -60,7 +62,7 @@ class ItemReservationController extends Controller
             // Validation: check if input data is valid
             // check if quantity is positive and not zero
             if ($request->quantity <= 0) {
-                throw ReservationException::Custom('Invalid quantity. Please enter a positive number greater than zero.');
+                throw new ResponseException(400, 'Invalid quantity. Please enter a positive number greater than zero.');
             }
 
 
@@ -74,14 +76,14 @@ class ItemReservationController extends Controller
             $available_quantity = $item::find($request->item_id)->quantity - $booked_quantity;
 
             if ($request->quantity > $available_quantity) {
-                throw ReservationException::Custom("Insufficient quantity. try to reserve $available_quantity or less.");
+                throw new ResponseException(400, "Insufficient quantity. try to reserve $available_quantity or less.");
             }
 
 
 
             // Validation: check if the user has already reserved the item in that given time
             // check if the user has already reserved the item in that given time
-            if ($Booked_item::where('user_id', $request->user_id)
+            if ($Booked_item::where('user_id', $userID)
                 ->where('item_id', $request->item_id)
                 ->where('reservation_start_time', '<=', $request->reservation_date_start . ' ' . $request->reservation_time_start)
                 ->where('reservation_end_time', '>=', $request->reservation_date_end . ' ' . $request->reservation_time_end)
@@ -89,7 +91,7 @@ class ItemReservationController extends Controller
                 ->where('status', '!=', 2)
                 ->exists()
             ) {
-                throw ReservationException::Custom('You have already reserved this item in that given time.');
+                throw new ResponseException(400, 'You have already reserved this item in that given time.');
             }
 
             // Validation: check if the reservation time is valid
@@ -104,7 +106,7 @@ class ItemReservationController extends Controller
 
             // Check if the start time is before the end time
             if ($startDateTime >= $endDateTime) {
-                throw ReservationException::Custom('Invalid reservation times.');
+                throw new ResponseException(400, 'Invalid reservation times.');
             }
 
             // Use a database transaction to ensure data consistency
@@ -117,7 +119,7 @@ class ItemReservationController extends Controller
             // Insert the reservation into the database within the transaction
             $Booked_item->create([
                 'item_id' => $request->item_id,
-                'user_id' => $request->user_id,
+                'user_id' => $userID,
                 'quantity' => $request->quantity,
                 'reservation_start_time' => $startDateTime,
                 'reservation_end_time' => $endDateTime,
@@ -130,8 +132,14 @@ class ItemReservationController extends Controller
             DB::commit();
             // return redirect()->route('reservation.item')->with('success', 'Item has been reserved');
             return response()->json([
+                'status' => 201,
                 'message' => 'Item has been reserved',
-            ], 200);
+            ], 201);
+        }  catch (ResponseException $e){
+            return response()->json([
+                "status" => $e->getStatusCode(),
+                "message" => $e->getMessage(),
+            ], $e->getStatusCode());
         } catch (ReservationException $e) {
             // Handle exceptions (e.g., log the error)
             DB::rollBack(); // Rollback the transaction in case of an exception
