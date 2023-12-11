@@ -35,7 +35,7 @@ class RoomController extends Controller
                 'next_page_url' => $data['next_page_url'],
                 'prev_page_url' => $data['prev_page_url'],
             ];
-            //chunk 
+            //chunk
 
             if ($rooms['rooms'] == null) {
                 return response()->json([
@@ -65,13 +65,11 @@ class RoomController extends Controller
     {
         try {
             //find room by id find of fail
-            $rooms = Room::findOrFail($id);
+            $room = Room::findOrFail($id);
             return response()->json([
                 'code' => 200,
-                'data' => [
-                    'room' => $rooms,
-                ],
                 'message' => 'success',
+                'data' => $room,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -345,5 +343,5 @@ class RoomController extends Controller
             ], 422);
         }
     }
-    # Admin    
+    # Admin
 }
