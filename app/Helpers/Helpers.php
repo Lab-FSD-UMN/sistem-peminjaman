@@ -35,6 +35,15 @@ function FormatDate($date)
 }
 
 
+function CombineDateTime(
+    $date,
+    $time
+) {
+    $date = Carbon::parse($date);
+    $time = Carbon::parse($time);
+    $combined_date_time = $date->format('Y-m-d') . ' ' . $time->format('H:i:s');
+    return $combined_date_time;
+}
 function uploadImage($image, $destination_path = "", $table, $metadata){
     try {
         if (!$image){

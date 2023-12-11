@@ -9,7 +9,8 @@ import DescriptionSection from './Section/DescriptionSection';
 import InNumbersSection from './Section/InNumbers';
 import TestimonySection from './Section/TestimonySection';
 import Slider from '@/Components/General/Slider';
-import { SwiperSlide } from 'swiper/vue';
+// import { SwiperSlide } from 'swiper/vue';
+import { SwiperSlide } from 'swiper/react';
 import FacilitySection from './Section/FacilitySection';
 import HowToSection from './Section/HowToSection';
 
@@ -67,6 +68,8 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
                             }
                             )
                         } */}
+
+
                     </div>
                 </div>
             </Guest>

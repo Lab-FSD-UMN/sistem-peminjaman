@@ -66,14 +66,12 @@ Route::prefix('reservation')->group(function () {
         Route::get('/', [RoomReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
 
         Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationDetailPage']);
-
     });
 
     Route::prefix('item')->group(function () {
         Route::get('/', [ItemReservationController::class, 'showItemReservationPage'])->name('reservation.item');
 
         Route::get('/{id}', [ItemReservationController::class, 'showItemReservationDetailPage']);
-
     });
 });
 
@@ -112,8 +110,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
                     // blm ada
                     Route::put('/{id}', [ItemReservationController::class, 'updateItemData'])->name('update');
-
                 });
+            });
+
+            Route::prefix('/room')->name('room.')->group(function () {
+                // Room : show room reservation page
+                Route::get('/', [ReservationController::class, 'showAdminReservationRoomPage']); // haven't made. check controller
             });
         });
 
@@ -155,7 +157,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
         // Delete a room (DELETE)
         Route::delete('/{id}', [RoomReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.destroy');
-
     });
 
     // Room schedule function

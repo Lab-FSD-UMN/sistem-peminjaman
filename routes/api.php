@@ -14,16 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -32,14 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.email');
 
-// Route::post('send-email', function (Request $request) {
-//     dd($request);
-//         // $data = $request->all();
-//     // $data['email'] = 'aureliusivanwijaya@gmail.com';
-//     // // antrian email
-//     // dispatch(new SendEmailJob($data));
-//     // return 'Email was sent';
-// });
+
 
 // Reservation System Route Start [Edited by Ivan]
 // USER
@@ -148,6 +132,35 @@ Route::prefix('room')
 
 
 Route::post('/search/history', [ReservationController::class, 'searchHistoryData']);
+Route::prefix('room')->group(function () {
+    // API FOR CRUD
+    Route::get('/', [RoomController::class, 'showAllRoom']); //  create item
+    Route::get('/{id}', [RoomController::class, 'showRoom']); //  create item
+    Route::post('/create', [RoomController::class, 'createRoom']); //  create item
+    Route::post('/update', [RoomController::class, 'updateRoom']); //
+    Route::delete('/{id}/delete', [RoomController::class, 'deleteRoom']); //
+    Route::post('/search', [RoomController::class, 'searchRoom']); //
+});
+
+
+Route::prefix('/reservation')->group(function () {
+    Route::prefix('/room')->group(function () {
+        Route::get('/', [RoomReservationController::class, 'showAllRoomReservationPending']); //    
+        Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
+        Route::get('/history', [RoomReservationController::class, 'showRoomReservationHistory']); //
+        Route::get('/history/{id}', [RoomReservationController::class, 'showRoomReservationHistoryById']); //
+        Route::post('/', [RoomReservationController::class, 'reserveRoom']);
+        Route::post('/cancel', [RoomReservationController::class, 'cancelRoomReservation']);
+        Route::post('/delete', [RoomReservationController::class, 'deleteRoomReservation']);
+        Route::post('/update', [RoomReservationController::class, 'updateRoomReservation']);
+        Route::post('/extend', [RoomReservationController::class, 'extendRoomReservation']);
+    });
+});
+
+// Route::get('/reservation/{id}', [RoomReservationController::class, 'showUserReservationListAndStatus']); //
+
+
+Route::post('/search/item', [ItemController::class, 'searchItemData']);
 
 
 // ADMIN
@@ -158,3 +171,6 @@ Route::post('/search/history', [ReservationController::class, 'searchHistoryData
 
 
 // Reservation System Route End
+// Reservation System Route End
+// TESTING:
+Route::post('/reservation/item/schedule', [ReservationController::class, 'showItemScheduleFromDate']);
