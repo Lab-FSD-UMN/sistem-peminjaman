@@ -48,7 +48,7 @@ class ItemReservationController extends Controller
             // Validate the incoming request data
 
             $userID = auth()->user()->id;
-            Log::info(auth()->user());
+            Log::info(auth('sanctum')->user());
 
             $request->validate([
                 'item_id' => 'required',

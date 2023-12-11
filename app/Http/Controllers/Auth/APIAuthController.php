@@ -40,7 +40,7 @@ class APIAuthController extends Controller
                 ], 401);
             }
 
-            $token = $user->createToken('auth-user')->plainTextToken;
+            $token = $user->createToken('users')->plainTextToken;
 
             return response()->json([
                 "message" => "Successfully logged in.",
@@ -89,7 +89,7 @@ class APIAuthController extends Controller
 
             event(new Registered($user));
 
-            $token = $user->createToken('auth-user')->plainTextToken;
+            $token = $user->createToken('users')->plainTextToken;
 
             return response()->json([
                 "message" => "Successfully registered.",

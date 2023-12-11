@@ -20,6 +20,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
         'name',
         'email',
@@ -55,11 +61,11 @@ class User extends Authenticatable
             $model->id = Uuid::uuid4()->toString();
         });
     }
-    
+
     protected function role(): Attribute
     {
         return new Attribute(
             get: fn ($value) => ["user", "admin"][$value]
-        );  
+        );
     }
 }
