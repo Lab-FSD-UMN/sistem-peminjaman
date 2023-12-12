@@ -8,6 +8,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class RoomReservationController extends Controller
@@ -28,7 +29,34 @@ class RoomReservationController extends Controller
         ]);
     }
 
-    
+    public function userShowAllRoomReservationListandStatus(Request $request)
+    {
+        try {
+            #get id from user
+            // $id = $request->input('user_id');
+            $id = auth()->user()->id;
+            # show all reservation list and status for user 
+            $room_reservation = Booked_room::all()->where('user_id', $id);
+            //sort by reservation start time
+            $room_reservation = $room_reservation->sortBy('reservation_start_time');
+
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'id' => $id,
+                    'room_reservation' => $room_reservation,
+                ],
+                'message' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'error' => $e->getMessage(),
+                'message' => 'Room reservation not found!',
+            ]);
+        }
+    }
+
 
 
 
@@ -37,9 +65,10 @@ class RoomReservationController extends Controller
     {
         //reserve room
         try {
+            $user = auth()->user();
             $validator = Validator::make($request->all(), [
                 'room_id' => 'required|exists:rooms,id',
-                'user_id' => 'required|exists:users,id',
+                // 'user_id' => 'required|exists:users,id',
                 'reservation_time_start' => 'required|date_format:H:i',
                 'reservation_time_end' => 'required|date_format:H:i',
                 'reservation_date_start' => 'required|date',
@@ -96,30 +125,31 @@ class RoomReservationController extends Controller
             // check if the user has already booked the room 
 
             DB::beginTransaction();
-            // Create the reservation
-            $reservation = new Booked_room([
-                'user_id' => $request->input('user_id'), // Assuming the user is already logged in, otherwise you can use 'auth()->user()->id
-                'room_id' => $room->id,
-                'start_date' => $request->input('start_date'),
-                'end_date' => $request->input('end_date'),
+
+            $reservation = Booked_room::create([
+                'user_id' => $user->id,
+                'room_id' => $request->input('room_id'),
+                'reservation_start_time' => $start_time,
+                'reservation_end_time' => $end_time,
+                'note' => $request->input('note'),
             ]);
-            $reservation->save();
+
+            DB::commit();
 
             return response()->json([
                 'code' => 200,
                 'data' => [
                     'reservation' => $reservation,
                 ],
-                'message' => 'Reservation created successfully!',
+                'message' => 'Reservation created successfully!!',
             ], 200);
-            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'code' => 500,
                 'error' => $e->getMessage(),
                 'message' => 'Reservation failed!',
             ]);
-            DB::rollBack();
         }
     }
 
@@ -145,12 +175,14 @@ class RoomReservationController extends Controller
     }
 
 
-    public function cancelRoomReservation(Request $request)
+    public function cancelRoomReservation(Request $request, $id)
     {
         try {
-            $room_reservation = Booked_room::findOrFail($request->input('id'));
-            $room_reservation->status = 3;
-            $room_reservation->save();
+            // $room_reservation = Booked_room::findOrFail($request->input('id'));
+            $room_reservation = Booked_room::findOrFail($id);
+            // $room_reservation->status = 3;
+            #delete reservation
+            $room_reservation->delete();
             return response()->json([
                 'code' => 200,
                 'data' => [
@@ -163,6 +195,45 @@ class RoomReservationController extends Controller
                 'code' => 422,
                 'error' => $e->getMessage(),
                 'message' => 'Room reservation failed to cancel!',
+            ]);
+        }
+    }
+
+
+    //admin
+    public function changeRoomReservationStatus(Request $request)
+    {
+        try {
+            $validator  = Validator::make($request->all(), [
+                'id' => 'required|exists:booked_rooms,id',
+                'status' => 'required|integer|between:0,3',
+                # 0: pending, 1: approved, 2: rejected, 3: canceled
+            ]);
+
+            # If validation fails, return the error messages
+            if ($validator->fails()) {
+                return response()->json([
+                    'code' => 422,
+                    'error' => $validator->errors(),
+                    'message' => "Validation failed, re-check your input",
+                ]);
+            }
+
+            $room_reservation = Booked_room::findOrFail($request->input('id'));
+            $room_reservation->status = $request->input('status');
+            $room_reservation->save();
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'room_reservation' => $room_reservation,
+                ],
+                'message' => 'Room reservation status changed successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 422,
+                'error' => $e->getMessage(),
+                'message' => 'Room reservation status failed to change!',
             ]);
         }
     }

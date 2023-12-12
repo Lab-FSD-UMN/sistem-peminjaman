@@ -23,16 +23,16 @@ return new class extends Migration
             $table->timestamps();
 
 
-            $table->foreign('item_id')
-                    ->references('id')
-                    ->on('items')
-                    ->onDelete('set null');
+            // $table->foreign('item_id')
+            //         ->references('id')
+            //         ->on('items')
+            //         ->onDelete('set null');
 
 
-            $table->foreign('user_id')
-                    ->references('id')
-                    ->on('users')
-                    ->onDelete('set null');
+            // $table->foreign('user_id')
+            //         ->references('id')
+            //         ->on('users')
+            //         ->onDelete('set null');
         });
     }
 
