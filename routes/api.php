@@ -94,6 +94,7 @@ Route::middleware(['auth:sanctum', 'role-api:user'])
                     ->controller(RoomReservationController::class)
                     ->group(function(){
                         Route::post('/', 'roomReserve'); // haven't exist
+                        Route::get('/request', 'showUserRoomReservationList');
                     });
 
             });
@@ -145,7 +146,7 @@ Route::prefix('room')->group(function () {
 
 Route::prefix('/reservation')->group(function () {
     Route::prefix('/room')->group(function () {
-        Route::get('/', [RoomReservationController::class, 'showAllRoomReservationPending']); //    
+        Route::get('/', [RoomReservationController::class, 'showAllRoomReservationPending']); //
         Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
         Route::get('/history', [RoomReservationController::class, 'showRoomReservationHistory']); //
         Route::get('/history/{id}', [RoomReservationController::class, 'showRoomReservationHistoryById']); //
