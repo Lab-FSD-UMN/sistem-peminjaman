@@ -32,6 +32,7 @@ class Room extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'is_available' => 'boolean',
     ];
 

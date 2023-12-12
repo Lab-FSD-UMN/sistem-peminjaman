@@ -8,13 +8,12 @@ use App\Http\Controllers\ItemReservationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\Auth\APIAuthController;
+use App\Http\Controllers\Reservation\RoomReservationController as ReservationRoomReservationController;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -23,31 +22,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('send-email', [EmailController::class, 'SendEmail'])->name('send.email');
 
-
-
 // Reservation System Route Start [Edited by Ivan]
 // USER
 
 Route::prefix('auth')
     ->controller(APIAuthController::class)
-    ->group(function(){
+    ->group(function () {
 
-        Route::middleware(['auth:sanctum'])->group(function(){
+        Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/logout', 'logout');
         });
 
         Route::post('/login', 'login');
         Route::post('/register', 'register');
-});
+    });
+
 
 // Admin protected API Routes
 Route::middleware(['auth:sanctum', 'role-api:admin'])
     ->prefix('admin')
-    ->group(function(){
+    ->group(function () {
 
         Route::prefix('event')
             ->controller(EventController::class)
-            ->group(function(){
+            ->group(function () {
                 Route::post('create', 'createEventPost');
                 Route::post('update/{id}', 'updateEventPost');
                 Route::delete('delete/{id}', 'deleteEventPost');
@@ -55,32 +53,44 @@ Route::middleware(['auth:sanctum', 'role-api:admin'])
 
         Route::prefix('item')
             ->controller(ItemController::class)
-            ->group(function(){
+            ->group(function () {
                 Route::post('/', 'createItem');
 
                 Route::prefix('reservation')
                     ->controller(ItemReservationController::class)
-                    ->group(function(){
+                    ->group(function () {
                         Route::get('/find/{id}', 'adminGetReservationDetail');
                         Route::post('/list/status', 'ChangeItemReservationStatus');
                     });
             });
 
-});
+        Route::prefix('room')
+            ->controller(RoomController::class)
+            ->group(function () {
+                Route::post('/', 'createRoom');
+
+                Route::prefix('reservation')
+                    ->controller(ReservationRoomReservationController::class)
+                    ->group(function () {
+                        Route::get('/find/{id}', 'adminGetReservationDetail');
+                        Route::post('/list/status', 'changeRoomReservationStatus');
+                    });
+            });
+    });
 
 // User protected API Routes
 Route::middleware(['auth:sanctum', 'role-api:user'])
     ->prefix('user')
-    ->group(function(){
+    ->group(function () {
 
         Route::prefix('reservation')
-            ->group(function(){
+            ->group(function () {
 
                 Route::get('/request', [ReservationController::class, 'showUserReservationListAndStatusPage']); // get all item
 
                 Route::prefix('item')
                     ->controller(ItemReservationController::class)
-                    ->group(function(){
+                    ->group(function () {
                         Route::post('/', 'reserveItem');
 
                         Route::get('/myreservations', 'viewAllSelfReservations');
@@ -89,17 +99,26 @@ Route::middleware(['auth:sanctum', 'role-api:user'])
                     });
 
 
-
                 Route::prefix('room')
-                    ->controller(RoomReservationController::class)
-                    ->group(function(){
-                        Route::post('/', 'roomReserve'); // haven't exist
-                        Route::get('/request', 'showUserRoomReservationList');
+                    ->controller(ReservationRoomReservationController::class)
+                    ->group(function () {
+                        Route::get('/myreservations', 'userShowAllRoomReservationListandStatus'); //    
+                        Route::get('/myreservations/{id}', [ReservationRoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
+                        Route::get('/history', [ReservationRoomReservationController::class, 'showRoomReservationHistory']); //
+                        Route::get('/history/{id}', [ReservationRoomReservationController::class, 'showRoomReservationHistoryById']); //
+                        Route::post('/', 'reserveRoom');
+                        Route::delete('/cancel/{id}', 'cancelRoomReservation');
+                        Route::post('/delete', [ReservationRoomReservationController::class, 'deleteRoomReservation']);
+                        Route::post('/update', [ReservationRoomReservationController::class, 'updateRoomReservation']);
+                        Route::post('/extend', [ReservationRoomReservationController::class, 'extendRoomReservation']);
+
+                        // user
+                        Route::prefix('/user')->group(function () {
+                            Route::post('/', [ReservationRoomReservationController::class, 'userShowAllRoomReservationListandStatus']);
+                        });
                     });
-
             });
-
-});
+    });
 
 
 
@@ -107,10 +126,10 @@ Route::middleware(['auth:sanctum', 'role-api:user'])
 // -----------------------------------
 Route::prefix('event')
     ->controller(EventController::class)
-    ->group(function(){
+    ->group(function () {
         Route::get('/', 'getAllEventPosts');
         Route::get('/id/{id}', 'getSpecificEventPost');
-});
+    });
 
 
 
@@ -121,12 +140,12 @@ Route::prefix('item')
         Route::get('/', 'showAllItemPage'); //  create item
         Route::get('/{id}', 'getItemById');
         Route::post('/search', 'searchItemData');
-});
+    });
 
 // Room Route
 Route::prefix('room')
     ->controller(RoomController::class)
-    ->group(function(){
+    ->group(function () {
         Route::get('/', 'showAllRooms');
         Route::get('/{id}', 'getRoomById');
     });
@@ -144,21 +163,7 @@ Route::prefix('room')->group(function () {
 });
 
 
-Route::prefix('/reservation')->group(function () {
-    Route::prefix('/room')->group(function () {
-        Route::get('/', [RoomReservationController::class, 'showAllRoomReservationPending']); //
-        Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
-        Route::get('/history', [RoomReservationController::class, 'showRoomReservationHistory']); //
-        Route::get('/history/{id}', [RoomReservationController::class, 'showRoomReservationHistoryById']); //
-        Route::post('/', [RoomReservationController::class, 'reserveRoom']);
-        Route::post('/cancel', [RoomReservationController::class, 'cancelRoomReservation']);
-        Route::post('/delete', [RoomReservationController::class, 'deleteRoomReservation']);
-        Route::post('/update', [RoomReservationController::class, 'updateRoomReservation']);
-        Route::post('/extend', [RoomReservationController::class, 'extendRoomReservation']);
-    });
-});
 
-// Route::get('/reservation/{id}', [RoomReservationController::class, 'showUserReservationListAndStatus']); //
 
 
 Route::post('/search/item', [ItemController::class, 'searchItemData']);
