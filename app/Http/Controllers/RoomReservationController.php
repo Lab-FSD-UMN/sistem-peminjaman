@@ -32,4 +32,19 @@ class RoomReservationController extends Controller
         return Inertia::render('Reservation/ReservationGroup/Room/ReservationRoomDetailPage');
     }
 
+    public function showUserRoomReservationList()
+    {
+        $Booked_rooms = Booked_room::where('user_id', auth()->id())
+            ->with('room')
+            ->get();
+
+        $data = [
+            'status' => 200,
+            'message' => "Successfully fetched user's reservation data.",
+            'userReservation' => $Booked_rooms,
+        ];
+
+        return response()->json($data, 200);
+    }
+
 }
