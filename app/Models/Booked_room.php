@@ -25,6 +25,16 @@ class Booked_room extends Model
         'updated_at' => 'datetime:l, Y-m-d H:i:s',
     ];
 
+
+    protected function Status(): Attribute
+    {
+        return Attribute::make(
+            // convert value to storage link
+            // get: fn ($value) => ["pending", "approved", "rejected"][$value],
+        );
+    }
+
+
     public function room()
     {
         return $this->belongsTo(Room::class);
@@ -35,5 +45,10 @@ class Booked_room extends Model
         return $this->belongsTo(User::class)->withDefault([
             'name' => 'Guest',
         ]);
+    }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 1);
     }
 }

@@ -102,7 +102,7 @@ Route::middleware(['auth:sanctum', 'role-api:user'])
                 Route::prefix('room')
                     ->controller(ReservationRoomReservationController::class)
                     ->group(function () {
-                        Route::get('/myreservations', 'userShowAllRoomReservationListandStatus'); //    
+                        Route::get('/myreservations', [RoomReservationController::class, 'showUserRoomReservationList']); //
                         Route::get('/myreservations/{id}', [ReservationRoomReservationController::class, 'showRoomReservationStatusOnGoingById']); //
                         Route::get('/history', [ReservationRoomReservationController::class, 'showRoomReservationHistory']); //
                         Route::get('/history/{id}', [ReservationRoomReservationController::class, 'showRoomReservationHistoryById']); //
@@ -161,6 +161,7 @@ Route::prefix('room')->group(function () {
     Route::delete('/{id}/delete', [RoomController::class, 'deleteRoom']); //
     Route::post('/search', [RoomController::class, 'searchRoom']); //
 });
+
 
 
 

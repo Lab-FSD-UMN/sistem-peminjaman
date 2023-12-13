@@ -41,6 +41,8 @@ class ReservationController extends Controller
 
         // Data to be sent to the view and JSON
         $data = [
+            'status' => 200,
+            'message' => "Successfully fetched user's reservation data.",
             'userReservation' => $Booked_item,
         ];
         // Wants JSON
@@ -181,7 +183,7 @@ class ReservationController extends Controller
             DB::commit();
             // return redirect()->route('reservation.item')->with('success', 'Item has been reserved');
             return response()->json([
-                'mes    sage' => 'Item has been reserved',
+                'message' => 'Item has been reserved',
             ], 200);
         } catch (ReservationException $e) {
             // Handle exceptions (e.g., log the error)
@@ -237,7 +239,7 @@ class ReservationController extends Controller
 
     public function searchHistoryData(Request $request)
     {
-        // 
+        //
         $keyword = $request->input('keyword');
         $search_type = $request->input('search_type', 0); //0 for all, 1 for items only, 2 for rooms only
         $perPage = $request->input('per_page', 10);

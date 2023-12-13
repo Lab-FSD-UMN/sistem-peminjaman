@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('id')->primary()->unique();
             $table->string('image')->nullable();
             $table->string('name');
+            $table->string('location');
             $table->boolean('is_available')->default(true);
             $table->string('description');
             $table->timestamps();
