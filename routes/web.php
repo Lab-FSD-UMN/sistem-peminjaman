@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomReservationController;
 use App\Http\Controllers\ItemReservationController;
+use App\Http\Controllers\Reservation\RoomReservationController as ReservationRoomReservationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\WebconfigController;
 use App\Models\Image;
@@ -142,7 +143,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         // Display the room data page
         Route::get('/', [RoomReservationController::class, 'adminReservationRoomPage'])->name('admin.reservation.room.data.index');
 
-
         // Display room details (GET)
         Route::get('/{id}', [RoomReservationController::class, 'adminReservationRoomDetailPage'])->name('admin.reservation.room.data.show');
 
@@ -162,7 +162,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Room schedule function
     Route::get('/admin/reservation/room/schedule', [RoomReservationController::class, 'adminReservationRoomPage']);
 
-
     // Reservation System END
     Route::get('/admin/webconfig', WebconfigController::class)->name('admin.webconfig');
     Route::post('/admin/webconfig', [WebconfigController::class, 'UpdateWebconfig'])->name('admin.webconfig.update');
@@ -180,6 +179,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
+
+    Route::post('admin/room/reservation/list/status', [ReservationRoomReservationController::class, 'changeRoomReservationStatus']);
 });
 
 

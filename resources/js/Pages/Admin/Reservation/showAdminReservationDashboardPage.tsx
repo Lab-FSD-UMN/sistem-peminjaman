@@ -13,23 +13,22 @@ export default function ReservationDashboardPage() {
     return (
         <AdminLayout>
             <section
-                className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'
+                className='bg-blue-700 text-white font-bold py-[1rem] px-4 w-full text-center'
             >
                 <h1>
-                    Reservation Dashboard Page
+                    Admin Reservation Dashboard
                 </h1>
-                <LinkButton href='/admin/reservation/list'>
-                    Reservation List & Approval
-                </LinkButton>
-                <LinkButton href='/admin/reservation/item'>
-                    Item Reservation
-                </LinkButton>
-                <LinkButton href='/'>
-                    Room Reservation
-                </LinkButton>
-                <LinkButton href='/admin/reservation/history'>
-                    Reservation History
-                </LinkButton>
+                <br />
+                <div
+                    className='flex flex-row p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'
+                >
+                    <LinkButton href='/admin/reservation/list'>
+                        Reservation Monitoring
+                    </LinkButton>
+                    <LinkButton href='/admin/reservation/history'>
+                        Reservation History
+                    </LinkButton>
+                </div>
             </section>
         </AdminLayout>
     )
@@ -39,9 +38,21 @@ const LinkButton = ({ href, children }: any) => {
     return (
         <Link
             href={href}
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-[1rem] overflow-hidden 
+            flex flex-col gap-[0.5rem] items-center w-[10rem]'
         >
-            {children}
+            <img
+                //  placeholder
+                src="https://via.placeholder.com/50"
+                alt=""
+                className='w-full inline-block rounded'
+            />
+            <div
+                className='text-left px-[0.5rem] pb-[0.5rem] w-full flex flex-row align-middle justify-between items-center'
+            >
+                {children}
+                <svg width="141px" height="2rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            </div>
         </Link>
     )
 }
@@ -84,7 +95,8 @@ function CreateItemPage() {
 
     return (
         <form
-            className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'
+            className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4
+            '
         >
             <h1>
                 Create Item

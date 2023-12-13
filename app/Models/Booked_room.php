@@ -24,4 +24,16 @@ class Booked_room extends Model
         'created_at' => 'datetime:l, Y-m-d H:i:s',
         'updated_at' => 'datetime:l, Y-m-d H:i:s',
     ];
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault([
+            'name' => 'Guest',
+        ]);
+    }
 }

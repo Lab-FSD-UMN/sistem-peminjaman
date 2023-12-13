@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class RoomReservationController extends Controller
 {
@@ -222,6 +223,12 @@ class RoomReservationController extends Controller
             $room_reservation = Booked_room::findOrFail($request->input('id'));
             $room_reservation->status = $request->input('status');
             $room_reservation->save();
+            # if input status is web, redirect to web
+            if ($request->web == true) {
+                // return Inertia::red
+                // redrect back
+                return redirect()->back();
+            }
             return response()->json([
                 'code' => 200,
                 'data' => [
