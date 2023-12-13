@@ -72,6 +72,7 @@ class ItemReservationController extends Controller
             $booked_quantity = $Booked_item::where('item_id', $request->item_id)
                 ->where('reservation_start_time', '<=', $request->reservation_date_start . ' ' . $request->reservation_time_start)
                 ->where('reservation_end_time', '>=', $request->reservation_date_end . ' ' . $request->reservation_time_end)
+                ->where('status', 1)
                 ->sum('quantity');
 
             $available_quantity = $item::find($request->item_id)->quantity - $booked_quantity;
