@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
-            DB::statement('ALTER TABLE personal_access_tokens MODIFY COLUMN tokenable_id VARCHAR(100)');
+            // DB::statement('ALTER TABLE personal_access_tokens MODIFY COLUMN tokenable_id VARCHAR(100)');
         });
     }
 
