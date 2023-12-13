@@ -210,9 +210,11 @@ class ReservationController extends Controller
     {
         // get all booked items
         // $booked_items = Booked_item::with('user')->with('item')->get();
-        $booked_items = Booked_item::with('user')->with('item')->where('status', 0)->get();
+        // $booked_items = Booked_item::with('user')->with('item')->where('status', 0)->get();
         // get all booked rooms
-        $booked_rooms = Booked_room::with('user')->with('room')->get();
+        // $booked_rooms = Booked_room::with('user')->with('room')->get();
+        $booked_items = Booked_item::with('item')->get();
+        $booked_rooms = Booked_room::with('room')->get();
         return Inertia::render(
             'Admin/Reservation/ReservationMenu/showAdminReservationRequest',
             [

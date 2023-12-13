@@ -25,6 +25,7 @@ class Booked_room extends Model
         'updated_at' => 'datetime:l, Y-m-d H:i:s',
     ];
 
+
     protected function Status(): Attribute
     {
         return Attribute::make(

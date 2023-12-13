@@ -47,6 +47,8 @@ class Room extends Model
     // }
     //mutator
 
+    
+
 
     public function scopeAvailable($query)
     {
