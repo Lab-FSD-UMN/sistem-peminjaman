@@ -11,6 +11,9 @@ class Room extends Model
 {
     use HasFactory;
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
 
     // //boot to insert uuid
     // protected static function boot()

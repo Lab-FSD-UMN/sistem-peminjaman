@@ -18,7 +18,7 @@ class RoomReservationController extends Controller
     {
         //get all room reservation status on going for future user
         $room_reservation = Booked_room::all()->where('status', 0);
-        //sort by reservation start time 
+        //sort by reservation start time
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         return response()->json([
             'code' => 200,
@@ -35,17 +35,14 @@ class RoomReservationController extends Controller
             #get id from user
             // $id = $request->input('user_id');
             $id = auth()->user()->id;
-            # show all reservation list and status for user 
+            # show all reservation list and status for user
             $room_reservation = Booked_room::all()->where('user_id', $id);
             //sort by reservation start time
             $room_reservation = $room_reservation->sortBy('reservation_start_time');
 
             return response()->json([
                 'code' => 200,
-                'data' => [
-                    'id' => $id,
-                    'room_reservation' => $room_reservation,
-                ],
+                'room_reservation' => $room_reservation,
                 'message' => 'success',
             ]);
         } catch (\Exception $e) {
@@ -122,7 +119,7 @@ class RoomReservationController extends Controller
                 return response()->json(['message' => 'Booking duration exceeds the maximum allowed hours.'], 400);
             }
 
-            // check if the user has already booked the room 
+            // check if the user has already booked the room
 
             DB::beginTransaction();
 

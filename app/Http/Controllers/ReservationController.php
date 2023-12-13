@@ -183,7 +183,7 @@ class ReservationController extends Controller
             DB::commit();
             // return redirect()->route('reservation.item')->with('success', 'Item has been reserved');
             return response()->json([
-                'mes    sage' => 'Item has been reserved',
+                'message' => 'Item has been reserved',
             ], 200);
         } catch (ReservationException $e) {
             // Handle exceptions (e.g., log the error)

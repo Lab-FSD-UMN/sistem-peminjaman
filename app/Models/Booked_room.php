@@ -45,4 +45,9 @@ class Booked_room extends Model
             'name' => 'Guest',
         ]);
     }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 1);
+    }
 }
