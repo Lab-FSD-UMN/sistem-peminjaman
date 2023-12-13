@@ -22,6 +22,39 @@ class RoomController extends Controller
     public function showAllRoom() // this function is for show all room on database
     {
         try {
+            $rooms = Room::all();
+            //chunk
+
+            if ($rooms == null) {
+                return response()->json([
+                    'code' => 200,
+                    'data' => [
+                        'rooms' => [],
+                    ], // 'room still empty
+                    'message' => 'room still empty',
+                ], 200);
+            }
+            //valid data
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'rooms' => $rooms
+                ],
+                'message' => 'Success to get all room!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'error' => $e->getMessage(), // 'room not found
+                'message' => 'Room not found',
+            ], 404);
+        }
+    }
+
+    // show / get all room data with pagination
+    public function showAllRoomWithPagination() // this function is for show all room on database
+    {
+        try {
             $query = Room::paginate(10);
 
             $data = $query->toArray();
@@ -35,7 +68,7 @@ class RoomController extends Controller
                 'next_page_url' => $data['next_page_url'],
                 'prev_page_url' => $data['prev_page_url'],
             ];
-            //chunk 
+            //chunk
 
             if ($rooms['rooms'] == null) {
                 return response()->json([
@@ -65,13 +98,11 @@ class RoomController extends Controller
     {
         try {
             //find room by id find of fail
-            $rooms = Room::findOrFail($id);
+            $room = Room::findOrFail($id);
             return response()->json([
                 'code' => 200,
-                'data' => [
-                    'room' => $rooms,
-                ],
                 'message' => 'success',
+                'data' => $room,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -345,5 +376,5 @@ class RoomController extends Controller
             ], 422);
         }
     }
-    # Admin    
+    # Admin
 }

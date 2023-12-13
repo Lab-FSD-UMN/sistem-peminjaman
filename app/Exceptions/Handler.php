@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Exceptions\CustomException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,4 +38,22 @@ class Handler extends ExceptionHandler
         //     ], $e->getCode());
         // });
     }
+
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof AuthenticationException) {
+            if ($request->wantsJson()) { // header (Accept : application/json)
+                return response()->json([
+                    'message' => 'Unauthenticated'
+                ], 401);
+            }
+            return redirect()->guest(route('login'));
+        }
+
+        return parent::render($request, $exception);
+    }
+
+
+
 }

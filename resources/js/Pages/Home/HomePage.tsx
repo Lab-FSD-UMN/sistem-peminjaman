@@ -18,9 +18,8 @@ import HowToSection from './Section/HowToSection';
 export default function HomePage({ auth, WebconfigData, cache, helper, testimonies }: PageProps<{ WebconfigData: any, cache: any, helper: string, testimonies: any }>) {
     const currentYear = new Date().getDate();
     const companyData: any = usePage().props.companyData; //get page info
-    const data = usePage();
     useEffect(() => {
-        console.log("DATA: ", data);
+        console.log(companyData);
     }, [])
 
     return (
@@ -46,7 +45,7 @@ export default function HomePage({ auth, WebconfigData, cache, helper, testimoni
                         sectionDescription={companyData.section2_description}
                     />
                     <FacilitySection />
-                    <HowToSection 
+                    <HowToSection
                         sectionTitle={companyData.section3_title}
                         sectionDescription={companyData.section3_description}
                     />

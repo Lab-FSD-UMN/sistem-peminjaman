@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import axios from 'axios';
 
 export default function Login({ status, canResetPassword }: { status?: string, canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -20,10 +21,23 @@ export default function Login({ status, canResetPassword }: { status?: string, c
         };
     }, []);
 
+    useEffect(() => {
+        console.log("data", data);
+    }, [data])
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         post(route('login'));
+        // axios.post('api/auth/login', data)
+        //     .then((res) => {
+        //         console.log(res);
+        //         localStorage.setItem('token', res.data.token);
+        //         localStorage.setItem('user', JSON.stringify(res.data.user));
+        //         window.location.href = '/admin/dashboard';
+        //     })
+        //     .catch((err) => {
+        //         console.log(err.response);
+        //     })
     };
 
     return (

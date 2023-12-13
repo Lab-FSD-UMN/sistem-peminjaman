@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
                 'role' => 1
             ]);
             $User->insert([
-                "id" => Uuid::uuid4()->toString(),
+                "id" => 2,
                 'name' => 'user',
                 'email' => 'user@user.com',
                 'password' =>  Hash::make('dadargulung'),

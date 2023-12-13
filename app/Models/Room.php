@@ -32,6 +32,7 @@ class Room extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'is_available' => 'boolean',
     ];
 
@@ -42,6 +43,8 @@ class Room extends Model
     //     return $this->hasMany(Room_Image::class);
     // }
     //mutator
+
+    
 
 
     public function scopeAvailable($query)

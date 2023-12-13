@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\item;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,8 +21,6 @@ use Ramsey\Uuid\Uuid;
 
 class ReservationController extends Controller
 {
-    // USER //
-    // [Reservation/] Show User Reservation Dashboard Page (GET)
     public function showUserReservationPage()
     {
         // TODO: check if user is logged in middleware
@@ -33,7 +31,6 @@ class ReservationController extends Controller
         return Inertia::render('Reservation/showUserReservationPage');
     }
 
-    // [Reservation/Myreservation] Show all item and room reservation of user (GET)
     public function showUserReservationListAndStatusPage()
     {
         // $Booked_item = Booked_item::where('user_id', auth()->user()->id)->with('item')->get();
@@ -211,9 +208,11 @@ class ReservationController extends Controller
     {
         // get all booked items
         // $booked_items = Booked_item::with('user')->with('item')->get();
-        $booked_items = Booked_item::with('user')->with('item')->where('status', 0)->get();
-        // get all booked rooms 
-        $booked_rooms = Booked_room::with('user')->with('room')->get();
+        // $booked_items = Booked_item::with('user')->with('item')->where('status', 0)->get();
+        // get all booked rooms
+        // $booked_rooms = Booked_room::with('user')->with('room')->get();
+        $booked_items = Booked_item::with('item')->get();
+        $booked_rooms = Booked_room::with('room')->get();
         return Inertia::render(
             'Admin/Reservation/ReservationMenu/showAdminReservationRequest',
             [
@@ -222,91 +221,7 @@ class ReservationController extends Controller
             ]
         );
     }
-    // function for approve / reject item loan request
-    public function ChangeItemReservationStatus(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-            $request->validate([
-                'id' => 'required',
-                'status' => 'required',
-            ]);
 
-
-            $booked_item = Booked_item::find($request->id);
-            $booked_item->status = $request->status;
-            $booked_item->save();
-            DB::commit();
-
-            return response()->json([
-                'message' => 'status has been changed',
-            ], 200);
-        } catch (CustomException $e) {
-            // Handle exceptions (e.g., log the error)
-            DB::rollBack(); // Rollback the transaction in case of an exception
-            return response()->json([
-                'error' => $e->getMessage(),
-            ], $e->getCode());
-        }
-    }
-
-    // [Reservation/Item] Show Reservation Menu Related to Item
-    public function showAdminReservationItemPage()
-    {
-        return Inertia::render(
-            'Admin/Reservation/ReservationMenu/Submenu/Item/showAdminReservationItemPage'
-        );
-    }
-
-
-    //[Method for get all item based on schedule] 
-    public function showItemScheduleFromDate(Request $request)
-    {
-        $request->validate([
-            'reservation_start_time' => 'required',
-            'reservation_end_time' => 'required',
-        ]);
-        $start_time = $request->reservation_start_time;
-        $end_time = $request->reservation_end_time;
-
-        $Booked_item = Booked_item::where('reservation_start_time', '>=', $start_time)
-            ->where('reservation_end_time', '<=', $end_time)
-            ->get();
-
-        return response()->json([
-            'booked_items' => $Booked_item,
-        ], 200);
-    }
-
-
-    // [Reservation/Item/schedule] Show Item Schedule in time series
-    public function showAdminReservationItemMonitoringSchedule()
-    {
-        $item_schedule = Booked_item::all();
-
-        return Inertia::render(
-            'Admin/Reservation/ReservationMenu/Submenu/Item/showAdminReservationItemMonitoringSchedule',
-            [
-                'item_schedule' => $item_schedule,
-            ]
-        );
-    }
-
-
-    // [Reservation/Item/data] Show & Configure Reservation Data 
-    public function showAdminReservationItemDataPage()
-    {
-        $item = Item::with('item_images')->get();
-        return Inertia::render(
-            'Admin/Reservation/ReservationMenu/Submenu/Item/showAdminReservationItemDataPage',
-            [
-                'items' => $item
-            ]
-        );
-    }
-
-
-    // show history page
     public function showAdminReservationHistoryPage()
     {
         $booked_items = Booked_item::with('user')->with('item')->where('status', '!=', 0)->get();
@@ -320,8 +235,6 @@ class ReservationController extends Controller
         );
     }
 
-
-    // to search data from history page
     public function searchHistoryData(Request $request)
     {
         // 
