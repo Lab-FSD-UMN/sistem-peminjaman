@@ -18,8 +18,24 @@ class ItemController extends Controller
 
     public function showAllItemPage()
     {
+
+        $items = Item::leftJoin('booked_items', 'booked_items.item_id', '=', 'items.id')
+            ->select(
+                'items.id AS id',
+                'items.name AS name',
+                'items.image AS image',
+                'items.quantity AS quantity',
+                'items.is_available AS is_available',
+                'items.description AS description',
+                'items.created_at AS created_at',
+                'items.updated_at AS updated_at',
+                DB::raw('items.quantity - COALESCE(SUM(CASE WHEN booked_items.status = 1 THEN booked_items.quantity ELSE 0 END), 0) as reserved_qty')
+            )
+            ->groupBy('items.id')
+            ->get();
+
         return response()->json([
-            'items' => Item::all(),
+            'items' => $items
         ], 200);
     }
 
