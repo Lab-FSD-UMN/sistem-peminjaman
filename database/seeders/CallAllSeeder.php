@@ -16,7 +16,6 @@ class CallAllSeeder extends Seeder
             ImageSeeder::class,
             UserSeeder::class,
             TestimonySeeder::class,
-            // MessageSeeder::class,
             RoomSeeder::class,
             ReservationSeeder::class,
         ]);

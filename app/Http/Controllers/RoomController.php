@@ -123,6 +123,7 @@ class RoomController extends Controller
                 'name' => 'required|unique:rooms,name', // Use 'title' for the unique rule
                 'description' => 'required',
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'location' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -159,6 +160,7 @@ class RoomController extends Controller
                 'quantity' => $request->input('quantity'),
                 'description' => $request->input('description'),
                 'image' => $image_link,
+                'location' => $request->input('location'),
             ]);
 
             DB::commit();
