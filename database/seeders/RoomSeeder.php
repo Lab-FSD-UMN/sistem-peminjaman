@@ -17,18 +17,20 @@ class RoomSeeder extends Seeder
 
         #truncate table
         $Rooms->truncate();
-
+        
         $Rooms->insert([
             'id' => '1',
             'name' => 'Room 1',
             'description' => 'Room 1',
+            'location' => 'B1011',
             'is_available' => true,
         ]);
         $Rooms->insert([
             'id' => '2',
             'name' => 'Room 2',
             'description' => 'Room 2',
+            'location' => 'B1012',
             'is_available' => true,
-        ]);   
+        ]);
     }
 }

@@ -18,7 +18,7 @@ class RoomReservationController extends Controller
     public function showAllRoomReservationPending()
     {
         //get all room reservation status on going for future user
-        $room_reservation = Booked_room::all()->where('status', 0);
+        $room_reservation = Booked_room::with('room')->where('status', 0)->get();
         //sort by reservation start time
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         return response()->json([

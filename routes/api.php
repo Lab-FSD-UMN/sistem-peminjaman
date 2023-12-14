@@ -72,6 +72,8 @@ Route::middleware(['auth:sanctum', 'role-api:admin'])
                 Route::prefix('reservation')
                     ->controller(ReservationRoomReservationController::class)
                     ->group(function () {
+                        //get all 
+                        Route::get('/', 'showAllRoomReservationPending');
                         Route::get('/find/{id}', 'adminGetReservationDetail');
                         Route::post('/list/status', 'changeRoomReservationStatus');
                     });

@@ -30,6 +30,7 @@ class Room extends Model
         'image',
         'name',
         'image',
+        'location',
         'is_available',
         'description',
     ];
@@ -47,7 +48,7 @@ class Room extends Model
     // }
     //mutator
 
-    
+
 
 
     public function scopeAvailable($query)
