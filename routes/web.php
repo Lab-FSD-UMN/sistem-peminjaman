@@ -64,9 +64,9 @@ Route::prefix('reservation')->group(function () {
 
 
     Route::prefix('room')->group(function () {
-        Route::get('/', [RoomReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
+        Route::get('/', [ReservationRoomReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
 
-        Route::get('/{id}', [RoomReservationController::class, 'showRoomReservationDetailPage']);
+        Route::get('/{id}', [ReservationRoomReservationController::class, 'showRoomReservationDetailPage']);
     });
 
     Route::prefix('item')->group(function () {

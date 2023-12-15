@@ -9,11 +9,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class RoomReservationController extends Controller
 {
+
+
+    public function showRoomReservationPage()
+    {
+        //show room reservation page with image storage url
+        $rooms = Room::all();
+        foreach ($rooms as $room) {
+            $room->image = Storage::url($room->image);
+        }
+        return Inertia::render('Reservation/ReservationGroup/Room/showRoomReservationPage', [
+            'rooms' => $rooms,
+        ]);
+    }
+
+    public function showRoomReservationDetailPage($id)
+    {
+        //show room reservation detail page
+        $room = Room::findOrFail($id);
+        $room->image = Storage::url($room->image);
+        return Inertia::render('Reservation/ReservationGroup/Room/showReservationRoomDetailPage', [
+            'room' => $room,
+        ]);
+    }
 
     public function showAllRoomReservationPending()
     {
