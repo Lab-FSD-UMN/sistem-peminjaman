@@ -13,6 +13,7 @@ use App\Exceptions\ReservationException;
 use App\Models\Booked_item;
 use App\Models\Booked_room;
 use App\Models\Item_image;
+use App\Models\Room;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,7 +24,11 @@ class RoomReservationController extends Controller
 
     public function showRoomReservationPage()
     {
-        return Inertia::render('Reservation/ReservationGroup/Room/ReservationRoomPage');
+
+
+        return Inertia::render('Reservation/ReservationGroup/Room/showRoomReservationPage', [
+            'rooms' => Room::all(),
+        ]);
     }
 
     public function showRoomReservationDetailPage($id)
@@ -46,5 +51,4 @@ class RoomReservationController extends Controller
 
         return response()->json($data, 200);
     }
-
 }

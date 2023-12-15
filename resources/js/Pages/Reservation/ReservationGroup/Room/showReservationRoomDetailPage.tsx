@@ -53,14 +53,7 @@ export default function ReservationRoomDetailPage({ room }: any) {
   }
 
   useEffect(() => {
-    // console.log("Item", Item)
-    // const { hours } = CalculateTime({
-    //   dateStart: data.reservation_date_start,
-    //   dateEnd: data.reservation_date_end,
-    //   timeStart: data.reservation_time_start,
-    //   timeEnd: data.reservation_time_end
-    // })
-    // console.log("Time", hours)
+    console.log("Data :", room)
   }, [data])
 
 
@@ -91,10 +84,14 @@ export default function ReservationRoomDetailPage({ room }: any) {
         {/* <p>{Item.description}</p> */}
 
         {/* TODO: Nanti jangan lupa dikasih fallback ketika image not found (suggestion, use svg) */}
-        {/* <img
-          className='w-[20rem] h-[20rem] object-cover'
-          src={Item.item_images[0]?.link} alt=""
-        /> */}
+        <img
+          className='w-[20rem] h-[20rem] object-cover '
+          src={room.image}
+          onError={(e: any) => {
+            e.target.onerror = null;
+            e.target.src = "https://via.placeholder.com/150";
+          }}
+        />
         <p
           className=' text-white font-bold '
         >
