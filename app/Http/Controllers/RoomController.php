@@ -23,7 +23,11 @@ class RoomController extends Controller
     {
         try {
             $rooms = Room::all();
-            //chunk
+
+            #get image with storage link
+            foreach ($rooms as $room) {
+                $room->image = Storage::url($room->image);
+            }
 
             if ($rooms == null) {
                 return response()->json([
@@ -123,9 +127,9 @@ class RoomController extends Controller
                 'name' => 'required|unique:rooms,name', // Use 'title' for the unique rule
                 'description' => 'required',
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                // 'location' => 'required|unique:rooms,location',
                 'location' => 'required',
             ]);
-
             if ($validator->fails()) {
                 return response()->json([
                     'error' => $validator->errors(),
@@ -153,6 +157,8 @@ class RoomController extends Controller
 
                 $image_link = Storage::putFileAs('public/images/rooms', $image, $image_title);
             }
+
+
 
             $item = Room::create([
                 'id' => Uuid::uuid4()->toString(), // Generate a new UUID
