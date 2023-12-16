@@ -51,7 +51,7 @@ class RoomReservationController extends Controller
                 'room_reservation' => $room_reservation,
             ],
             'message' => 'Success',
-        ]);
+        ], 200);
     }
 
     public function userShowAllRoomReservationListandStatus(Request $request)
@@ -69,13 +69,13 @@ class RoomReservationController extends Controller
                 'code' => 200,
                 'room_reservation' => $room_reservation,
                 'message' => 'success',
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'code' => 404,
                 'error' => $e->getMessage(),
                 'message' => 'Room reservation not found!',
-            ]);
+            ], 404);
         }
     }
 
@@ -190,6 +190,10 @@ class RoomReservationController extends Controller
         $id = auth()->user()->id;
         $room_reservation = Booked_room::with('room')->where('user_id', $id)->get();
 
+        //image storage url 
+        foreach ($room_reservation as $room) {
+            $room->room->image = Storage::url($room->room->image);
+        }
         //filter, if start date is before today, dont show
         $today = Carbon::now();
         $room_reservation = $room_reservation->filter(function ($value, $key) use ($today) {
@@ -220,13 +224,13 @@ class RoomReservationController extends Controller
                     'room' => $room_reservation,
                 ],
                 'message' => 'Success',
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'code' => 404,
                 'error' => $e->getMessage(),
                 'message' => 'Room reservation not found!',
-            ]);
+            ], 404);
         }
     }
 
@@ -245,13 +249,13 @@ class RoomReservationController extends Controller
                     'room_reservation' => $room_reservation,
                 ],
                 'message' => 'Room reservation canceled successfully!',
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'code' => 422,
                 'error' => $e->getMessage(),
                 'message' => 'Room reservation failed to cancel!',
-            ]);
+            ], 422);
         }
     }
 
@@ -272,7 +276,7 @@ class RoomReservationController extends Controller
                     'code' => 422,
                     'error' => $validator->errors(),
                     'message' => "Validation failed, re-check your input",
-                ]);
+                ], 422);
             }
 
             $room_reservation = Booked_room::findOrFail($request->input('id'));
@@ -290,13 +294,13 @@ class RoomReservationController extends Controller
                     'room_reservation' => $room_reservation,
                 ],
                 'message' => 'Room reservation status changed successfully!',
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'code' => 422,
                 'error' => $e->getMessage(),
                 'message' => 'Room reservation status failed to change!',
-            ]);
+            ], 422);
         }
     }
 }
