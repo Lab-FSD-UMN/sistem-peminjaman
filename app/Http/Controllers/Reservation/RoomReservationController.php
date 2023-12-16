@@ -91,10 +91,10 @@ class RoomReservationController extends Controller
             $validator = Validator::make($request->all(), [
                 'room_id' => 'required|exists:rooms,id',
                 // 'user_id' => 'required|exists:users,id',
-                'reservation_time_start' => 'required|date_format:H:i',
-                'reservation_time_end' => 'required|date_format:H:i',
-                'reservation_date_start' => 'required|date',
-                'reservation_date_end' => 'required|date',
+                'reservation_time_start' => 'required|date_format:H:i:s',
+                'reservation_time_end' => 'required|date_format:H:i:s',
+                'reservation_date_start' => 'required|date_format:Y-m-d',
+                'reservation_date_end' => 'required|date_format:Y-m-d',
                 'note' => 'nullable|string',
             ]);
 
@@ -115,8 +115,8 @@ class RoomReservationController extends Controller
             }
 
             # combine date and time
-            $start_time  = CombineDateTime($request->input('reservation_time_start'), $request->input('reservation_date_start'));
-            $end_time  = CombineDateTime($request->input('reservation_time_end'), $request->input('reservation_date_end'));
+            $start_time  = CombineDateTime($request->input('reservation_date_start'), $request->input('reservation_time_start'),);
+            $end_time  = CombineDateTime($request->input('reservation_date_end'), $request->input('reservation_time_end'));
 
             // Check if the requested time range clashes with existing bookings
             $clashingBookings = Booked_room::where('room_id', $room->id)
@@ -196,7 +196,7 @@ class RoomReservationController extends Controller
             return $value->reservation_start_time->gte($today);
         });
 
-        
+
 
         //sort by reservation status
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
