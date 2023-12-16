@@ -191,9 +191,7 @@ class RoomReservationController extends Controller
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         return response()->json([
             'code' => 200,
-            'data' => [
-                'room_reservation' => $room_reservation,
-            ],
+            'data' => $room_reservation,
             'message' => 'Successfully user reservation data.',
         ]);
     }
