@@ -97,14 +97,14 @@ class RoomReservationController extends Controller
                 'reservation_date_end' => 'required|date',
                 'note' => 'nullable|string',
             ]);
-
+            
             # If validation fails, return the error messages
             if ($validator->fails()) {
                 return response()->json([
                     'code' => 422,
-                    'error' => $validator->errors(),
+                    'errors' => $validator->errors(),
                     'message' => "Validation failed, re-check your input",
-                ]);
+                ], 422);
             }
 
             $room = Room::findOrFail($request->input('room_id'));
@@ -120,6 +120,7 @@ class RoomReservationController extends Controller
 
             // Check if the requested time range clashes with existing bookings
             $clashingBookings = Booked_room::where('room_id', $room->id)
+                ->where('status', 1) // only check approved bookings
                 ->where(function ($query) use ($start_time, $end_time) {
                     $query->where(function ($q) use ($start_time, $end_time) {
                         $q->whereBetween('reservation_start_time', [$start_time, $end_time])
@@ -171,7 +172,7 @@ class RoomReservationController extends Controller
                 'code' => 500,
                 'error' => $e->getMessage(),
                 'message' => 'Reservation failed!',
-            ]);
+            ], 422);
         }
     }
 
