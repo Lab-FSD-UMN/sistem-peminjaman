@@ -217,7 +217,7 @@ class RoomReservationController extends Controller
             return response()->json([
                 'code' => 200,
                 'data' => [
-                    'room_reservation' => $room_reservation,
+                    'room' => $room_reservation,
                 ],
                 'message' => 'Success',
             ]);
