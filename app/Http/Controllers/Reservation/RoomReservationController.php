@@ -189,15 +189,14 @@ class RoomReservationController extends Controller
         // $room_reservation = Booked_room::with('room')->where('status', 0)->get();
         $id = auth()->user()->id;
         $room_reservation = Booked_room::with('room')->where('user_id', $id)->get();
-        
-        //filter, if start date is before today, delete
+
+        //filter, if start date is before today, dont show
         $today = Carbon::now();
-        foreach ($room_reservation as $reservation) {
-            $reservation_start_time = Carbon::parse($reservation->reservation_start_time);
-            if ($reservation_start_time->lessThan($today)) {
-                $reservation->delete();
-            }
-        }
+        $room_reservation = $room_reservation->filter(function ($value, $key) use ($today) {
+            return $value->reservation_start_time->gte($today);
+        });
+
+        
 
         //sort by reservation status
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
