@@ -191,8 +191,8 @@ class RoomReservationController extends Controller
         $room_reservation = Booked_room::with('room')->where('user_id', $id)->get();
 
         //image storage url 
-        foreach ($room_reservation as $room) {
-            $room->room->image = Storage::url($room->room->image);
+        foreach ($room_reservation as $item) {
+            $item->room->image = Storage::url($item->room->image);
         }
         //filter, if start date is before today, dont show
         $today = Carbon::now();
