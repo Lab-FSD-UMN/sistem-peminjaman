@@ -183,10 +183,11 @@ class RoomReservationController extends Controller
     }
 
 
-    public function showRoomReservationStatusOnGoing()
+    public function showUserRoomReservation()
     {
         //get room reservation status on going for admin
-        $room_reservation = Booked_room::with('room')->where('status', 0)->get();
+        // $room_reservation = Booked_room::with('room')->where('status', 0)->get();
+        $room_reservation = Booked_room::with('room')->get();
         //sort by reservation start time
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         return response()->json([
@@ -196,7 +197,7 @@ class RoomReservationController extends Controller
         ]);
     }
 
-    public function showRoomReservationStatusOnGoingById($id)
+    public function showUserRoomReservationById($id)
     {
         //get room reservation status by id
         try {
