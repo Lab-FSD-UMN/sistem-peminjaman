@@ -157,7 +157,7 @@ Route::post('/search/history', [ReservationController::class, 'searchHistoryData
 Route::prefix('room')->group(function () {
     // API FOR CRUD
     Route::get('/', [RoomController::class, 'showAllRoom']); //  create item
-    Route::get('/{id}', [RoomController::class, 'showRoom']); //  create item
+    Route::get('/{id}', [RoomController::class, 'showRoomById']); //  create item
     Route::post('/create', [RoomController::class, 'createRoom']); //  create item
     Route::post('/update', [RoomController::class, 'updateRoom']); //
     Route::delete('/{id}/delete', [RoomController::class, 'deleteRoom']); //
