@@ -98,11 +98,14 @@ class RoomController extends Controller
         }
     }
 
-    public function showRoom($id)
+    public function showRoomById($id)
     {
         try {
             //find room by id find of fail
             $room = Room::findOrFail($id);
+
+            $room->image = Storage::url($room->image);
+            
             return response()->json([
                 'code' => 200,
                 'message' => 'success',
