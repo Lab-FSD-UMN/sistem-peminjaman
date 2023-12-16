@@ -187,14 +187,25 @@ class RoomReservationController extends Controller
     {
         //get room reservation status on going for admin
         // $room_reservation = Booked_room::with('room')->where('status', 0)->get();
-        $room_reservation = Booked_room::with('room')->get();
-        //sort by reservation start time
+        $id = auth()->user()->id;
+        $room_reservation = Booked_room::with('room')->where('user_id', $id)->get();
+        
+        //filter, if start date is before today, delete
+        $today = Carbon::now();
+        foreach ($room_reservation as $reservation) {
+            $reservation_start_time = Carbon::parse($reservation->reservation_start_time);
+            if ($reservation_start_time->lessThan($today)) {
+                $reservation->delete();
+            }
+        }
+
+        //sort by reservation status
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         return response()->json([
             'code' => 200,
             'data' => $room_reservation,
             'message' => 'Successfully user reservation data.',
-        ]);
+        ], 200);
     }
 
     public function showUserRoomReservationById($id)
