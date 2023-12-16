@@ -200,6 +200,8 @@ class RoomReservationController extends Controller
 
         //sort by reservation status
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
+        // get only its array value
+        $room_reservation = $room_reservation->values()->all();
         return response()->json([
             'code' => 200,
             'data' => $room_reservation,

@@ -23,7 +23,7 @@ class RoomController extends Controller
     {
         try {
             $rooms = Room::all();
-
+            
             #get image with storage link
             foreach ($rooms as $room) {
                 $room->image = Storage::url($room->image);
