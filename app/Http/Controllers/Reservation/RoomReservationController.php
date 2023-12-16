@@ -97,7 +97,7 @@ class RoomReservationController extends Controller
                 'reservation_date_end' => 'required|date',
                 'note' => 'nullable|string',
             ]);
-            
+
             # If validation fails, return the error messages
             if ($validator->fails()) {
                 return response()->json([
@@ -130,7 +130,10 @@ class RoomReservationController extends Controller
                 ->exists();
 
             if ($clashingBookings) {
-                return response()->json(['message' => 'Booking clashes with existing reservation.'], 400);
+                return response()->json([
+                    'code' => 422,
+                    'message' => 'Booking clashes with existing reservation.'
+                ], 422);
             }
 
             // Calculate the booking duration
@@ -142,7 +145,10 @@ class RoomReservationController extends Controller
             $maxBookingHours = 4;
 
             if ($bookingDuration > $maxBookingHours) {
-                return response()->json(['message' => 'Booking duration exceeds the maximum allowed hours.'], 400);
+                return response()->json([
+                    'code' => 422,
+                    'message' => 'Booking duration exceeds the maximum allowed hours.'
+                ], 422);
             }
 
             // check if the user has already booked the room
@@ -169,7 +175,7 @@ class RoomReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
-                'code' => 500,
+                'code' => 422,
                 'error' => $e->getMessage(),
                 'message' => 'Reservation failed!',
             ], 422);
