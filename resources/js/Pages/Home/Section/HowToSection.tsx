@@ -1,4 +1,3 @@
-import { StepsProps } from "antd";
 import vector from "/public/assets/vector.png"
 import recycle from "/public/assets/recycle.png"
 import checklist from "/public/assets/checklist.png"
