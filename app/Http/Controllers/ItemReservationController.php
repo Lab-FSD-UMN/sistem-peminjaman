@@ -75,7 +75,14 @@ class ItemReservationController extends Controller
                 ->where('status', 1)
                 ->sum('quantity');
 
-            $available_quantity = $item::find($request->item_id)->quantity - $booked_quantity;
+            $findItem = $item::find($request->item_id);
+
+            if (!$findItem){
+                throw new ResponseException(404, 'Item not found.');
+            }
+
+
+            $available_quantity = $findItem->quantity - $booked_quantity;
 
             if ($request->quantity > $available_quantity) {
                 throw new ResponseException(400, "Insufficient quantity. try to reserve $available_quantity or less.");
