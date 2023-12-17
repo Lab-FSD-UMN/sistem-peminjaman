@@ -4,7 +4,7 @@ import Footer from '@/Components/General/Footer';
 import Credits from '@/Components/General/Credits';
 import Navbar from '@/Components/General/Navbar/Navbar';
 import { Link, usePage } from '@inertiajs/react';
-import React, { PropsWithChildren, ReactNode, useEffect } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
