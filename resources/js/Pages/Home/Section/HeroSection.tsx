@@ -43,7 +43,7 @@ export default function HeroSection({
             </div>
             <img 
                 src={heroLogo}
-                className="z-[10] absolute w-4/6 md:w-1/3 lg:w-3/5"/>
+                className="z-[10] absolute w-4/6 md:w-1/3 lg:w-1/2"/>
             <div className="flex justify-center text-justify text-white z-[9] h-96 lg:h-screen w-full bg-biru_muda bg-opacity-70">
                 <div className="w-5/6 md:w-4/6 mt-28 lg:mt-72">
                     <img src="https://i.ibb.co/0YbgjHG/tanda-petik.png" className="mb-4 w-5 md:w-7"/>
