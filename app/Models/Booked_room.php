@@ -12,7 +12,7 @@ class Booked_room extends Model
     protected $fillable = [
         'room_id',
         'user_id',
-        'status',
+        'status', // '0: pending, 1: approved, 2: rejected, 3: canceled'
         'reservation_start_time',
         'reservation_end_time',
         'note',
@@ -24,4 +24,31 @@ class Booked_room extends Model
         'created_at' => 'datetime:l, Y-m-d H:i:s',
         'updated_at' => 'datetime:l, Y-m-d H:i:s',
     ];
+
+
+    protected function Status(): Attribute
+    {
+        return Attribute::make(
+            // convert value to storage link
+            // get: fn ($value) => ["pending", "approved", "rejected"][$value],
+        );
+    }
+
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault([
+            'name' => 'Guest',
+        ]);
+    }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 1);
+    }
 }

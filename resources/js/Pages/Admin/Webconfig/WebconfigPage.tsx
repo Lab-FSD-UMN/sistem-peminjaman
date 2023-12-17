@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from '@inertiajs/react'
 import { router } from '@inertiajs/react'
 import AdminLayout from '@/Layouts/AdminLayout'
-import { Popconfirm } from 'antd'
+// import { Popconfirm } from 'antd'
 
 
 export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: any }>) {
@@ -163,7 +163,7 @@ const WebconfigItemCard = (webconfig: any) => {
                 <p className="text-gray-500">Last updated at: {webconfig.updated_at}</p>
             }
 
-            <Popconfirm
+            {/* <Popconfirm
                 title="Ubah data"
                 description="
                 Apakah anda yakin ingin mengubah data ini?"
@@ -172,7 +172,7 @@ const WebconfigItemCard = (webconfig: any) => {
                 okText="Yes"
                 cancelText="No"
                 disabled={processing}
-            >
+            > */}
                 <button
                     type='button'
                     disabled={processing}
@@ -180,7 +180,7 @@ const WebconfigItemCard = (webconfig: any) => {
                 >
                     Submit
                 </button>
-            </Popconfirm>
+            {/* </Popconfirm> */}
         </form>
     )
 }

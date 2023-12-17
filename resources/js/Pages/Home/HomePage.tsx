@@ -10,7 +10,7 @@ import InNumbersSection from './Section/InNumbers';
 import TestimonySection from './Section/TestimonySection';
 import Slider from '@/Components/General/Slider';
 // import { SwiperSlide } from 'swiper/vue';
-import { SwiperSlide } from 'swiper/vue';
+import { SwiperSlide } from 'swiper/react';
 import FacilitySection from './Section/FacilitySection';
 import HowToSection from './Section/HowToSection';
 
@@ -18,9 +18,8 @@ import HowToSection from './Section/HowToSection';
 export default function HomePage({ auth, WebconfigData, cache, helper, testimonies }: PageProps<{ WebconfigData: any, cache: any, helper: string, testimonies: any }>) {
     const currentYear = new Date().getDate();
     const companyData: any = usePage().props.companyData; //get page info
-    const data = usePage();
     useEffect(() => {
-        console.log("DATA: ", data);
+        console.log(companyData);
     }, [])
 
     return (

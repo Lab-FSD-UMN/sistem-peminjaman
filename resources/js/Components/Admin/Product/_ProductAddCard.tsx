@@ -1,4 +1,4 @@
-import { Input } from 'antd'
+// import { input } from 'antd'
 import React, { useState } from 'react'
 import { router } from '@inertiajs/react'
 
@@ -34,31 +34,31 @@ export default function ProductAddCard(data: any) {
             onSubmit={handleSubmit}
             className="bg-white overflow-hidden shadow-sm sm:rounded-lg m-10"
         >
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='title'
                 // defaultValue={data.title}
                 onChange={handleChange}
                 id='title'
             />
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='description'
                 // defaultValue={data.description}
                 onChange={handleChange}
                 id='description'
             />
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='slug'
                 // defaultValue={data.slug}
                 onChange={handleChange}
                 id='slug'
             />
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='price'
                 // defaultValue={data.price}
                 onChange={handleChange}
                 id='price'
             />
-            <Input className="text-gray-500"
+            <input className="text-gray-500"
                 placeholder='price'
                 // defaultValue={data.price}
                 onChange={

@@ -10,7 +10,7 @@ php artisan key:generate
 <!-- migrate data -->
 php artisan migrate
 <!-- seeding data -->
-php artisan migrate:fresh --seed --seeder=CallAllSeeder
+    php artisan migrate:fresh --seed --seeder=CallAllSeeder
 <!-- run -->
 php artisan serve (in terminal 1)
 yarn start (in terminal 2)
@@ -37,5 +37,4 @@ ln -s ../storage/app/public storage (on public dir)
 
 <!-- Referensi -->
 1. Send Email : https://www.youtube.com/watch?v=XywB2qtzSoM
-2. Middleware Auth : https://www.youtube.com/watch?v=vc4sXOdE4bQ
-
+2. Middleware Auth : https://www.youtube.com/watch?v=vc4sXOdE4bQ    

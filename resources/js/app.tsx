@@ -6,6 +6,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { StrictMode } from 'react';
 
 const appName = import.meta.env.VITE_APP_NAME || 'LAB FSD UMN';
 
@@ -21,9 +22,11 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <ApolloProvider client={client}>
-                <App {...props} />
-            </ApolloProvider>
+            <StrictMode>
+                <ApolloProvider client={client}>
+                    <App {...props} />
+                </ApolloProvider>
+            </StrictMode>
         );
     },
     progress: {

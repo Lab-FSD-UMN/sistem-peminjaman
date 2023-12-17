@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/General/Footer';
 import Credits from '@/Components/General/Credits';
 import Navbar from '@/Components/General/Navbar/Navbar';
 import { Link, usePage } from '@inertiajs/react';
-import React, { PropsWithChildren, ReactNode, useEffect } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import NavLink from '@/Components/NavLink';
@@ -56,7 +56,6 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 {item.name}
                                             </NavLink>
                                         ))
-
                                     }
                                     <div className="flex items-center pt-1">
                                         <div className="flex items-center pr-6">
@@ -203,33 +202,29 @@ const Route = [
         route: 'home'
     },
     {
-        name: 'Facility',
-        path: '/facility',
-        route: 'facility'
+        name: 'About',
+        path: '/about',
+        route: 'about'
     },
-    // {
-    //     name: 'About',
-    //     path: '/about',
-    //     route: 'about'
-    // },
-    // {
-    //     name: 'Gallery',
-    //     path: '/gallery',
-    //     route: 'gallery'
-    // },
-    // {
-    //     name: 'Contact',
-    //     path: '/contact',
-    //     route: 'contact'
-    // },
-    // {
-    //     name: 'Reservation',
-    //     path: '/reservation',
-    //     route: 'reservation'
-    // },
-    // {
-    //     name: 'Login',
-    //     path: '/login',
-    //     route: 'login'
-    // }
+    {
+        name: 'Products',
+        path: '/product',
+        route: 'product'
+    },
+    {
+        name: 'Gallery',
+        path: '/gallery',
+        route: 'gallery'
+    },
+    {
+        name: 'Contact',
+        path: '/contact',
+        route: 'contact'
+    },
+
+    {
+        name: 'Login',
+        path: '/login',
+        route: 'login'
+    }
 ]

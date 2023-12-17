@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rooms', function (Blueprint $table) {
-            $table->id()->index();
+            //id with uuid format and primary key
+            $table->string('id')->primary()->unique();
             $table->string('image')->nullable();
             $table->string('name');
+            $table->string('location');
             $table->boolean('is_available')->default(true);
             $table->string('description');
             $table->timestamps();

@@ -5,22 +5,38 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Ramsey\Uuid\Uuid;
 
 class Room extends Model
 {
     use HasFactory;
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+
+    // //boot to insert uuid
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::creating(function ($model) {
+    //         $model->id = Uuid::uuid4()->toString();
+    //     });
+    // }
 
     protected $fillable = [
         'id',
         'image',
         'name',
         'image',
+        'location',
         'is_available',
         'description',
     ];
 
     protected $casts = [
+        'id' => 'string',
         'is_available' => 'boolean',
     ];
 
@@ -31,6 +47,8 @@ class Room extends Model
     //     return $this->hasMany(Room_Image::class);
     // }
     //mutator
+
+
 
 
     public function scopeAvailable($query)
