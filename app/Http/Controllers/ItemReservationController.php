@@ -69,13 +69,21 @@ class ItemReservationController extends Controller
 
             // Validation: Check if the item is available in that given time and given quantity
             // check if available quantity - booked quantity > requested quantity in that given time
+
+            $findItem = $item::find($request->item_id);
+
+            if (!$findItem){
+                throw new ResponseException(404, 'Item not found.');
+            }
+
             $booked_quantity = $Booked_item::where('item_id', $request->item_id)
                 // ->where('reservation_start_time', '<=', $request->reservation_date_start . ' ' . $request->reservation_time_start)
                 // ->where('reservation_end_time', '>=', $request->reservation_date_end . ' ' . $request->reservation_time_end)
                 ->where('status', 1)
                 ->sum('quantity');
 
-            $available_quantity = $item::find($request->item_id)->quantity - $booked_quantity;
+
+            $available_quantity = $findItem->quantity - $booked_quantity;
 
             if ($request->quantity > $available_quantity) {
                 throw new ResponseException(400, "Insufficient quantity. try to reserve $available_quantity or less.");

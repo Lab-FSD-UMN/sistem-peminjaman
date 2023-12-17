@@ -2,6 +2,13 @@ import Slider from "@/Components/General/Slider";
 import { usePage } from "@inertiajs/react";
 import { useRef } from "react";
 import { SwiperSlide } from "swiper/react";
+import photo1 from "/public/assets/photo 1.png"
+import photo2 from "/public/assets/photo 2.png"
+import photo3 from "/public/assets/photo 3.png"
+import photo4 from "/public/assets/photo 4.png"
+import ornament1 from "/public/assets/Ornament_63.png"
+import ornament2 from "/public/assets/Ornament_2.png"
+
 
 type Props = {
     sectionTitle: string;
@@ -16,81 +23,56 @@ export default function DescriptionSection({
     const navigationprevref = useRef(null);
     const navigationnextref = useRef(null);
 
-    return (
-        <div className="AboutSection flex flex-col-reverse items-center md:flex-row justify-center py-16 w-4/5">
-            <div className="overflow-hidden w-full md:w-3/4 relative">
-                <Slider
-                    slidesPerView={1}
-                    spaceBetween={20}
-                    pagination={false}
-                    breakpoints={{
-                        0: {
-                            slidesPerView: 1,
-                            spaceBetween: 20,
-                        }
-                    }}
-                    // navigation={{
-                    //     prevel: navigationprevref.current,
-                    //     nextel: navigationnextref.current,
-                    // }}
-                >
-                    {/* nanti yang di map url image */}
-                    {TestimoniesData.map((testimony: any) => {
-                        return (
-                            <SwiperSlide
-                                key={testimony.id}
-                                className="flex flex-col items-center justify-center w-full min-h-80 max-h-80 bg-gray-800
-                                            rounded-md shadow-md"
-                            >
-                                <img
-                                    src="https://res.cloudinary.com/dakp66ddf/image/upload/v1692149904/marshlands-8176000_fndgne.webp"
-                                    className="inset-0 w-full h-full object-cover object-center"
-                                />
-                            </SwiperSlide>
-                        );
-                    })}
-                </Slider>
-                {/* ga mau ke tengah T.T, belom isa dipencet juga */}
-                <div className="absolute top-0 bottom-0 right-0 z-10">
-                    <button
-                        ref={navigationnextref}
-                        type="button"
-                        className=" h-10 w-10 
-                                    flex items-center justify-center 
-                                    text-blue-700 
-                                    bg-white hover:bg-blue-100 bg-opacity-70 
-                                    rounded-full 
-                                    text-xl p-2.5 text-center"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="1em"
-                            viewBox="0 0 320 512"
-                        >
-                            <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
-                        </svg>
-                    </button>
+    return ( 
+        <div className="DescriptionSection flex justify-center w-full bg-greyBG mt-32">
+            <div className="flex flex-col justify-center items-center w-full">
+                <div className="flex flex-col w-full items-center justify-center">
+                    <div className="flex flex-row items-center justify-between w-2/3 mb-12 md:mb-0">
+                        <div>
+                            <div className="-mt-16 md:mt-0 -ml-9 md:ml-0">
+                                <img src={photo1} className="-mb-4 w-28 md:w-48"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="-ml-24 md:-ml-52">
+                                <img src={ornament1}
+                                    className="absolute -mt-20 w-16 md:w-24"/>
+                                <img src={photo4} 
+                                    className="absolute w-28 md:w-44 -mt-16 ml-5 md:ml-8"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-4/5 md:w-1/3 space-y-8">
+                        <h1 className="text-4xl font-bold text-center text-biru_umn">What We Do?</h1>
+                            <p className="text-gray-600 text-justify">
+                                {sectionDescription}. Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                minim veniam, quis nostrud exercitation ullamco laboris nisi
+                                ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+                                amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                minim veniamLorem ipsum dolor sit amet consectetur. 
+                                Adipiscing at eu aenean justo nullam eu. Ullamcorper 
+                                tellus magnis semper et et et. 
+                            </p>
+                        </div>
+                    <div className="flex flex-row items-center justify-between w-2/3 mt-12 md:mt-0">
+                        <div>
+                            <div className="mt-16 md:mt-0 -ml-5 md:ml-5">
+                                <img src={photo2} 
+                                    className="absolute w-28 md:w-44 -mt-24 -mr-5 md:mr-8 z-[1]"/>
+                                <img src={ornament2}
+                                    className="absolute w-16 -mt-8 md:mt-0 md:w-24 z-[0]"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="-mr-9 md:mr-0">   
+                                <img src={photo3} className="-mb-4 w-28 md:w-48"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="w-full md: w-1/2 md:ms-12 text-center md:text-left">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-800 mb-4">
-                    {sectionTitle}
-                </h1>
-                <p className="text-lg md:text-xl text-gray-600 whitespace-pre-wrap">
-                    {sectionDescription}. Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi
-                    ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-                    amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam
-                </p>
-                {/* <div className="flex justify-center">
-                    <button className="btn">
-                        Learn More
-                    </button>
-                </div> */}
             </div>
         </div>
     );

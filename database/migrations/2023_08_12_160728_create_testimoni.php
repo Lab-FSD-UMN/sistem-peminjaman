@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('position')->default('Customer');
             $table->text('testimony');
-            // $table->string('image');
+            $table->string('image');
             $table->timestamps();
         });
     }
