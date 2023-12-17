@@ -1,7 +1,9 @@
 import Slider from '@/Components/General/Slider'
 import { usePage } from '@inertiajs/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { SwiperSlide } from 'swiper/react'
+import { Swiper } from "swiper";
+import "swiper/swiper.min.css";
 
 export default function TestimonySection(Testimonies: any) {
     const TestimoniesData: any = usePage().props.testimonies
@@ -9,6 +11,7 @@ export default function TestimonySection(Testimonies: any) {
         // console.log("testimonies :")
         console.log(TestimoniesData)
     }, [])
+    const swiperRef = useRef<Swiper | null>(null);
     return (
         <div
 
@@ -22,7 +25,20 @@ export default function TestimonySection(Testimonies: any) {
             <div
                 className='overflow-hidden'
             >
-                <Slider>
+                <Slider
+                    swiperRef={swiperRef}
+                    className="w-full h-72 mt-5 md:mt-0"
+                    autoplay={{
+                        delay: 5000
+                    }}
+                    breakpoints={{
+                        0: {
+                            slidesPerView: 1,
+                            spaceBetween: 0,
+                            centeredSlides: false,
+                        },
+                    }}
+                >
                     {
                         TestimoniesData.map((testimony: any) => {
                             return (
