@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
@@ -43,6 +44,8 @@ Route::get('/testing', function () {
     return Inertia::render('Testing/TestingPage');
 })->name('testing');
 Route::get('/contact', ContactController::class)->name('contact');
+
+Route::get('/facility', FacilityController::class)->name('facility');
 
 Route::get('/about', AboutController::class)->name('about');
 

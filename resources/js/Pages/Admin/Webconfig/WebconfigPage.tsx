@@ -33,10 +33,10 @@ export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: an
                         Edit your website configurations here
                     </p>
                 </div>
-                <div className='flex space-x-4 mt-10 text-center'>
+                <div className='flex flex-col md:flex-row items-center justify-center w-4/5 space-y-2 md:space-y-0 md:space-x-4 mt-10 text-center'>
                     <div
                         id='general'
-                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'general' ? 
+                        className={`w-full md:w-1/4 bg-black border-solid border-2 text-white ${tipeCategory === 'general' ? 
                             'bg-blue-600' : ''}`}
                         onClick={() => handleCategoryClick('general')}
                     >
@@ -44,7 +44,7 @@ export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: an
                     </div>
                     <div
                         id='home'
-                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'home' ? 
+                        className={`w-full md:w-1/4 bg-black border-solid border-2 text-white ${tipeCategory === 'home' ? 
                             'bg-blue-600' : ''}`}
                         onClick={() => handleCategoryClick('home')}
                     >
@@ -52,7 +52,7 @@ export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: an
                     </div>
                     <div
                         id='reservation'
-                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'reservation' ? 
+                        className={`w-full md:w-1/4 bg-black border-solid border-2 text-white ${tipeCategory === 'reservation' ? 
                             'bg-blue-600' : ''}`}
                         onClick={() => handleCategoryClick('reservation')}
                     >
@@ -60,7 +60,7 @@ export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: an
                     </div>
                     <div
                         id='contact'
-                        className={`w-52 bg-black border-solid border-2 text-white ${tipeCategory === 'contact' ? 
+                        className={`w-full md:w-1/4 bg-black border-solid border-2 text-white ${tipeCategory === 'contact' ? 
                             'bg-blue-600' : ''}`}
                         onClick={() => handleCategoryClick('contact')}
                     >
@@ -69,7 +69,7 @@ export default function WebConfigPage({ webconfigs }: PageProps<{ webconfigs: an
                 </div>
                 <div
                     className='bg-white overflow-hidden sm:rounded-lg
-                    w-[50rem] m-10 flex flex-col shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'
+                    w-4/5 md:w-3/5 m-10 flex flex-col shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]'
                 >
                     {
                         webconfigs.map((webconfig: any) => {
@@ -135,7 +135,7 @@ const WebconfigItemCard = (webconfig: any) => {
         >
             <h1 className="text-2xl font-bold">{webconfig.alias}</h1>
             {webconfig.type === 'image' ? (
-                <input type='file' className='input border border-gray-400 rounded-md focus:outline-none        focus:ring-2 focus:ring-blue-600 focus:border-transparent text-black'
+                <input type='file' className='input border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent text-black'
                     id="value"
                     onChange={(event: any) => setData('value', event.target.files[0])} />
             ) : webconfig.type === 'text' ? (

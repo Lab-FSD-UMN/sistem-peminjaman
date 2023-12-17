@@ -9,9 +9,7 @@ export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
     return (
         <img
             className='
-                h-full
-                w-12
-                aspect-square
+                h-11
             '
             src={page?.companyData.company_logo}
         />
