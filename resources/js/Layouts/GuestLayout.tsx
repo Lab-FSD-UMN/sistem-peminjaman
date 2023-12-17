@@ -1,8 +1,8 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/General/Footer';
 import Navbar from '@/Components/General/Navbar/Navbar';
-import { Link } from '@inertiajs/react';
-import React, { PropsWithChildren, ReactNode } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import React, { PropsWithChildren, ReactNode, useEffect } from 'react';
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import NavLink from '@/Components/NavLink';
@@ -10,6 +10,12 @@ import Dropdown from '@/Components/Dropdown';
 
 export default function Guest({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = React.useState(false);
+
+    const page = usePage();
+    const user = page.props.auth;
+    useEffect(() => {
+        console.log("user", user)
+    }, [user])
     return (
         <>
             <div className="min-h-screen bg-gray-100">
@@ -138,7 +144,11 @@ const Route = [
         path: '/contact',
         route: 'contact'
     },
-
+    {
+        name: 'Reservation',
+        path: '/reservation',
+        route: 'reservation'
+    },
     {
         name: 'Login',
         path: '/login',

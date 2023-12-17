@@ -76,6 +76,29 @@ Route::prefix('reservation')->group(function () {
     });
 });
 
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::prefix('reservation')
+        ->group(function () {
+            Route::prefix('room')
+                ->controller(ReservationRoomReservationController::class)
+                ->group(function () {
+                    Route::post('/', 'reserveRoom');// create error bag
+                    Route::get('/list', 'showAllRoomReservation');
+                    Route::get('/find/{id}', 'userGetReservationDetail');
+                    Route::post('/list/status', 'changeRoomReservationStatus');
+                });
+
+            Route::prefix('item')
+                ->controller(ItemReservationController::class)
+                ->group(function () {
+                    Route::post('/', 'createItemReservation');
+                    Route::get('/list', 'showAllItemReservation');
+                    Route::get('/find/{id}', 'userGetReservationDetail');
+                    Route::post('/list/status', 'ChangeItemReservationStatus');
+                });
+        });
+});
+
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

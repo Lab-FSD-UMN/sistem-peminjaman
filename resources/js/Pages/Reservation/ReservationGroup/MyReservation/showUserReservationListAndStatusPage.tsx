@@ -6,6 +6,8 @@ export default function MyReservationPage() {
     const pageInfo = usePage().props
     // fetch initial data from the backend
     const userReservation: any = pageInfo.userReservation
+
+    
     // wait for the data to be fetched from the backend
 
     // convert status code to string
@@ -28,7 +30,7 @@ export default function MyReservationPage() {
                         </h1> : null
                 }
                 {
-                    userReservation.map((reservation: any) => {
+                    userReservation?.map((reservation: any) => {
                         const { text, color } = statusToString(reservation.status); // Declare variables here
                         useEffect(() => {
                             console.log("dari dalem", reservation)

@@ -19,12 +19,13 @@ export default {
                 'nexa': ['Nexa', 'sans'],
             },
             colors: {
-                'biru_umn' : '#005596',
-                'biru_muda' : '#0F9EED',
-                'orange' : '#F28A15',
-                'purple' : '#904992',
-                'teal' : '#1C968F',
-            }
+                'biru_umn': '#005596',
+                'biru_muda': '#0F9EED',
+                'biru_tua': '#006BBD',
+                'orange': '#F28A15',
+                'purple': '#904992',
+                'teal': '#1C968F',
+            },
         },
     },
     variants: {
