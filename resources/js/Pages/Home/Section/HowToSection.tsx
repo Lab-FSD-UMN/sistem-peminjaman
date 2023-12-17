@@ -24,7 +24,7 @@ function HowToSection({
     reserveNow_desc,
 }: Props) {
     return (
-        <div className="InNumbersSection pt-20 md:pt-28 pb-24 w-full flex justify-center relative w-full bg-greyBG">
+        <div className="InNumbersSection pt-20 md:pt-28 pb-24 w-full flex justify-center relative bg-greyBG">
             <div className="md:mb-0 w-4/5">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight mb-8 text-center text-biru_umn">
                     {sectionTitle}

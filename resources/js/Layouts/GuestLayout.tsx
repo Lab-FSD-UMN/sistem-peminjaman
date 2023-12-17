@@ -41,7 +41,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                             <div className="flex items-center">
                                 <div className="flex items-center">
                                     <a href="/">
-                                        <ApplicationLogo/>
+                                        <ApplicationLogo />
                                         {/* <img src={logoFSD}/> */}
                                     </a>
                                 </div>
@@ -63,18 +63,18 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 <button onClick={toggleDropdown}
                                                     className="text-sm text-white font-semibold bg-transparent border-none focus:outline-none">
                                                     About</button>
-                                                <span><img src="https://i.ibb.co/d5ZCxkj/dropdown-icon.png" className='pl-2'/></span>
+                                                <span><img src="https://i.ibb.co/d5ZCxkj/dropdown-icon.png" className='pl-2' /></span>
                                             </div>
                                             {showDropdown && (
                                                 <div className="absolute mt-44 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
-                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
-                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
+                                                    <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
+                                                    <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
+                                                    <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
                                                 </div>
                                             )}
                                         </div>
-                                        <div className='flex flex-row items-center font-medium leading-5 transition duration-150 ease-in-out focus:outline-none
-                                            bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30 transition duration-150 ease-in-out'>
+                                        <div className='flex flex-row items-center font-medium leading-5 transition duration-150  focus:outline-none
+                                            bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30  ease-in-out'>
                                             <div className='mr-2'>
                                                 <img src="https://i.ibb.co/gdzWDbZ/Vector.png" />
                                             </div>
@@ -83,7 +83,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                             </div>
                                         </div>
                                         <div className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
-                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
+                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
                                             {
                                                 Role === "guest" ?
 
@@ -164,15 +164,15 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                     {
                                         Role === "guest" ?
 
-                                        <ResponsiveNavLink href={route('login')} active={route().current('login')}>
-                                            Login
-                                        </ResponsiveNavLink>
-                                        :
-                                        <ResponsiveNavLink
-                                            active={route().current('logout')}
-                                            method="post" href={route('logout')} as="button">
-                                            Log Out
-                                        </ResponsiveNavLink>
+                                            <ResponsiveNavLink href={route('login')} active={route().current('login')}>
+                                                Login
+                                            </ResponsiveNavLink>
+                                            :
+                                            <ResponsiveNavLink
+                                                active={route().current('logout')}
+                                                method="post" href={route('logout')} as="button">
+                                                Log Out
+                                            </ResponsiveNavLink>
                                     }
                                 </div>
                             </div>
