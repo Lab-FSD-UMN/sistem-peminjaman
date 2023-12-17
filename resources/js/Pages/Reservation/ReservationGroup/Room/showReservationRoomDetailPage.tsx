@@ -1,6 +1,6 @@
 import Guest from '@/Layouts/GuestLayout'
 import axiosClient from '@/Services/axiosClient'
-import { router, useForm, usePage } from '@inertiajs/react'
+import { Link, router, useForm, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useEffect } from 'react'
 
@@ -8,16 +8,19 @@ import React, { useEffect } from 'react'
 export default function ReservationRoomDetailPage({ room }: any) {
   // const pageInfo: any = usePage().props
   // const Item: any = pageInfo.item
-  const [setMessages, messages] = React.useState<any>([])
 
+  const [setMessages, messages] = React.useState<any>([])
+  const [submitted, setSubmitted] = React.useState(false)
   // Form Values
   // ✨ form logic
   const { data, setData, post, progress, errors } = useForm({
+    room_id: room.id,
     reservation_date_start: "",
     reservation_time_start: "",
     reservation_date_end: "",
     reservation_time_end: "",
     note: "",
+    web: true,
   })
 
   useEffect(() => {
@@ -32,14 +35,23 @@ export default function ReservationRoomDetailPage({ room }: any) {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    console.log("Form Data", data)
-    axiosClient.post(`/reservation/item`, data).then((res) => {
-      console.log("Success", res)
-      alert("Reservation Success")
-    }
-    ).catch((err) => {
-      console.log("Error", err)
-      alert(err.response.data.error)
+    router.post(`/reservation/room`, {
+      room_id: room.id,
+      reservation_date_start: data.reservation_date_start,
+      reservation_time_start: ConvertTimeFormat(data.reservation_time_start), // convert date to HH:MM:SS
+      reservation_date_end: data.reservation_date_end,
+      reservation_time_end: ConvertTimeFormat(data.reservation_time_end),
+      note: data.note,
+      web: true,
+    }, {
+      onSuccess: () => {
+        // alert("Reservation Success")
+        setSubmitted(true)
+      },
+      onError: (error) => {
+        console.log("Error", error)
+        alert("Reservation Failed")
+      }
     })
   }
 
@@ -60,88 +72,93 @@ export default function ReservationRoomDetailPage({ room }: any) {
 
   return (
     <Guest>
-      <div
-        className='flex flex-col p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-2 px-4'
+      <section
+        className='flex flex-col gap-[1rem]'
       >
+        {/* Back button */}
         <div
-          className='flex flex-row justify-between items-center'
-        // onClick={() => router.back()}
+          className='flex flex-row justify-between items-center bg-biru_tua px-[1rem] sm:px-[5rem] xl:px-[10rem]
+          h-[3rem]'
         >
-          <button
-            onClick={() =>
-              window.history.back()
-            }
-            className='bg-blue-500 hover:bg-blue-700 font-light text-white px-[0.5rem] rounded text-[2rem]'
+          <Link
+            href='/reservation/room'
+            className='hover:opacity-60 text-white px-[0.5rem] rounded text-[1.2rem] flex items-center   '
           >
-            {'<'}
-          </button>
+            <img
+              src="https://www.svgrepo.com/show/500472/back.svg"
+              className='w-[2rem] h-[1.5rem] invert-[1]'
+              alt="" /> Back
+          </Link>
         </div>
-        <h1
-          className='capitalize text-[2rem]'
+        <div
+          className='px-[1rem] sm:px-[5rem] xl:px-[10rem]'
         >
-          {/* {Item.name} */}
-        </h1>
-        {/* <p>{Item.description}</p> */}
-
-        {/* TODO: Nanti jangan lupa dikasih fallback ketika image not found (suggestion, use svg) */}
-        <img
-          className='w-[20rem] h-[20rem] object-cover '
-          src={room.image}
-          onError={(e: any) => {
-            e.target.onerror = null;
-            e.target.src = "https://via.placeholder.com/150";
-          }}
-        />
-        <p
-          className=' text-white font-bold '
-        >
-          {/* Available: {Item.is_available ? "Yes" : "No"} */}
-        </p>
-        <form
-
-          onSubmit={handleSubmit}
-          className='flex flex-col gap-[1rem] text-white font-bold  rounded'
-        >
-
-          <label
-            htmlFor="">
-            Reservation Date From - To
-          </label>
-          {/* Reservation Date */}
-          <div
-            className='flex flex-row gap-[1rem]'
+          <h1
+            className='capitalize text-biru_umn font-bold text-[2rem]'
           >
+            Room Reservation Form
+          </h1>
+          <div
+            className='flex flex-row gap-[1rem] h-[10rem] p-[0.5rem] items-center'
+          >
+            <img
+              className='h-full object-cover rounded-[1rem]'
+              src={room.image}
+              onError={(e: any) => {
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/150";
+              }}
+            />
+            <h2
+              className='text-biru_umn font-bold   text-[1.5rem] text-center'
+            >
+              {room.location ? room.location : "B000"} - {room.name}
+            </h2>
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className='flex flex-col gap-[0.5rem] text-white font-bold rounded p-[1rem] '
+          >
+            <label
+              className='text-black font-bold text-[1.2rem]'
+              htmlFor="reservation_date_start">Date Start</label>
             <input
               type="date"
               name="reservation_date_start"
               id="reservation_date_start"
               placeholder="Reservation Date"
-              // className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-              className=' text-black font-bold py-2 px-4 rounded'
+              className=' text-black font-bold rounded placeholder:text-opacity-60 text-opacity-60'
               onChange={handleChange}
             />
-            <input
-              type="time"
-              name="reservation_time_start"
-              id="reservation_time_start"
-              placeholder="Reservation Time"
-              // className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-              className=' text-black font-bold py-2 px-4 rounded'
-              onChange={handleChange}
 
-            />
-          </div>
-          <div
-            className='flex flex-row gap-[1rem]'
-          >
+            <label
+              className='text-black font-bold text-[1.2rem]'
+              htmlFor="reservation_date_end">Date End</label>
+
             <input
               type="date"
               name="reservation_date_end"
               id="reservation_date_end"
               placeholder="Reservation Date"
+              className=' text-black font-bold rounded placeholder:text-opacity-60 text-opacity-60'
+              onChange={handleChange}
+            />
+
+            <label
+              className='text-black font-bold text-[1.2rem]'
+              htmlFor="reservation_time_start">Time Start</label>
+            <input
+              type="time"
+              name="reservation_time_start"
+              id="reservation_time_start"
+              placeholder="Reservation Time"
               className=' text-black font-bold py-2 px-4 rounded'
               onChange={handleChange}
             />
+
+            <label
+              className='text-black font-bold text-[1.2rem]'
+              htmlFor="reservation_time_start">Time End</label>
             <input
               type="time"
               name="reservation_time_end"
@@ -150,24 +167,52 @@ export default function ReservationRoomDetailPage({ room }: any) {
               className=' text-black font-bold py-2 px-4 rounded'
               onChange={handleChange}
             />
-          </div>
+
+            <label
+              className='text-black font-bold text-[1.2rem]'
+              htmlFor="reservation_time_start">Note</label>
+            <textarea
+              onChange={handleChange}
+              name="note"
+              id="note"
+              placeholder="Description"
+              className=' text-black font-bold py-2 px-4 rounded'
+            ></textarea>
+            <br />
+            <button
+              type="submit"
+              className='bg-biru_tua hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-[1rem]'
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </section>
 
 
-          <textarea
-            onChange={handleChange}
-            name="note"
-            id="note"
-            placeholder="Description"
-            className=' text-black font-bold py-2 px-4 rounded'
-          ></textarea>
-          <button
-            type="submit"
-            className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+      {
+        //modal 
+        submitted ?
+          <div
+            className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50'
           >
-            Submit
-          </button>
-        </form>
-      </div>
+            <div
+              className='flex flex-col gap-[1rem] bg-white rounded p-[1rem]'
+            >
+              <h1
+                className='text-black font-bold text-[1.5rem] text-center'
+              >
+                Reservation Success
+              </h1>
+              <Link
+                href='/reservation/'
+                className='bg-biru_umn hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-[1rem] text-center'
+              >
+                Back
+              </Link>
+            </div>
+          </div> : null
+      }
     </Guest >
   )
 }
@@ -184,4 +229,13 @@ function CalculateTime({ dateStart, dateEnd, timeStart, timeEnd }: any) {
   const seconds = Math.floor((timeDiffInMilliseconds % (1000 * 60)) / 1000);
 
   return { hours, minutes, seconds };
+}
+
+
+function ConvertTimeFormat(time: string) {
+  const timeArray = time.split(":")
+  const hour = timeArray[0]
+  const minute = timeArray[1]
+
+  return `${hour}:${minute}:00`
 }

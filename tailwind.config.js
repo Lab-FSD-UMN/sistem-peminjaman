@@ -33,6 +33,7 @@ export default {
             fontSize: {
                 xxs: '0.5rem'
             }
+
         },
     },
     variants: {

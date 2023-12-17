@@ -96,6 +96,7 @@ class RoomReservationController extends Controller
                 'reservation_date_start' => 'required|date_format:Y-m-d',
                 'reservation_date_end' => 'required|date_format:Y-m-d',
                 'note' => 'nullable|string',
+                'web' => 'nullable|boolean',
             ]);
 
             # If validation fails, return the error messages
@@ -164,6 +165,9 @@ class RoomReservationController extends Controller
             ]);
 
             DB::commit();
+            if ($request->web == true) {
+                return redirect()->back()->with('success', 'Reservation created successfully!');
+            }
 
             return response()->json([
                 'code' => 200,
@@ -174,6 +178,9 @@ class RoomReservationController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            if ($request->web == true) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
             return response()->json([
                 'code' => 422,
                 'error' => $e->getMessage(),
@@ -190,10 +197,6 @@ class RoomReservationController extends Controller
         $id = auth()->user()->id;
         $room_reservation = Booked_room::with('room')->where('user_id', $id)->get();
 
-        //image storage url 
-        foreach ($room_reservation as $item) {
-            $item->room->image = Storage::url($item->room->image);
-        }
         //filter, if start date is before today, dont show
         $today = Carbon::now();
         $room_reservation = $room_reservation->filter(function ($value, $key) use ($today) {
@@ -206,6 +209,10 @@ class RoomReservationController extends Controller
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         // get only its array value
         $room_reservation = $room_reservation->values()->all();
+
+        // foreach ($room_reservation as $item) {
+        //     $item->room->image = Storage::url($item->room->image);
+        // }
         return response()->json([
             'code' => 200,
             'data' => $room_reservation,

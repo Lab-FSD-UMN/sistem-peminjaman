@@ -4,7 +4,8 @@ import Footer from '@/Components/General/Footer';
 import Credits from '@/Components/General/Credits';
 import Navbar from '@/Components/General/Navbar/Navbar';
 import { Link, usePage } from '@inertiajs/react';
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode, useEffect } from 'react';
+
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import NavLink from '@/Components/NavLink';
@@ -13,6 +14,7 @@ import logoFSD from "/public/assets/logoFSD.png"
 
 export default function Guest({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = React.useState(false);
+
     const Usepage: any = usePage().props;
     const Role = Usepage.auth.user?.role ? Usepage.auth.user?.role : 'guest';
     useEffect(() => {
@@ -23,6 +25,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
+
     return (
         <>
             <div className="min-h-screen bg-greyBG">
