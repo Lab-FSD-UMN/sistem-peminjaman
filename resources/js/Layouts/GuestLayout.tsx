@@ -201,30 +201,30 @@ const Route = [
         path: '/',
         route: 'home'
     },
-    {
-        name: 'About',
-        path: '/about',
-        route: 'about'
-    },
-    {
-        name: 'Products',
-        path: '/product',
-        route: 'product'
-    },
-    {
-        name: 'Gallery',
-        path: '/gallery',
-        route: 'gallery'
-    },
+    // {
+    //     name: 'About',
+    //     path: '/about',
+    //     route: 'about'
+    // },
+    // {
+    //     name: 'Products',
+    //     path: '/product',
+    //     route: 'product'
+    // },
+    // {
+    //     name: 'Gallery',
+    //     path: '/gallery',
+    //     route: 'gallery'
+    // },
     {
         name: 'Contact',
         path: '/contact',
         route: 'contact'
     },
 
-    {
-        name: 'Login',
-        path: '/login',
-        route: 'login'
-    }
+    // {
+    //     name: 'Login',
+    //     path: '/login',
+    //     route: 'login'
+    // }
 ]
