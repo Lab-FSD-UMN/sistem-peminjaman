@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Facility;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,8 +17,9 @@ class CallAllSeeder extends Seeder
             ImageSeeder::class,
             UserSeeder::class,
             TestimonySeeder::class,
-            RoomSeeder::class,
-            ReservationSeeder::class,
+            // RoomSeeder::class,
+            // ReservationSeeder::class,
+            FacilitySeeder::class,
         ]);
     }
 }

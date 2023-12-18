@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
+import axiosClient from '@/Services/axiosClient';
 
 export default function Login({ status, canResetPassword }: { status?: string, canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,16 +29,13 @@ export default function Login({ status, canResetPassword }: { status?: string, c
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('login'));
-        // axios.post('api/auth/login', data)
-        //     .then((res) => {
-        //         console.log(res);
-        //         localStorage.setItem('token', res.data.token);
-        //         localStorage.setItem('user', JSON.stringify(res.data.user));
-        //         window.location.href = '/admin/dashboard';
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response);
-        //     })
+        axiosClient.post(`/auth/login`, data).then((res) => {
+            console.log("Success", res.data.token)
+            localStorage.setItem("token", res.data.token)
+        }
+        ).catch((err) => {
+            console.log("Error", err)
+        })
     };
 
     return (
