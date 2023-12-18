@@ -253,7 +253,51 @@ export default function showManageRoomPage({ room }: any) {
 
 const Card = ({ ...data }: any) => {
     const [modal, setModal] = React.useState(false)
+    const [imagePreview, setImagePreview] = React.useState<any>(null)
+    const [dataRoom, setDataRoom] = React.useState<any>({
+        name: data.name,
+        location: data.location,
+        description: data.description,
+        image: null,
+    })
 
+    const handleChange = (e: any) => {
+        const key = e.target.id;
+        const value = e.target.value
+        setDataRoom({
+            ...dataRoom,
+            [key]: value
+        })
+    }
+
+    const handleImageUpload = (e: any) => {
+        setDataRoom({
+            ...dataRoom,
+            image: e.target.files[0]
+        })
+        setImagePreview(URL.createObjectURL(e.target.files[0]))
+    }
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        const formData = new FormData()
+        if (dataRoom.image != null) {
+            formData.append("image", dataRoom.image)
+        }
+        formData.append("id", data.id)
+        formData.append("name", dataRoom.name)
+        formData.append("location", dataRoom.location)
+        formData.append("description", dataRoom.description)
+        console.log("Form Image ", dataRoom.image)
+        axiosClient.post(`/room/update`, formData)
+            .then((res) => {
+                console.log("Success", res)
+                setModal(false)
+                router.reload()
+            }).catch((err) => {
+                console.log("Error", err)
+            })
+    }
 
     //delete room
     const handleDelete = (id: any) => {
@@ -302,9 +346,9 @@ const Card = ({ ...data }: any) => {
             </button>
 
 
-            {/* Modal */}
+            {/* Modal Detail */}
             <div
-                className={`fixed z-10 inset-0 overflow-y-auto ${modal ? "block" : "hidden"}`}
+                className={`fixed z-[51] inset-0 overflow-y-auto ${modal ? "block" : "hidden"}`}
                 aria-labelledby="modal-title"
                 role="dialog"
                 aria-modal="true"
@@ -347,6 +391,55 @@ const Card = ({ ...data }: any) => {
                                             {data.description}
                                         </p>
                                     </div>
+                                    <form>
+                                        <div
+                                            className='mt-2'
+                                        >
+                                            <input
+                                                onChange={handleChange}
+                                                type="text" name="name" id="name" placeholder='Room Name'
+                                                className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
+                                        items-center placeholder-black my-[1rem] truncate'
+                                                value={dataRoom.name}
+                                            />
+                                            <input
+                                                onChange={handleChange}
+                                                type="text" name="location" id="location" placeholder='Room Location'
+                                                className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
+                                        items-center placeholder-black my-[1rem] truncate'
+                                                value={dataRoom.location}
+                                            />
+                                            <input
+                                                onChange={handleChange}
+                                                type="text" name="description" id="description" placeholder='Room Description'
+                                                className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
+                                        items-center placeholder-black my-[1rem] truncate'
+                                                value={dataRoom.description}
+                                            />
+                                            <input
+                                                onChange={handleImageUpload}
+                                                type="file"
+                                                accept='image/*'
+                                                name="image" id="image"
+                                                placeholder='Room Image'
+                                                className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
+                                        items-center placeholder-black my-[1rem] truncate'
+                                            />
+                                            <img
+                                                src={imagePreview ? imagePreview : data.image}
+                                                alt={data.name}
+                                                className='w-full h-[10rem] object-cover rounded-[1rem]
+                                                    my-[1rem]'
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={handleSubmit}
+                                            className='bg-biru_umn hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-[1rem] items-center inline-flex flex-nowrap w-full h-[3rem] justify-center'
+                                        >
+                                            Save
+                                        </button>
+                                    </form>
+                                    <br />
                                     <button
                                         onClick={() => handleDelete(data.id)}
                                         type="button"

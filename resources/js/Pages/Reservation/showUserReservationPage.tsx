@@ -227,6 +227,31 @@ export default function ReservationPage() {
                         </div>
                     </div>
                 }
+                {
+                    role === "admin"
+
+                    &&
+                    <div
+                        className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[100] '
+                        id="modal"
+                    >
+                        <div
+                            className='bg-white w-[30rem] h-[20rem] flex flex-col justify-center items-center rounded-[1rem] px-[1rem]'
+                        >
+                            <h1
+                                className='text-[2rem] font-bold text-center'
+                            >
+                                Admin cannot make reservation!
+                            </h1>
+                            <Link
+                                href='/admin'
+                                className='bg-biru_umn hover:bg-biru_muda text-white font-bold py-2 px-4 rounded'
+                            >
+                                Go to Admin Page
+                            </Link>
+                        </div>
+                    </div>
+                }
             </section>
         </Guest>
     )

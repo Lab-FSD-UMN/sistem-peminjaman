@@ -270,7 +270,9 @@ class ReservationController extends Controller
     public function showAdminReservationHistoryPage()
     {
         $booked_items = Booked_item::with('user')->with('item')->where('status', '!=', 0)->get();
+        $booked_items = $booked_items->sortBy('created_at');
         $booked_rooms = Booked_room::with('user')->with('room')->where('status', '!=', 0)->get();
+        $booked_rooms = $booked_rooms->sortBy('created_at');
         return Inertia::render(
             'Admin/Reservation/ReservationMenu/showAdminReservationHistoryPage',
             [
