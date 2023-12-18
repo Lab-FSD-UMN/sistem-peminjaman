@@ -19,16 +19,17 @@ export default {
                 'nexa': ['Nexa', 'sans'],
             },
             colors: {
-                'biru_umn' : '#005596',
-                'biru_muda' : '#0F9EED',
-                'biru_navbar' : '#0377D0',
-                'orange' : '#F28A15',
-                'purple' : '#904992',
-                'teal' : '#1C968F',
-                'grey_footer' : '#333333',
-                'grey_copyrights' : '#222222',
-                'greyBG' : '#F8F8F8',
-                'kuning' : '#FFC000'
+                'biru_umn': '#005596',
+                'biru_muda': '#0F9EED',
+                'biru_navbar': '#0377D0',
+                'biru_tua': '#006BBD',
+                'orange': '#F28A15',
+                'purple': '#904992',
+                'teal': '#1C968F',
+                'grey_footer': '#333333',
+                'grey_copyrights': '#222222',
+                'greyBG': '#F8F8F8',
+                'kuning': '#FFC000'
             },
             fontSize: {
                 xxs: '0.5rem'

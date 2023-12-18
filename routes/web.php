@@ -72,9 +72,8 @@ Route::prefix('reservation')->group(function () {
         Route::get('/{id}', [ReservationRoomReservationController::class, 'showRoomReservationDetailPage']);
     });
 
-    Route::prefix('item')->group(function () {
+    Route::prefix('item')->group(function () {  
         Route::get('/', [ItemReservationController::class, 'showItemReservationPage'])->name('reservation.item');
-
         Route::get('/{id}', [ItemReservationController::class, 'showItemReservationDetailPage']);
     });
 });
@@ -85,7 +84,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
             Route::prefix('room')
                 ->controller(ReservationRoomReservationController::class)
                 ->group(function () {
-                    Route::post('/', 'reserveRoom');// create error bag
+                    Route::post('/', 'reserveRoom'); // create error bag
                     Route::get('/list', 'showAllRoomReservation');
                     Route::get('/find/{id}', 'userGetReservationDetail');
                     Route::post('/list/status', 'changeRoomReservationStatus');

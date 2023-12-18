@@ -61,7 +61,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
 
                                     }
                                     <div className="flex items-center pt-1">
-                                        <div className='flex flex-row items-center font-medium leading-5 transition duration-150 ease-in-out focus:outline-none
+                                        <div className='flex flex-row items-center font-medium leading-5 focus:outline-none
                                             bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30 transition duration-150 ease-in-out'>
                                             <div className='mr-2'>
                                                 <img src="https://i.ibb.co/gdzWDbZ/Vector.png" />
@@ -70,7 +70,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
                                                 <Link href="/admin/reservation" className='font-semibold text-white'>Reservation</Link>
                                             </div>
                                         </div>
-                                        <div className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                        <div className='font-medium leading-4 focus:outline-none
                                             bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
                                             {
                                                 Role === "guest" ?
