@@ -295,6 +295,18 @@ class RoomReservationController extends Controller
                 // redrect back
                 return redirect()->back();
             }
+
+
+            // notify user with fcm
+            // $user = $room_reservation->user;
+            // $title = "Room Reservation Status Changed";
+            // $body = "Your room reservation status has been changed to " . $room_reservation->status;
+            // $data = [
+            //     'type' => 'room_reservation',
+            //     'id' => $room_reservation->id,
+            // ];
+            // $this->sendNotification($user, $title, $body, $data);
+
             return response()->json([
                 'code' => 200,
                 'data' => [

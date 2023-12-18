@@ -21,8 +21,8 @@ export default {
             colors: {
                 'biru_umn': '#005596',
                 'biru_muda': '#0F9EED',
-                'biru_tua': '#0377D0',
                 'biru_navbar': '#0377D0',
+                'biru_tua': '#006BBD',
                 'orange': '#F28A15',
                 'purple': '#904992',
                 'teal': '#1C968F',

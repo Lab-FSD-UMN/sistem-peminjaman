@@ -199,7 +199,9 @@ export default function ReservationRoomDetailPage({ room }: any) {
         //modal 
         submitted ?
           <div
-            className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50'
+            className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50
+            z-[100]
+            '
           >
             <div
               className='flex flex-col gap-[1rem] bg-white rounded p-[1rem]'
