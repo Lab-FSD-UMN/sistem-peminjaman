@@ -3,6 +3,8 @@ import Guest from '@/Layouts/GuestLayout'
 import axiosClient from '@/Services/axiosClient'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
+import ItemImage from "@/Assets/image/item.png"
+import RoomImage from "@/Assets/image/room.png"
 
 export default function ReservationDashboardPage() {
     const Items: any = usePage().props.items;
@@ -13,7 +15,8 @@ export default function ReservationDashboardPage() {
     return (
         <AdminLayout>
             <section
-                className='bg-blue-700 text-white font-bold py-[1rem] px-4 w-full text-center'
+                className='bg-biru_tua text-white font-bold py-[1rem] w-full text-center
+                px-[1rem] sm:px-[5rem] xl:px-[10rem] relative'
             >
                 <h1
                     className='text-4xl font-bold text-left text-white w-full py-[1rem] px-4'
@@ -22,18 +25,26 @@ export default function ReservationDashboardPage() {
                 </h1>
                 <br />
                 <div
-                    className='flex flex-row p-[1rem] gap-[1rem] bg-blue-700 text-white font-bold py-[1rem] px-4'
+                    className='flex flex-row p-[1rem] gap-[1rem]  text-white font-bold py-[1rem] px-4'
                 >
-                    <LinkButton href='/admin/reservation/list'>
+                    <LinkButton
+                        image={ItemImage}
+                        href='/admin/reservation/list'>
                         Reservation Monitoring
                     </LinkButton>
-                    <LinkButton href='/admin/reservation/history'>
+                    <LinkButton
+                        image={ItemImage}
+                        href='/admin/reservation/history'>
                         Reservation History
                     </LinkButton>
-                    <LinkButton href='/admin/reservation/room'>
+                    <LinkButton
+                        image={RoomImage}
+                        href='/admin/reservation/room'>
                         Manage Room
                     </LinkButton>
-                    <LinkButton href='/admin/reservation/item'>
+                    <LinkButton
+                        image={ItemImage}
+                        href='/admin/reservation/item'>
                         Manage Item
                     </LinkButton>
                 </div>
@@ -42,18 +53,21 @@ export default function ReservationDashboardPage() {
     )
 }
 
-const LinkButton = ({ href, children }: any) => {
+const LinkButton = ({ href, children, image }: any) => {
     return (
         <Link
             href={href}
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-[1rem] overflow-hidden 
-            flex flex-col gap-[0.5rem] items-center w-[10rem]'
+            flex flex-col gap-[0.5rem] items-center w-[13rem]'
         >
             <img
-                //  placeholder
-                src="https://via.placeholder.com/50"
+                src={image}
                 alt=""
-                className='w-full inline-block rounded'
+                className='
+                w-full
+                aspect-square
+                h-[10rem] object-cover
+                inline-block rounded-[1rem]'
             />
             <div
                 className='text-left px-[0.5rem] pb-[0.5rem] w-full flex flex-row align-middle justify-between items-center'

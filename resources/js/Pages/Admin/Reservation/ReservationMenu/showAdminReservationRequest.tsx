@@ -123,7 +123,7 @@ export default function ReservationListPage() {
                     Sort By:
                 </button>
             </div>
-            
+
             <section
                 className='p-[1rem] gap-[1rem font-bold py-[1rem] px-4 w-full text-center'
             >
@@ -331,19 +331,42 @@ const ReservationListCard = ({
                                     <div
                                         className='flex flex-row gap-[1rem] w-full mt-[1rem] '
                                     >
-                                        <button
-                                            onClick={(e: any) => item.handleApprove(item.id)}
-                                            className='bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full'
-                                        >
-                                            Approve
-                                        </button>
-                                        <button
-                                            onClick={(e: any) => item.handleReject(item.id)}
-                                            className='bg-red-700 hover:bg-red-40000 text-white font-bold py-2 px-4 rounded w-full'
-                                        >
-                                            Reject
-                                        </button>
+                                        {
+                                            item.status == 0 &&
+                                            <>
+                                                <button
+                                                    onClick={(e: any) => item.handleApprove(item.id)}
+                                                    className='bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full'
+                                                >
+                                                    Approve
+                                                </button>
+                                                <button
+                                                    onClick={(e: any) => item.handleReject(item.id)}
+                                                    className='bg-red-700 hover:bg-red-40000 text-white font-bold py-2 px-4 rounded w-full'
+                                                >
+                                                    Reject
+                                                </button>
+                                            </>
+                                        }
+                                        {
+                                            item.status == 1 &&
+                                            <button
+                                                onClick={(e: any) => item.handleReject(item.id)}
+                                                className='bg-red-700 hover:bg-red-40000 text-white font-bold py-2 px-4 rounded w-full'
+                                            >
+                                                Reject
+                                            </button>
+                                        }
 
+                                        {
+                                            item.status == 2 &&
+                                            <button
+                                                onClick={(e: any) => item.handleApprove(item.id)}
+                                                className='bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full'
+                                            >
+                                                Approve
+                                            </button>
+                                        }
                                     </div>
                                 </div>
                             </div>
