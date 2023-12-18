@@ -14,7 +14,7 @@ export default function ReservationPage() {
 
     // wait for the data to be fetched from the backend
     const username: any = pageInfo?.auth?.user?.name
-    const role = pageInfo?.auth?.user?.role
+    // const role = pageInfo?.auth?.user?.role
 
 
     const [tab, setTab] = React.useState(0); // 0 for room, 1 for item
