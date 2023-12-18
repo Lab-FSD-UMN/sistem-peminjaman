@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->integer('status')->default(0)->comment('0: pending, 1: approved, 2: rejected, 3: canceled',);
             $table->timestamps();
+
+            // Define a foreign key constraint with cascade delete
+            $table->foreign('room_id')
+                ->references('id')
+                ->on('rooms')
+                ->onDelete('cascade');
         });
     }
 

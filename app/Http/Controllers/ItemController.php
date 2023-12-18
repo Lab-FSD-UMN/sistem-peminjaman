@@ -97,6 +97,7 @@ class ItemController extends Controller
             $item->create([
                 'id' => $image_item_id,
                 'name' => $request->name,
+                'image' => $image_link,
                 'quantity' => $request->quantity,
                 'description' => $request->description,
             ]);
