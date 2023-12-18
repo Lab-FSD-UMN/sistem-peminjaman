@@ -2,6 +2,7 @@ import AdminLayout from '@/Layouts/AdminLayout'
 import React, { useEffect } from 'react'
 import { router, usePage } from '@inertiajs/react'
 import axiosClient from '@/Services/axiosClient';
+import { formatDateTime } from '@/Utils/RoomReservationUtils';
 
 
 interface ReservationItemType {
@@ -78,7 +79,7 @@ export default function ReservationListPage() {
             status: 1,
             id: id,
             web: true
-        })  
+        })
     }
 
     // handle Reject
@@ -122,6 +123,7 @@ export default function ReservationListPage() {
                     Sort By:
                 </button>
             </div>
+            
             <section
                 className='p-[1rem] gap-[1rem font-bold py-[1rem] px-4 w-full text-center'
             >
@@ -171,58 +173,10 @@ export default function ReservationListPage() {
                         return (
                             <ReservationListCard
                                 key={item.id}
-                            >
-                                <img
-                                    // src={item?.image}
-                                    // placeholder
-                                    src="https://via.placeholder.com/150"
-                                    alt="image"
-                                    className='w-[100px] h-[100px] object-cover rounded-[1rem]'
-                                />
-                                <div
-                                    className='flex flex-col gap-[1rem] w-full text-left'
-                                >
-                                    <div
-                                        className='text-[1.2rem] font-bold'
-                                    >
-                                        {
-                                            item.isRoom ? item.room.name : item.item.name
-                                        }
-                                    </div>
-
-                                    <div>
-                                        {/* {item.description} */}
-                                        <span>
-                                            {item.reservation_start_time}
-                                        </span>
-                                        -
-                                        <span>
-                                            {item.reservation_end_time}
-                                        </span>
-                                    </div>
-                                    <div
-                                        className='flex flex-row gap-[1rem] w-fit'
-                                    >
-                                        <button
-                                            onClick={(e: any) => handleApprove(item.id)}
-                                            className='bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full'
-                                        >
-                                            Approve
-                                        </button>
-                                        <button
-                                            onClick={(e: any) => handleReject(item.id)}
-                                            className='bg-red-700 hover:bg-red-40000 text-white font-bold py-2 px-4 rounded w-full'
-                                        >
-                                            Reject
-                                        </button>
-                                        <div>
-                                            {item.status == 0 && "Pending"}
-                                            {item.status == 1 && "Approved"}
-                                            {item.status == 2 && "Rejected"}
-                                        </div>
-                                    </div>
-                                </div>
-                            </ReservationListCard>
+                                {...item}
+                                handleApprove={handleApprove}
+                                handleReject={handleReject}
+                            />
                         )
                     }
                     )
@@ -240,12 +194,174 @@ export default function ReservationListPage() {
         </AdminLayout>
     )
 }
-const ReservationListCard = ({ children }: any) => {
+const ReservationListCard = ({
+    ...item
+}: any) => {
+    let color = () => {
+        if (item.status == 0) return 'bg-yellow-500 hover:bg-yellow-700 text-white';
+        if (item.status == 1) return 'bg-green-500 hover:bg-green-700 text-white';
+        if (item.status == 2) return 'bg-red-500 hover:bg-red-700 text-white';
+    }
+
+    const [showModal, setShowModal] = React.useState(false);
+
     return (
-        <div
-            className='flex flex-row p-[1rem] gap-[1rem] bg-white text-black font-bold py-[1rem] px-4'
-        >
-            {children}
-        </div>
+        <>
+            <button
+                className='flex flex-row p-[1rem] gap-[1rem] bg-white text-black font-bold py-[1rem] px-4
+            hover:bg-gray-100'
+                onClick={(e) => setShowModal(true)}
+            >
+                <img
+                    src={item.isRoom ? item.room.image_url : item.item.image}
+                    alt="image"
+                    onError={(e: any) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/150";
+                    }}
+                    className='w-[100px] h-[100px] object-cover rounded-[1rem]'
+                />
+                <div
+                    className='flex flex-col gap-[1rem] w-full text-left'
+                >
+                    <div
+                        className='text-[1.2rem] font-bold'
+                    >
+                        {item.isRoom ? `${item.room.location} - ${item.room.name}` : item.item.name}
+                    </div>
+
+                    <div
+                        className='flex flex-row gap-[1rem] w-full'
+                    >
+                        <span>
+                            {item.reservation_start_time}
+                        </span>
+                        -
+                        <span>
+                            {item.reservation_end_time}
+                        </span>
+                    </div>
+                    <div
+                        className={`font-bold py-2 px-4 rounded w-full max-w-[20rem] text-center ${color()}`}
+                    >
+                        {item.status == 0 && "Pending"}
+                        {item.status == 1 && "Approved"}
+                        {item.status == 2 && "Rejected"}
+                    </div>
+                </div>
+            </button>
+            {/* //modal */}
+            <div
+                className={`fixed z-10 inset-0 overflow-y-auto justify-center items-center ${showModal ? 'block' : 'hidden'}`}
+                aria-labelledby="modal-title"
+                role="dialog"
+                aria-modal="true"
+            // onClick={(e) => setShowModal(false)}
+            >
+
+                <div
+                    className="flex  justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 items-center"
+                    onClick={(e) => setShowModal(false)}
+                >
+                    <div
+                        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                        aria-hidden="true"
+                    ></div>
+                    <span
+                        className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                        aria-hidden="true"
+                    >
+                        &#8203;
+                    </span>
+
+
+                    {/* Modal Content */}
+                    <div
+                        className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="modal-headline"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div
+                            className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"
+                        >
+                            <div
+                                className="sm:flex sm:items-start"
+                            >
+                                <div
+                                    className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full"
+                                >
+                                    <h3
+                                        className="text-lg leading-6 text-left font-bold capitalize bg-biru_umn text-white  p-2 w-fit mb-2"
+                                        id="modal-headline"
+                                    >
+                                        By {item.user.name}
+                                    </h3>
+                                    <h3
+                                        className="text-lg leading-6 text-gray-900 text-left font-bold"
+                                        id="modal-headline"
+                                    >
+                                        {item.isRoom ? `${item.room.location} - ${item.room.name}` : item.item.name}
+                                    </h3>
+                                    <hr />
+                                    <div>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {formatDateTime(item.reservation_start_time)}
+                                        </span>
+                                        -
+                                        <span>
+                                            {formatDateTime(item.reservation_end_time)}
+                                        </span>
+                                    </div>
+                                    <div
+                                        className="mt-2"
+                                    >
+                                        <h3>
+                                            Note:
+                                        </h3>
+                                        <p
+                                            className="text-sm text-gray-500"
+                                        >
+                                            {item.note}
+                                        </p>
+                                    </div>
+                                    <div
+                                        className='flex flex-row gap-[1rem] w-full mt-[1rem] '
+                                    >
+                                        <button
+                                            onClick={(e: any) => item.handleApprove(item.id)}
+                                            className='bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full'
+                                        >
+                                            Approve
+                                        </button>
+                                        <button
+                                            onClick={(e: any) => item.handleReject(item.id)}
+                                            className='bg-red-700 hover:bg-red-40000 text-white font-bold py-2 px-4 rounded w-full'
+                                        >
+                                            Reject
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+                        >
+                            <button
+                                type="button"
+                                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-700 text-base font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                onClick={(e) => setShowModal(false)}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
