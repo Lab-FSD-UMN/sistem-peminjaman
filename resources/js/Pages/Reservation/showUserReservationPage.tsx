@@ -10,6 +10,8 @@ export default function ReservationPage() {
     const { userRoomReservation, userItemReservation } = pageInfo
     // wait for the data to be fetched from the backend
     const username: any = pageInfo?.auth?.user?.name
+    const role = pageInfo?.auth?.user?.role
+
 
     const [tab, setTab] = React.useState(0); // 0 for room, 1 for item
     const [reservationData, setReservationData] = useState() as any[];
@@ -203,7 +205,7 @@ export default function ReservationPage() {
 
 
                 {/* // modal if not logged in */}
-                {user === null || user.role !== "user" &&
+                {username === null || role !== "user" &&
                     <div
                         className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[100] '
                         id="modal"
