@@ -15,7 +15,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const Usepage: any = usePage().props;
     const Role = Usepage.auth.user?.role ? Usepage.auth.user?.role : 'guest';
-    
+
     useEffect(() => {
         console.log(Role);
     }, [])
@@ -24,7 +24,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
     // const toggleDropdown = () => {
     //     setShowDropdown(!showDropdown);
     // };
-    
+
     return (
         <>
             <div className="min-h-screen bg-grayBG">
@@ -43,7 +43,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
                             <div className="flex items-center">
                                 <div className="flex items-center">
                                     <a href="/">
-                                        <ApplicationLogo/>
+                                        <ApplicationLogo />
                                         {/* <img src={logoFSD}/> */}
                                     </a>
                                 </div>
@@ -61,15 +61,18 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
 
                                     }
                                     <div className="flex items-center pt-1">
-                                        <div className='flex flex-row items-center font-medium leading-5 focus:outline-none
-                                            bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30 transition duration-150 ease-in-out'>
+
+                                        <Link href="/admin/reservation" className='flex flex-row items-center font-medium leading-5 transition duration-150  focus:outline-none
+                                            bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30  ease-in-out'>
                                             <div className='mr-2'>
                                                 <img src="https://i.ibb.co/gdzWDbZ/Vector.png" />
                                             </div>
                                             <div>
-                                                <Link href="/admin/reservation" className='font-semibold text-white'>Reservation</Link>
+                                                <div className='font-semibold text-white'>Reservation</div>
                                             </div>
-                                        </div>
+
+                                        </Link>
+
                                         <div className='font-medium leading-4 focus:outline-none
                                             bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
                                             {
@@ -144,15 +147,15 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
                                     {
                                         Role === "guest" ?
 
-                                        <ResponsiveNavLink href={route('login')} active={route().current('login')}>
-                                            Login
-                                        </ResponsiveNavLink>
-                                        :
-                                        <ResponsiveNavLink
-                                            active={route().current('logout')}
-                                            method="post" href={route('logout')} as="button">
-                                            Log Out
-                                        </ResponsiveNavLink>
+                                            <ResponsiveNavLink href={route('login')} active={route().current('login')}>
+                                                Login
+                                            </ResponsiveNavLink>
+                                            :
+                                            <ResponsiveNavLink
+                                                active={route().current('logout')}
+                                                method="post" href={route('logout')} as="button">
+                                                Log Out
+                                            </ResponsiveNavLink>
                                     }
                                 </div>
                             </div>

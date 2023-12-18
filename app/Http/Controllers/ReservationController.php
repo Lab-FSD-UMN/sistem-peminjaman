@@ -24,11 +24,14 @@ class ReservationController extends Controller
     public function showUserReservationPage()
     {
         // TODO: check if user is logged in middleware
-        // if the user is not logged in, redirect to the login page
-        // if (auth()->user() == null) {
-        //     // return redirect()->route('login');
-        //     return Inertia::render('Reservation/showUserReservationPageNotLogin');
+        // if the login is admin then redirect to admin page
+        // if (auth()->user()) {
+        //     // return redirect()->route('index.admin.reservation.dashboard');
+        //     // return to /admin/reservation without route name
+        //     return redirect('/admin/reservation');
         // }
+
+
         $booked_item = Booked_item::where('user_id', auth()->id())
             ->with('item')
             ->get();
@@ -235,23 +238,26 @@ class ReservationController extends Controller
     // [Reservation/List] Show Update of User Reservation (GET)
     public function showAdminReservationRequest()
     {
-        $booked_items = Booked_item::with('item')->get();
-        $booked_items = $booked_items->map(function ($data) {
-            $data->item->image = Storage::url($data->item->image);
-            return $data;
-        });
+        // $booked_items = Booked_item::with('item')->get();
+        // with user data
+        $booked_items = Booked_item::with('user')->with('item')->get();
+        foreach ($booked_items as $data) {
+            $data['item']['image_url'] = Storage::url($data['item']['image']);
+        }
         $booked_items = $booked_items->sortBy('status');
 
-
         //rooms
-        $booked_rooms = Booked_room::with('room')->get();
-        $booked_rooms = $booked_rooms->map(function ($item) {
-            $item->room->image = Storage::url($item->room->image);
-            return $item;
-        });
+        $booked_rooms = Booked_room::with('room')->with('user')->get();
         $booked_rooms = $booked_rooms->sortBy('status');
 
+        //turn to array 
+        $booked_items = $booked_items->values()->all();
+        $booked_rooms = $booked_rooms->values()->all();
 
+
+        foreach ($booked_rooms as $data) {
+            $data['room']['image_url'] = Storage::url($data['room']['image']);
+        }
         return Inertia::render(
             'Admin/Reservation/ReservationMenu/showAdminReservationRequest',
             [
@@ -301,6 +307,18 @@ class ReservationController extends Controller
     }
 
 
-    //notification
 
+    // manage room
+    public function showManageRoomPage()
+    {
+        //get all room data
+        $room = Room::all();
+        $room = $room->map(function ($item) {
+            $item->image = Storage::url($item->image);
+            return $item;
+        });
+        return Inertia::render('Admin/Reservation/ReservationMenu/Submenu/Room/showManageRoomPage', [
+            'room' => $room,
+        ]);
+    }
 }

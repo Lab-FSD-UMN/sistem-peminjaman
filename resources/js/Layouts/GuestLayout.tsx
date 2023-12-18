@@ -85,22 +85,27 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 <div className='font-semibold text-white'>Reservation</div>
                                             </div>
                                         </Link>
-                                        {Role === "guest" ?
-                                            <NavLink
-                                                className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
-                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80' href={route('login')} active={route().current('login')}
-                                            >
-                                                <a className="text-black font-bold">Login</a>
-                                            </NavLink>
-                                            :
-                                            <NavLink
-                                                className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
-                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'
-                                                active={route().current('logout')}
-                                                method="post" href={route('logout')} as="button">
-                                                <a className="text-black font-bold">Log Out</a>
 
-                                            </NavLink>
+
+                                        {
+                                            Role === "guest" ?
+                                                <NavLink href={route('login')} active={route().current('login')}
+                                                    className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                                bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
+                                                    <div className="text-black font-bold">
+                                                        Login
+                                                    </div>
+                                                </NavLink>
+                                                :
+                                                <NavLink
+                                                    active={route().current('logout')}
+                                                    method="post" href={route('logout')} as="button"
+                                                    className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                                    bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
+                                                    <div className="text-black font-bold">
+                                                        Log Out
+                                                    </div>
+                                                </NavLink>
                                         }
                                     </div>
                                 </div>

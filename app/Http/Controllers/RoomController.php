@@ -11,19 +11,18 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 use Ramsey\Uuid\Uuid;
 
 class RoomController extends Controller
 {
-
-
 
     // show / get all room data with pagination
     public function showAllRoom() // this function is for show all room on database
     {
         try {
             $rooms = Room::all();
-            
+
             #get image with storage link
             foreach ($rooms as $room) {
                 $room->image = Storage::url($room->image);
@@ -105,7 +104,7 @@ class RoomController extends Controller
             $room = Room::findOrFail($id);
 
             $room->image = Storage::url($room->image);
-            
+
             return response()->json([
                 'code' => 200,
                 'message' => 'success',
@@ -130,7 +129,6 @@ class RoomController extends Controller
                 'name' => 'required|unique:rooms,name', // Use 'title' for the unique rule
                 'description' => 'required',
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                // 'location' => 'required|unique:rooms,location',
                 'location' => 'required',
             ]);
             if ($validator->fails()) {
@@ -140,7 +138,6 @@ class RoomController extends Controller
                     'code' => 422, // Unprocessable Entity
                 ], 422);
             }
-
             DB::beginTransaction();
 
             $image_link = null;

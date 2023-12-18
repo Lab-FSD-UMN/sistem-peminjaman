@@ -10,6 +10,7 @@ export default function ReservationPage() {
     const { userRoomReservation, userItemReservation } = pageInfo
     // wait for the data to be fetched from the backend
     const username: any = pageInfo?.auth?.user?.name
+
     const [tab, setTab] = React.useState(0); // 0 for room, 1 for item
     const [reservationData, setReservationData] = useState() as any[];
     // convert status code to string
@@ -24,6 +25,10 @@ export default function ReservationPage() {
         }
         console.log("username", username)
     }, [tab])
+
+    useEffect(() => {
+        console.log("Page Info: ", pageInfo);
+    }, [pageInfo])
 
     //search logic
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -63,7 +68,7 @@ export default function ReservationPage() {
     return (
         <Guest>
             <section
-                className='flex flex-col w-full min-h-[5rem]'
+                className='flex flex-col w-full min-h-[5rem] relative'
             >
                 <div
                     className='flex flex-col p-[1rem] gap-[1rem]  text-white font-bold py-[3rem] px-[1rem]
@@ -77,12 +82,13 @@ export default function ReservationPage() {
                             Room and Item Reservation
                         </h2>
                         <h1
-                            className='text-[2rem] w-full text-white font-bold'
+                            className='text-[2rem] w-full text-white font-bold capitalize'
                         >
                             {
                                 username && `Welcome, ${username} `
                             }
                             Choose your reservation
+
                         </h1>
                         <p
                             className='text-sm w-full text-white opacity-[70%]'
@@ -175,37 +181,11 @@ export default function ReservationPage() {
                             reservationData?.map((data: any) => {
                                 const { text, color } = statusToString(data.status); // Declare variables here
                                 return (
-                                    <div
-                                        className='flex flex-row gap-[1rem] bg-white h-[10rem]
-                                            border-b-[0.5px] border-biru_muda border-opacity-[50%] pb-[0rem] sm:pb-[1rem]'
-                                        key={data.id}
-                                    >
-                                        <img
-                                            className="h-full object-cover hidden sm:block"
-                                            src={
-                                                tab === 0 ? data.room.image : data.item.image
-                                            } alt="image"
-                                            onError={(e) => {
-                                                e.currentTarget.src = "https://placehold.co/600x400"
-                                            }}
-                                        />
-                                        <div className='flex flex-col justify-start text-left w-full'>
-                                            <h3
-                                                className='text-black font-bold rounded text-[1.5rem]'
-                                            >
-                                                {tab === 0 ? `${data.room.location} - ${data.room.name}` : `${data.item.name}`}
-                                            </h3>
-                                            {/* <p>Reservation ID: {reservation.id}</p> */}
-                                            <p
-                                                className='text-black font-bold py-2 rounded'
-                                            >{formatDateTime(data.reservation_start_time)} - {formatDateTime(data.reservation_end_time)}</p>
-                                            <p
-                                                className={`${color} text-white font-bold py-2 px-4 rounded text-center w-full`}
-                                            >
-                                                {text}
-                                            </p>
-                                        </div>
-                                    </div>
+                                    <ReserveCard
+                                        {...data}
+                                        text={text}
+                                        color={color}
+                                    />
                                 );
                             })
                         }
@@ -219,6 +199,32 @@ export default function ReservationPage() {
                         // backgroundSize: '100px'
                     }}
                 />
+
+
+
+                {/* // modal if not logged in */}
+                {user === null || user.role !== "user" &&
+                    <div
+                        className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[100] '
+                        id="modal"
+                    >
+                        <div
+                            className='bg-white w-[30rem] h-[20rem] flex flex-col justify-center items-center rounded-[1rem]'
+                        >
+                            <h1
+                                className='text-[2rem] font-bold text-center'
+                            >
+                                Please Login First!
+                            </h1>
+                            <Link
+                                href='/login'
+                                className='bg-biru_umn hover:bg-biru_muda text-white font-bold py-2 px-4 rounded'
+                            >
+                                Login
+                            </Link>
+                        </div>
+                    </div>
+                }
             </section>
         </Guest>
     )
@@ -245,6 +251,45 @@ const Card = ({ title, description, href }: any) => {
             </div>
         </Link>
     </div>
+}
+
+
+const ReserveCard = ({ ...reservation }: any) => {
+    const { text, color } = statusToString(reservation.status); // Declare variables here
+    return (
+        <div
+            className='flex flex-row gap-[1rem] bg-white h-[10rem]
+            border-b-[0.5px] border-biru_muda border-opacity-[50%] pb-[0rem] sm:pb-[1rem]'
+        >
+            <img
+                className="h-full object-cover hidden sm:block"
+                src={reservation.room.image} alt="image"
+                onError={(e) => {
+                    e.currentTarget.src = "https://placehold.co/600x400"
+                }}
+            />
+            <div className='flex flex-col justify-start text-left w-full'>
+                <h3
+                    className='text-black font-bold rounded text-[1.5rem]'
+                >
+                    {
+                        reservation.is_item ?
+                            `${reservation.item.name}` :
+                            `${reservation.room.location} - ${reservation.room.name}`
+                    }
+                </h3>
+                {/* <p>Reservation ID: {reservation.id}</p> */}
+                <p
+                    className='text-black font-bold py-2 rounded'
+                >{formatDateTime(reservation.reservation_start_time)} - {formatDateTime(reservation.reservation_end_time)}</p>
+                <p
+                    className={`${color} text-white font-bold py-2 px-4 rounded text-center w-full`}
+                >
+                    {text}
+                </p>
+            </div>
+        </div>
+    )
 }
 
 
