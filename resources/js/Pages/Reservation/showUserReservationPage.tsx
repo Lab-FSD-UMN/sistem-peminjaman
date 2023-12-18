@@ -8,6 +8,10 @@ export default function ReservationPage() {
     const pageInfo: any = usePage().props
     const userReservation: any = pageInfo
     const { userRoomReservation, userItemReservation } = pageInfo
+    const auth: any = pageInfo.auth
+    const user = auth.user
+    const role = auth.user?.role
+
     // wait for the data to be fetched from the backend
     const username: any = pageInfo?.auth?.user?.name
     const role = pageInfo?.auth?.user?.role
@@ -205,7 +209,7 @@ export default function ReservationPage() {
 
 
                 {/* // modal if not logged in */}
-                {username === null || role !== "user" &&
+                {user === null &&
                     <div
                         className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[100] '
                         id="modal"
