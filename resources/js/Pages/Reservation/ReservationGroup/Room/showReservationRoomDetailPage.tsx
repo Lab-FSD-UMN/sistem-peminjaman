@@ -35,23 +35,20 @@ export default function ReservationRoomDetailPage({ room }: any) {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    router.post(`/reservation/room`, {
+    axiosClient.post(`/user/reservation/room`, {
       room_id: room.id,
       reservation_date_start: data.reservation_date_start,
       reservation_time_start: ConvertTimeFormat(data.reservation_time_start), // convert date to HH:MM:SS
       reservation_date_end: data.reservation_date_end,
       reservation_time_end: ConvertTimeFormat(data.reservation_time_end),
-      note: data.note,
-      web: true,
-    }, {
-      onSuccess: () => {
-        // alert("Reservation Success")
-        setSubmitted(true)
-      },
-      onError: (error) => {
-        console.log("Error", error)
-        alert("Reservation Failed")
-      }
+      note: data.note
+    }
+    ).then((res) => {
+      console.log("Success", res)
+      setSubmitted(true)
+    }
+    ).catch((err) => {
+      console.log("Error", err)
     })
   }
 
@@ -117,7 +114,7 @@ export default function ReservationRoomDetailPage({ room }: any) {
           </div>
           <form
             onSubmit={handleSubmit}
-            className='flex flex-col gap-[0.5rem] text-white font-bold rounded p-[1rem] '
+            className='flex flex-col gap-[0.5rem] font-bold rounded p-[1rem] pb-[5rem]'
           >
             <label
               className='text-black font-bold text-[1.2rem]'
@@ -180,8 +177,16 @@ export default function ReservationRoomDetailPage({ room }: any) {
             ></textarea>
             <br />
             <button
+              disabled={
+                data.reservation_date_start === "" ||
+                data.reservation_time_start === "" ||
+                data.reservation_date_end === "" ||
+                data.reservation_time_end === ""
+              }
               type="submit"
-              className='bg-biru_tua hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-[1rem]'
+              className='bg-biru_umn hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-[1rem]
+              disabled:opacity-50 disabled:cursor-not-allowed
+              '
             >
               Submit
             </button>

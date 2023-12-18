@@ -76,31 +76,36 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 </div>
                                             )}
                                         </div>
-                                        <div className='flex flex-row items-center font-medium leading-5 transition duration-150  focus:outline-none
+                                        <Link href="/reservation" className='flex flex-row items-center font-medium leading-5 transition duration-150  focus:outline-none
                                             bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30  ease-in-out'>
                                             <div className='mr-2'>
                                                 <img src="https://i.ibb.co/gdzWDbZ/Vector.png" />
                                             </div>
                                             <div>
-                                                <Link href="/reservation" className='font-semibold text-white'>Reservation</Link>
+                                                <div className='font-semibold text-white'>Reservation</div>
                                             </div>
-                                        </div>
-                                        <div className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
-                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
-                                            {
-                                                Role === "guest" ?
+                                        </Link>
 
-                                                    <NavLink href={route('login')} active={route().current('login')}>
-                                                        <a className="text-black font-bold">Login</a>
-                                                    </NavLink>
-                                                    :
-                                                    <NavLink
-                                                        active={route().current('logout')}
-                                                        method="post" href={route('logout')} as="button">
-                                                        <a className="text-black font-bold">Log Out</a>
-                                                    </NavLink>
-                                            }
-                                        </div>
+                                        {
+                                            Role === "guest" ?
+                                                <NavLink href={route('login')} active={route().current('login')}
+                                                    className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                                bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
+                                                    <div className="text-black font-bold">
+                                                        Login
+                                                    </div>
+                                                </NavLink>
+                                                :
+                                                <NavLink
+                                                    active={route().current('logout')}
+                                                    method="post" href={route('logout')} as="button"
+                                                    className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                                    bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
+                                                    <div className="text-black font-bold">
+                                                        Log Out
+                                                    </div>
+                                                </NavLink>
+                                        }
                                     </div>
                                 </div>
                             </div>

@@ -15,8 +15,10 @@ export default function ReservationDashboardPage() {
             <section
                 className='bg-blue-700 text-white font-bold py-[1rem] px-4 w-full text-center'
             >
-                <h1>
-                    Admin Reservation Dashboard
+                <h1
+                    className='text-4xl font-bold text-left text-white w-full py-[1rem] px-4'
+                >
+                    Reservation Dashboad
                 </h1>
                 <br />
                 <div
@@ -27,6 +29,12 @@ export default function ReservationDashboardPage() {
                     </LinkButton>
                     <LinkButton href='/admin/reservation/history'>
                         Reservation History
+                    </LinkButton>
+                    <LinkButton href='/admin/reservation/room'>
+                        Manage Room
+                    </LinkButton>
+                    <LinkButton href='/admin/reservation/item'>
+                        Manage Item
                     </LinkButton>
                 </div>
             </section>
@@ -57,10 +65,6 @@ const LinkButton = ({ href, children }: any) => {
     )
 }
 
-
-// interface FormType {
-//     name: string;
-// }
 
 function CreateItemPage() {
     const { data, setData, post, processing, errors, reset } = useForm({
