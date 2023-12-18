@@ -5,13 +5,12 @@ import HeaderBackgroundImage from '@/Assets/image/reservationheroimg.webp'
 import PinewheelImage from '@/Assets/image/pinewheel.svg'
 
 export default function ReservationPage() {
-    const pageInfo = usePage().props
+    const pageInfo: any = usePage().props
     const userReservation: any = pageInfo
     const { userRoomReservation, userItemReservation } = pageInfo
-    const auth: any = pageInfo.auth
-    const user = auth.user
-
     // wait for the data to be fetched from the backend
+    const username: any = pageInfo?.auth?.user?.name
+
     const [tab, setTab] = React.useState(0); // 0 for room, 1 for item
     const [reservationData, setReservationData] = useState() as any[];
     // convert status code to string
@@ -24,6 +23,7 @@ export default function ReservationPage() {
             setReservationData(userItemReservation);
             console.log("item", userItemReservation)
         }
+        console.log("username", username)
     }, [tab])
 
     useEffect(() => {
@@ -84,8 +84,11 @@ export default function ReservationPage() {
                         <h1
                             className='text-[2rem] w-full text-white font-bold capitalize'
                         >
-                            {user?.name && (user.name.split(' ')[0], " ")}Choose your reservation!
-                            {/* {!user.name && <>Choose your reservation!</>} */}
+                            {
+                                username && `Welcome, ${username} `
+                            }
+                            Choose your reservation
+
                         </h1>
                         <p
                             className='text-sm w-full text-white opacity-[70%]'
@@ -187,12 +190,7 @@ export default function ReservationPage() {
                             })
                         }
                     </div>
-                    {/* <Link
-                        href={"/reservation/myreservation"}
-                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                    >
-                        View My Reservation
-                    </Link> */}
+
                 </div>
                 <div
                     className='w-full h-[20rem] bg-repeat-space bg-[length:5rem] md:bg-[length:10rem]'
@@ -238,9 +236,12 @@ const Card = ({ title, description, href }: any) => {
         <Link
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold flex flex-col
             rounded-[1rem] overflow-hidden'
-            href={href}>
+            href={href}
+        >
             <div>
-                <img src="https://placehold.co/600x400" className='max-h-[10rem] w-full object-cover' alt="" />
+                <img
+                    src={HeaderBackgroundImage}
+                    className='max-h-[10rem] w-full object-cover' alt="" />
             </div>
             <div className='py-2 px-4 text-center'>
                 {title}

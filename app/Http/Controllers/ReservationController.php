@@ -113,7 +113,7 @@ class ReservationController extends Controller
         // return item data with image
         // with pagination and eager loading
         $items = Item::with('item_images')->paginate(10);
-        return Inertia::render('Reservation/ReservationGroup/Item/ReservationItemPage', [
+        return Inertia::render('Reservation/ReservationGroup/Room/showItemReservationPage', [
             'items' => $items,
         ]);
     }
@@ -305,6 +305,7 @@ class ReservationController extends Controller
             }
         });
     }
+
 
 
     // manage room

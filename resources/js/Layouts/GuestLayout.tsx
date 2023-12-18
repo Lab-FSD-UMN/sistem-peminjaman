@@ -86,6 +86,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                             </div>
                                         </Link>
 
+
                                         {
                                             Role === "guest" ?
                                                 <NavLink href={route('login')} active={route().current('login')}

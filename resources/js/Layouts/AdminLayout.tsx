@@ -61,6 +61,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
 
                                     }
                                     <div className="flex items-center pt-1">
+
                                         <Link href="/admin/reservation" className='flex flex-row items-center font-medium leading-5 transition duration-150  focus:outline-none
                                             bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30  ease-in-out'>
                                             <div className='mr-2'>
@@ -69,6 +70,7 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
                                             <div>
                                                 <div className='font-semibold text-white'>Reservation</div>
                                             </div>
+
                                         </Link>
 
                                         <div className='font-medium leading-4 focus:outline-none
