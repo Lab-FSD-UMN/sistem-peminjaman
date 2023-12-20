@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('password');
             $table->tinyInteger('role')->default(0)->comment('0: user, 1: admin, 2: superadmin');
             $table->rememberToken();
+            //fcmtoken
+            $table->string('fcm_token')->nullable();
             $table->timestamps();
         });
     }
