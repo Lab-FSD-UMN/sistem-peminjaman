@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\SendNotif;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -69,10 +70,17 @@ class User extends Authenticatable
         );
     }
 
+
+
+    public function  fcm_token()
+    {
+        $token_test = "feJHq8YIRBKjw8xoEwc-TY:APA91bET_H68pCKmCE3zXWbEaUzstZWIDNwnEy-x-Tc_30l5bcpc0gFMO5GSH8TH63FFkBC_YGZ6iYk7NuVMI4AGJdbhuAPuI4K1jMvm-JR3ZH35pbOU5Ooa7jBxHxw9MbgXGaP9jc3B";
+        return $token_test;
+    }
+
     public function routeNotificationForFcm()
     {
-        return $this->fcm_token;
+        
+        return $this->fcm_token();
     }
 }
-
-

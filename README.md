@@ -35,6 +35,11 @@ ln -s ../storage/app/public storage (on public dir)
 <!--  -->
 
 
+<!-- Setup Firebase Message -->
+1. Setup Env, add "FIREBASE_CREDENTIALS="
+2. download credentials from firebase console, and put it on root dir
+
+
 <!-- Referensi -->
 1. Send Email : https://www.youtube.com/watch?v=XywB2qtzSoM
 2. Middleware Auth : https://www.youtube.com/watch?v=vc4sXOdE4bQ    

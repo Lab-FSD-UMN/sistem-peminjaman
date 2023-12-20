@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Reservation;
 use App\Http\Controllers\Controller;
 use App\Models\Booked_room;
 use App\Models\Room;
+use App\Notifications\SendNotif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,8 @@ class RoomReservationController extends Controller
         return Inertia::render('Reservation/ReservationGroup/Room/showRoomReservationPage', [
             'rooms' => $rooms,
         ]);
+
+        
     }
 
     public function showRoomReservationDetailPage($id)
@@ -37,6 +40,8 @@ class RoomReservationController extends Controller
         return Inertia::render('Reservation/ReservationGroup/Room/showReservationRoomDetailPage', [
             'room' => $room,
         ]);
+
+        
     }
 
     public function showAllRoomReservationPending()
@@ -295,17 +300,6 @@ class RoomReservationController extends Controller
                 // redrect back
                 return redirect()->back();
             }
-
-
-            // notify user with fcm
-            // $user = $room_reservation->user;
-            // $title = "Room Reservation Status Changed";
-            // $body = "Your room reservation status has been changed to " . $room_reservation->status;
-            // $data = [
-            //     'type' => 'room_reservation',
-            //     'id' => $room_reservation->id,
-            // ];
-            // $this->sendNotification($user, $title, $body, $data);
 
             return response()->json([
                 'code' => 200,

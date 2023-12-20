@@ -31,12 +31,13 @@ Route::prefix('auth')
 
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/logout', 'logout');
+            Route::post('/fcm/token', [APIAuthController::class, 'updateFCMToken']);
         });
 
         Route::post('/login', 'login');
         Route::post('/register', 'register');
     });
-
+//for fcm token
 
 // Admin protected API Routes
 Route::middleware(['auth:sanctum', 'role-api:admin'])
@@ -181,3 +182,7 @@ Route::post('/search/item', [ItemController::class, 'searchItemData']);
 // Reservation System Route End
 // TESTING:
 Route::post('/reservation/item/schedule', [ReservationController::class, 'showItemScheduleFromDate']);
+
+
+
+Route::get('/testnotif', [RoomController::class, 'testNotif']);

@@ -6,9 +6,13 @@ use App\Exceptions\ReservationException;
 use App\Models\Booked_room;
 use App\Models\Item_image;
 use App\Models\Room;
+use App\Models\User;
+use App\Notifications\SendNotif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -17,10 +21,28 @@ use Ramsey\Uuid\Uuid;
 class RoomController extends Controller
 {
 
+    public function testNotif()
+    {
+        $user = auth()->user();
+
+        $user = new User([
+            'name' => 'John Doe',
+            'email' => ''
+        ]);
+
+        $user->notify(new SendNotif());
+        
+        return response()->json([
+            'code' => 200,
+            'message' => 'success',
+        ], 200);
+    }
+
     // show / get all room data with pagination
     public function showAllRoom() // this function is for show all room on database
     {
         try {
+
             $rooms = Room::all();
 
             #get image with storage link
@@ -200,7 +222,6 @@ class RoomController extends Controller
             #get id
             $room = Room::findOrFail($request->id);
             #update only if attribute is not null
-
 
             DB::beginTransaction();
             // Update only if the request data is not null
