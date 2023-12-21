@@ -46,9 +46,10 @@ export default function Login({ status, canResetPassword }: { status?: string, c
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
             <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
                 <form onSubmit={submit} className="w-[20rem] bg-white shadow-md rounded-md p-5 space-y-4">
-                    <h1>
+                    <div>
                         <span className="text-2xl font-bold">Log in</span>
-                    </h1>
+                        {/* <img src={} alt="" /> */}
+                    </div>
                     <div className="space-y-2">
                         <InputLabel htmlFor="email" value="Email" />
                         <TextInput

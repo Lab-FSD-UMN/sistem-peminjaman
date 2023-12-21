@@ -66,17 +66,13 @@ Route::get('/dashboard', function () {
 
 Route::prefix('reservation')->group(function () {
     Route::get('/', [ReservationController::class, 'showUserReservationPage'])->name('reservation');
-
     Route::get('/myreservation', [ReservationController::class, 'showUserReservationListAndStatusPage'])->name('reservation.myreservation');
-
-
     Route::prefix('room')->group(function () {
         Route::get('/', [ReservationRoomReservationController::class, 'showRoomReservationPage'])->name('reservation.room');
-
         Route::get('/{id}', [ReservationRoomReservationController::class, 'showRoomReservationDetailPage']);
     });
 
-    Route::prefix('item')->group(function () {  
+    Route::prefix('item')->group(function () {
         Route::get('/', [ItemReservationController::class, 'showItemReservationPage'])->name('reservation.item');
         Route::get('/{id}', [ItemReservationController::class, 'showItemReservationDetailPage']);
     });
@@ -134,7 +130,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
                     ->name('item.')
                     ->controller(ItemReservationController::class)
                     ->group(function () {
-                        Route::get('/', [ItemReservationController::class, 'showAdminReservationItemPage'])->name('index');
+                        Route::get('/', [ItemController::class, 'showAdminReservationItemPage'])->name('index');
 
                         Route::get('/schedule', [ItemReservationController::class, 'showAdminReservationItemMonitoringSchedule'])->name('schedule');
 
