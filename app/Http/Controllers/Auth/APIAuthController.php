@@ -119,7 +119,7 @@ class APIAuthController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'message' => 'Validation failed.',
-                    'errors' => $validator->errors(),
+                    'code' => 422,
                 ], 422);
             }
 
@@ -133,7 +133,6 @@ class APIAuthController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                "error" => $e->getMessage(),
                 "message" => "Failed to update FCM token.",
                 "code" => 422,
             ], 422);
