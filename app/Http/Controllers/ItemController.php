@@ -34,6 +34,11 @@ class ItemController extends Controller
             ->groupBy('items.id')
             ->get();
 
+        // storage link
+        // Storage::
+        foreach ($items as $item) {
+            $item->image = Storage::url($item->image);
+        }
         return response()->json([
             'items' => $items
         ], 200);
@@ -41,16 +46,18 @@ class ItemController extends Controller
 
     public function getItemById($id)
     {
-            $item = Item::find($id);
+        $item = Item::find($id);
 
-            if (!$item){
-                throw new ResponseException(404, "Item is not found");
-            }
+        if (!$item) {
+            throw new ResponseException(404, "Item is not found");
+        }
 
-            return response()->json([
-                'message' => "Successfully fetched room detail.",
-                'data' => $item
-            ], 200);
+        $item->image = Storage::url($item->image);
+
+        return response()->json([
+            'message' => "Successfully fetched room detail.",
+            'data' => $item
+        ], 200);
     }
 
     // function for create new item

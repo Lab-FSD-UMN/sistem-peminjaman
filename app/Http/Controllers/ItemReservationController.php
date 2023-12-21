@@ -15,6 +15,7 @@ use App\Models\Booked_item;
 use App\Models\Booked_room;
 use App\Models\Item_image;
 use App\Notifications\SendNotif;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -157,7 +158,7 @@ class ItemReservationController extends Controller
             $title = "Item Reservation Status Changed!";
             $body = $username . " Your Item reservation status has been changed to " . $reservation_status;
             $user->notify(new SendNotif($title, $body));
-            
+
             return response()->json([
                 'status' => 201,
                 'message' => 'Item has been reserved',
