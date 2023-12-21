@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
 class ItemController extends Controller
@@ -49,14 +50,19 @@ class ItemController extends Controller
         $item = Item::find($id);
 
         if (!$item) {
-            throw new ResponseException(404, "Item is not found");
+            // throw new ResponseException(404, "Item is not found");
+            return response()->json([
+                'message' => "Item is not found.",
+                'code' => 404
+            ], 404);
         }
 
         $item->image = Storage::url($item->image);
 
         return response()->json([
             'message' => "Successfully fetched room detail.",
-            'data' => $item
+            'data' => $item,
+            'code' => 200
         ], 200);
     }
 
@@ -66,11 +72,20 @@ class ItemController extends Controller
         try {
 
             DB::beginTransaction();
-            $request->validate([
-                'name' => 'required',
-                'image' => 'required',
-                'quantity' => 'required',
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'quantity' => 'required|integer',
+                'description' => 'nullable|string',
             ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => $validator->errors(),
+                    'code' => 422,
+                    'message' => 'Validation error.'
+                ], 422);
+            }
 
             // declare variable for image
             $item = new Item();
@@ -114,6 +129,8 @@ class ItemController extends Controller
             if ($request->wantsJson()) {
                 return response()->json([
                     'message' => 'Item has been created',
+                    'data' => $item,
+                    'code' => 200
                 ], 200);
             }
             return redirect()->back();

@@ -56,7 +56,6 @@ Route::middleware(['auth:sanctum', 'role-api:admin'])
             ->controller(ItemController::class)
             ->group(function () {
                 Route::post('/', 'createItem');
-
                 Route::prefix('reservation')
                     ->controller(ItemReservationController::class)
                     ->group(function () {

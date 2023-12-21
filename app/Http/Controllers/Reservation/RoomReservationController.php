@@ -134,7 +134,7 @@ class RoomReservationController extends Controller
             if ($clashingBookings) {
                 return response()->json([
                     'code' => 422,
-                    'message' => 'Booking clashes with existing reservation.'
+                    'message' => 'Booking clashes with existing reservation.',
                 ], 422);
             }
 
@@ -144,14 +144,14 @@ class RoomReservationController extends Controller
             $bookingDuration = $endTime->diffInHours($startTime);
 
             // Check if booking duration exceeds the maximum allowed hours (4 hours in this example)
-            $maxBookingHours = 4;
+            // $maxBookingHours = 4;
 
-            if ($bookingDuration > $maxBookingHours) {
-                return response()->json([
-                    'code' => 422,
-                    'message' => 'Booking duration exceeds the maximum allowed hours.'
-                ], 422);
-            }
+            // if ($bookingDuration > $maxBookingHours) {
+            //     return response()->json([
+            //         'code' => 422,
+            //         'message' => 'Booking duration exceeds the maximum allowed hours.'
+            //     ], 422);
+            // }
 
             // check if the user has already booked the room
 
