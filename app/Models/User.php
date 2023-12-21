@@ -55,14 +55,14 @@ class User extends Authenticatable
     ];
 
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $model->id = Uuid::uuid4()->toString();
-        });
-    }
+    //     static::creating(function ($model) {
+    //         $model->id = Uuid::uuid4()->toString();
+    //     });
+    // }
 
     protected function role(): Attribute
     {
