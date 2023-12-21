@@ -32,6 +32,8 @@ export default function Login({ status, canResetPassword }: { status?: string, c
         axiosClient.post(`/auth/login`, data).then((res) => {
             console.log("Success", res.data.token)
             localStorage.setItem("token", res.data.token)
+            //refresh page
+            window.location.reload();
         }
         ).catch((err) => {
             console.log("Error", err)
