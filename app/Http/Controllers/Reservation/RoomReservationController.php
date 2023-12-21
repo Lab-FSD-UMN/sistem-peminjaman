@@ -28,8 +28,6 @@ class RoomReservationController extends Controller
         return Inertia::render('Reservation/ReservationGroup/Room/showRoomReservationPage', [
             'rooms' => $rooms,
         ]);
-
-        
     }
 
     public function showRoomReservationDetailPage($id)
@@ -40,8 +38,6 @@ class RoomReservationController extends Controller
         return Inertia::render('Reservation/ReservationGroup/Room/showReservationRoomDetailPage', [
             'room' => $room,
         ]);
-
-        
     }
 
     public function showAllRoomReservationPending()
@@ -205,7 +201,8 @@ class RoomReservationController extends Controller
         //filter, if start date is before today, dont show
         $today = Carbon::now();
         $room_reservation = $room_reservation->filter(function ($value, $key) use ($today) {
-            return $value->reservation_start_time->gte($today);
+            // return $value->reservation_start_time->gte($today) && end date is today 
+            return $value->reservation_end_time->gte($today);
         });
 
 
@@ -301,6 +298,20 @@ class RoomReservationController extends Controller
                 return redirect()->back();
             }
 
+            //send notif
+            $user = $room_reservation->user;
+            $username = $user->name;
+            $reservation_status = $room_reservation->status;
+            if ($reservation_status == 1) {
+                $reservation_status = "approved";
+            } elseif ($reservation_status == 2) {
+                $reservation_status = "rejected";
+            } elseif ($reservation_status == 3) {
+                $reservation_status = "canceled";
+            }
+            $title = "Room Reservation Status Changed!";
+            $body = $username . " Your room reservation status has been changed to " . $reservation_status;
+            $user->notify(new SendNotif($title, $body));
             return response()->json([
                 'code' => 200,
                 'data' => [

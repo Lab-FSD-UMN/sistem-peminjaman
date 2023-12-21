@@ -14,6 +14,7 @@ use App\Exceptions\ResponseException;
 use App\Models\Booked_item;
 use App\Models\Booked_room;
 use App\Models\Item_image;
+use App\Notifications\SendNotif;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -70,11 +71,13 @@ class ItemReservationController extends Controller
             // Validation: Check if the item is available in that given time and given quantity
             // check if available quantity - booked quantity > requested quantity in that given time
 
-            $findItem = $item::find($request->item_id);
+            $findItem = $item::find($request->item_id)->with('user')->first();
 
-            if (!$findItem){
+
+            if (!$findItem) {
                 throw new ResponseException(404, 'Item not found.');
             }
+
 
             $booked_quantity = $Booked_item::where('item_id', $request->item_id)
                 // ->where('reservation_start_time', '<=', $request->reservation_date_start . ' ' . $request->reservation_time_start)
@@ -141,11 +144,25 @@ class ItemReservationController extends Controller
             // Commit the transaction
             DB::commit();
             // return redirect()->route('reservation.item')->with('success', 'Item has been reserved');
+            $user = $findItem->user;
+            $username = $user->name;
+            $reservation_status = $findItem->status;
+            if ($reservation_status == 1) {
+                $reservation_status = "approved";
+            } elseif ($reservation_status == 2) {
+                $reservation_status = "rejected";
+            } elseif ($reservation_status == 3) {
+                $reservation_status = "canceled";
+            }
+            $title = "Item Reservation Status Changed!";
+            $body = $username . " Your Item reservation status has been changed to " . $reservation_status;
+            $user->notify(new SendNotif($title, $body));
+            
             return response()->json([
                 'status' => 201,
                 'message' => 'Item has been reserved',
             ], 201);
-        }  catch (ResponseException $e){
+        } catch (ResponseException $e) {
             return response()->json([
                 "status" => $e->getStatusCode(),
                 "message" => $e->getMessage(),
@@ -171,7 +188,7 @@ class ItemReservationController extends Controller
 
             $booked_item = Booked_item::find($request->id);
 
-            if (!$booked_item){
+            if (!$booked_item) {
                 throw new ResponseException(404, "Requested reservation does not exist.");
             }
 
@@ -182,7 +199,7 @@ class ItemReservationController extends Controller
             return response()->json([
                 'message' => 'status has been changed',
             ], 200);
-        }  catch (ResponseException $e){
+        } catch (ResponseException $e) {
             return response()->json([
                 "code" => $e->getStatusCode(),
                 "message" => $e->getMessage(),
@@ -246,16 +263,15 @@ class ItemReservationController extends Controller
                 'message' => "Successfully fetched user's reservations.",
                 'data' => $reservations
             ], 200);
-
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
-
     }
 
-    public function userGetReservationDetail($id){
+    public function userGetReservationDetail($id)
+    {
         try {
 
             $user = auth()->user();
@@ -264,7 +280,7 @@ class ItemReservationController extends Controller
                 ->where('user_id', $user->id)
                 ->first();
 
-            if (!$reservation){
+            if (!$reservation) {
                 throw new ResponseException(404, "Reservation data does not exist.");
             }
 
@@ -273,25 +289,25 @@ class ItemReservationController extends Controller
                 'message' => "Successfully fetched user's reservation detail.",
                 'data' => $reservation
             ], 200);
-
-        } catch (ResponseException $e){
+        } catch (ResponseException $e) {
             return response()->json([
                 "code" => $e->getStatusCode(),
                 "message" => $e->getMessage(),
             ], $e->getStatusCode());
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function adminGetReservationDetail($id){
+    public function adminGetReservationDetail($id)
+    {
         try {
 
             $reservation = Booked_item::where('id', $id)->first();
 
-            if (!$reservation){
+            if (!$reservation) {
                 throw new ResponseException(404, "Reservation data does not exist.");
             }
 
@@ -300,13 +316,12 @@ class ItemReservationController extends Controller
                 'message' => "Successfully fetched user's reservation detail.",
                 'data' => $reservation
             ], 200);
-
-        } catch (ResponseException $e){
+        } catch (ResponseException $e) {
             return response()->json([
                 "code" => $e->getStatusCode(),
                 "message" => $e->getMessage(),
             ], $e->getStatusCode());
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
@@ -329,12 +344,10 @@ class ItemReservationController extends Controller
                 'code' => $success ? 200 : 404,
                 'message' => $success ? "Successfully canceled reservation." : "Requested reservation does not exist."
             ], 200);
-
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
     }
-
 }

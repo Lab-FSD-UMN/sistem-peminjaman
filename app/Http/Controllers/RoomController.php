@@ -21,21 +21,50 @@ use Ramsey\Uuid\Uuid;
 class RoomController extends Controller
 {
 
-    public function testNotif()
+    public function testNotif(Request $request)
     {
-        $user = auth()->user();
 
-        $user = new User([
-            'name' => 'John Doe',
-            'email' => ''
-        ]);
+        // validate user id
+        try {
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required|exists:users,id',
+            ]);
 
-        $user->notify(new SendNotif());
-        
-        return response()->json([
-            'code' => 200,
-            'message' => 'success',
-        ], 200);
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => $validator->errors(),
+                    'message' => 'validation error while sending notif',
+                    'code' => 422, // Unprocessable Entity
+                ], 422);
+            }
+
+            $user = User::findOrFail($request->user_id)->first();
+            //if user not have fcm token
+            if ($user->fcm_token == null) {
+                return response()->json([
+                    'code' => 422,
+                    'error' => 'User not have fcm token',
+                    'message' => 'Cannot send notif',
+                ], 422);
+            }
+            $userName = $user->name;
+            $user->notify(new SendNotif(
+                "Hallo " . $userName,
+                "This is a test notification"
+            ));
+            return response()->json([
+                'code' => 200,
+                'message' => 'success',
+                // 'data' is user fcm token
+                'data' => $user->fcm_token,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 422,
+                'error' => $e->getMessage(), // 'room not found
+                'message' => 'Cannot send notif',
+            ], 422);
+        }
     }
 
     // show / get all room data with pagination
