@@ -31,6 +31,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'fcm_token',
     ];
 
     /**
@@ -72,15 +73,24 @@ class User extends Authenticatable
 
 
 
-    public function  fcm_token()
-    {
-        $token_test = "feJHq8YIRBKjw8xoEwc-TY:APA91bET_H68pCKmCE3zXWbEaUzstZWIDNwnEy-x-Tc_30l5bcpc0gFMO5GSH8TH63FFkBC_YGZ6iYk7NuVMI4AGJdbhuAPuI4K1jMvm-JR3ZH35pbOU5Ooa7jBxHxw9MbgXGaP9jc3B";
-        return $token_test;
-    }
+    // public function fcm_token()
+    // {
+    //     // $token_test = "eZoVVP58QbeXnJbqupHtY3:APA91bGU7JxfCrk5LAXMsF8vXD3Jz4GSv-bUCEMpVP97lWqywMNhWkSUR97CU00aCd2SZITrXEKCZvZZQeNKbvgGZ7-9pmQKEOULkd0ygR3B9tlTfGSJFpXTSZpnWzT3IRrKrBwtOIJw";
+    //     // return $token_test;
+    //     //return fcm token from database
+    //     return $this->
+    // }
+
+
+    // public function fcm_token()
+    // {
+    //     return $this->fcm_token;
+    // }
 
     public function routeNotificationForFcm()
     {
-        
-        return $this->fcm_token();
+        // $token_test = "eZoVVP58QbeXnJbqupHtY3:APA91bGU7JxfCrk5LAXMsF8vXD3Jz4GSv-bUCEMpVP97lWqywMNhWkSUR97CU00aCd2SZITrXEKCZvZZQeNKbvgGZ7-9pmQKEOULkd0ygR3B9tlTfGSJFpXTSZpnWzT3IRrKrBwtOIJw";
+        // return $token_test;
+        return $this->fcm_token;
     }
 }

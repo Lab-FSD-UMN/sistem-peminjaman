@@ -185,4 +185,4 @@ Route::post('/reservation/item/schedule', [ReservationController::class, 'showIt
 
 
 
-Route::get('/testnotif', [RoomController::class, 'testNotif']);
+Route::post('/testnotif', [RoomController::class, 'testNotif']);
