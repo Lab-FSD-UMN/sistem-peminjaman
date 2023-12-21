@@ -1,18 +1,25 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import axiosClient from '@/Services/axiosClient'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 
-export default function showManageRoomPage({ room }: any) {
+export default function showManageItemPage() {
     const [modal, setModal] = React.useState(false)
     const [imagePreview, setImagePreview] = React.useState<any>(null)
 
+
+    const items: any = usePage().props.items;
     const [data, setData] = React.useState<any>({
         name: "",
-        location: "",
+        quantity: 1,
         description: "",
         image: "",
     })
+
+
+    useEffect(() => {
+        console.log("Item :", items)
+    }, [])
 
     const handleChange = (e: any) => {
         const key = e.target.id;
@@ -37,10 +44,10 @@ export default function showManageRoomPage({ room }: any) {
         const formData = new FormData()
         formData.append("image", data.image)
         formData.append("name", data.name)
-        formData.append("location", data.location)
+        formData.append("quantity", data.quantity)
         formData.append("description", data.description)
         // console.log("Form Data", data.image)
-        axiosClient.post(`/room/create`, formData)
+        axiosClient.post(`/admin/item`, formData)
             .then((res) => {
                 console.log("Success", res)
                 setModal(false)
@@ -92,12 +99,12 @@ export default function showManageRoomPage({ room }: any) {
                                     items-center placeholder-white my-[1rem] truncate'
                             />
                         </div>
-                        <button
+                        {/* <button
                             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
                     '
                         >
                             Sort By:
-                        </button>
+                        </button> */}
                     </div>
 
                     {/*  Room Data */}
@@ -111,7 +118,7 @@ export default function showManageRoomPage({ room }: any) {
                             <h1
                                 className='text-4xl font-bold text-left text-biru_umn w-full py-[1rem] px-4'
                             >
-                                Room Data
+                                Item Data
                             </h1>
                             <button
                                 onClick={() => setModal(true)}
@@ -125,7 +132,7 @@ export default function showManageRoomPage({ room }: any) {
                             //grid
                             className='grid grid-cols-3 gap-4'
                         >
-                            {room.map((data: any) => {
+                            {items.map((data: any) => {
                                 return (
                                     <Card
                                         {...data}
@@ -177,7 +184,7 @@ export default function showManageRoomPage({ room }: any) {
                                             className='text-lg leading-6 font-medium text-gray-900'
                                             id="modal-title"
                                         >
-                                            Add Room
+                                            Add Item
                                         </h3>
                                         {/* add room form */}
                                         <div
@@ -185,13 +192,14 @@ export default function showManageRoomPage({ room }: any) {
                                         >
                                             <input
                                                 onChange={handleChange}
-                                                type="text" name="name" id="name" placeholder='Room Name'
+                                                type="text" name="nam
+                                                e" id="name" placeholder='Item Name'
                                                 className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
                                         items-center placeholder-black my-[1rem] truncate'
                                             />
                                             <input
                                                 onChange={handleChange}
-                                                type="text" name="location" id="location" placeholder='Room Location'
+                                                type="text" name="quantity" id="quantity" placeholder='Item quantity'
                                                 className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
                                         items-center placeholder-black my-[1rem] truncate'
                                             />
@@ -263,9 +271,10 @@ export default function showManageRoomPage({ room }: any) {
 const Card = ({ ...data }: any) => {
     const [modal, setModal] = React.useState(false)
     const [imagePreview, setImagePreview] = React.useState<any>(null)
-    const [dataRoom, setDataRoom] = React.useState<any>({
+    const [dataItem, setDataItem] = React.useState<any>({
+        id: data.id,
         name: data.name,
-        location: data.location,
+        quantity: data.quantity,
         description: data.description,
         image: null,
     })
@@ -273,15 +282,15 @@ const Card = ({ ...data }: any) => {
     const handleChange = (e: any) => {
         const key = e.target.id;
         const value = e.target.value
-        setDataRoom({
-            ...dataRoom,
+        setDataItem({
+            ...dataItem,
             [key]: value
         })
     }
 
     const handleImageUpload = (e: any) => {
-        setDataRoom({
-            ...dataRoom,
+        setDataItem({
+            ...dataItem,
             image: e.target.files[0]
         })
         setImagePreview(URL.createObjectURL(e.target.files[0]))
@@ -290,15 +299,15 @@ const Card = ({ ...data }: any) => {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         const formData = new FormData()
-        if (dataRoom.image != null) {
-            formData.append("image", dataRoom.image)
+        if (dataItem.image != null) {
+            formData.append("image", dataItem.image)
         }
         formData.append("id", data.id)
-        formData.append("name", dataRoom.name)
-        formData.append("location", dataRoom.location)
-        formData.append("description", dataRoom.description)
-        console.log("Form Image ", dataRoom.image)
-        axiosClient.post(`/room/update`, formData)
+        formData.append("name", dataItem.name)
+        formData.append("quantity", dataItem.quantity)
+        formData.append("description", dataItem.description)
+        console.log("Form Image ", dataItem.image)
+        axiosClient.post(`/item/update`, formData)
             .then((res) => {
                 console.log("Success", res)
                 setModal(false)
@@ -310,7 +319,7 @@ const Card = ({ ...data }: any) => {
 
     //delete room
     const handleDelete = (id: any) => {
-        axiosClient.delete(`/room/${id}/delete`).then((res) => {
+        axiosClient.delete(`/item/delete/${id}`).then((res) => {
             console.log("Success", res)
             setModal(false)
             router.reload()
@@ -341,7 +350,7 @@ const Card = ({ ...data }: any) => {
                     <h2
                         className='text-white font-bold text-[1.5rem] text-left'
                     >
-                        {data.location} - {data.name}
+                        {data.name}
                     </h2>
                     <p>
                         {data.status}
@@ -389,7 +398,7 @@ const Card = ({ ...data }: any) => {
                                         className='text-lg leading-6 font-medium text-gray-900'
                                         id="modal-title"
                                     >
-                                        {data.location} - {data.name}
+                                        {data.name}
                                     </h3>
                                     <div
                                         className='mt-2'
@@ -409,28 +418,28 @@ const Card = ({ ...data }: any) => {
                                                 type="text" name="name" id="name" placeholder='Room Name'
                                                 className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
                                         items-center placeholder-black my-[1rem] truncate'
-                                                value={dataRoom.name}
+                                                value={dataItem.name}
                                             />
                                             <input
                                                 onChange={handleChange}
-                                                type="text" name="location" id="location" placeholder='Room Location'
+                                                type="number" name="location" id="location" placeholder='Item Quantity'
                                                 className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
                                         items-center placeholder-black my-[1rem] truncate'
-                                                value={dataRoom.location}
+                                                value={dataItem.quantity}
                                             />
                                             <input
                                                 onChange={handleChange}
                                                 type="text" name="description" id="description" placeholder='Room Description'
                                                 className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
                                         items-center placeholder-black my-[1rem] truncate'
-                                                value={dataRoom.description}
+                                                value={dataItem.description}
                                             />
                                             <input
                                                 onChange={handleImageUpload}
                                                 type="file"
                                                 accept='image/*'
                                                 name="image" id="image"
-                                                placeholder='Room Image'
+                                                placeholder='Item Image'
                                                 className='w-full bg-gray-50 text-black font-bold py-2 px-4 rounded
                                         items-center placeholder-black my-[1rem] truncate'
                                             />

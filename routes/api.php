@@ -141,6 +141,8 @@ Route::prefix('item')
         Route::get('/', 'showAllItemPage'); //  create item
         Route::get('/{id}', 'getItemById');
         Route::post('/search', 'searchItemData');
+        Route::post('/update', 'updateItem'); //  create item
+        Route::delete('/delete/{id}', 'deleteItem'); //  create item
     });
 
 // Room Route
