@@ -292,15 +292,11 @@ class RoomReservationController extends Controller
             $room_reservation->status = $request->input('status');
             $room_reservation->save();
             # if input status is web, redirect to web
-            if ($request->web == true) {
-                // return Inertia::red
-                // redrect back
-                return redirect()->back();
-            }
 
             //send notif
             $user = $room_reservation->user;
             $username = $user->name;
+            $username = ucwords($username);
             $reservation_status = $room_reservation->status;
             if ($reservation_status == 1) {
                 $reservation_status = "approved";
@@ -312,6 +308,13 @@ class RoomReservationController extends Controller
             $title = "Room Reservation Status Changed!";
             $body = $username . " Your room reservation status has been changed to " . $reservation_status;
             $user->notify(new SendNotif($title, $body));
+
+            if ($request->web == true) {
+                // return Inertia::red
+                // redrect back
+                return redirect()->back();
+            }
+
             return response()->json([
                 'code' => 200,
                 'data' => [
