@@ -1,10 +1,13 @@
 import axios from "axios";
 
-const axiosClient = axios.create({
+// axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`
+
+let axiosClient = axios.create({
     baseURL: "/api",
     headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
 });
 

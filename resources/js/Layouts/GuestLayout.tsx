@@ -5,6 +5,7 @@ import Credits from '@/Components/General/Credits';
 import Navbar from '@/Components/General/Navbar/Navbar';
 import { Link, usePage } from '@inertiajs/react';
 import React, { PropsWithChildren, ReactNode } from 'react';
+
 import "@/Styles/global.scss"
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import NavLink from '@/Components/NavLink';
@@ -13,6 +14,7 @@ import logoFSD from "/public/assets/logoFSD.png"
 
 export default function Guest({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = React.useState(false);
+
     const Usepage: any = usePage().props;
     const Role = Usepage.auth.user?.role ? Usepage.auth.user?.role : 'guest';
     useEffect(() => {
@@ -23,6 +25,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
+
     return (
         <>
             <div className="min-h-screen bg-greyBG">
@@ -41,7 +44,7 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                             <div className="flex items-center">
                                 <div className="flex items-center">
                                     <a href="/">
-                                        <ApplicationLogo/>
+                                        <ApplicationLogo />
                                         {/* <img src={logoFSD}/> */}
                                     </a>
                                 </div>
@@ -63,41 +66,47 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                                 <button onClick={toggleDropdown}
                                                     className="text-sm text-white font-semibold bg-transparent border-none focus:outline-none">
                                                     About</button>
-                                                <span><img src="https://i.ibb.co/d5ZCxkj/dropdown-icon.png" className='pl-2'/></span>
+                                                <span><img src="https://i.ibb.co/d5ZCxkj/dropdown-icon.png" className='pl-2' /></span>
                                             </div>
                                             {showDropdown && (
                                                 <div className="absolute mt-44 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
-                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
-                                                <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
+                                                    <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Vision & Mission</a>
+                                                    <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Organization Structure</a>
+                                                    <a href="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lab Coordinators</a>
                                                 </div>
                                             )}
                                         </div>
-                                        <div className='flex flex-row items-center font-medium leading-5 transition duration-150 ease-in-out focus:outline-none
-                                            bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30 transition duration-150 ease-in-out'>
+                                        <Link href="/reservation" className='flex flex-row items-center font-medium leading-5 transition duration-150  focus:outline-none
+                                            bg-white bg-opacity-50 px-5 py-2 rounded-s-full hover:bg-opacity-30  ease-in-out'>
                                             <div className='mr-2'>
                                                 <img src="https://i.ibb.co/gdzWDbZ/Vector.png" />
                                             </div>
                                             <div>
-                                                <Link href="/reservation" className='font-semibold text-white'>Reservation</Link>
+                                                <div className='font-semibold text-white'>Reservation</div>
                                             </div>
-                                        </div>
-                                        <div className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
-                                            bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
-                                            {
-                                                Role === "guest" ?
+                                        </Link>
 
-                                                    <NavLink href={route('login')} active={route().current('login')}>
-                                                        <a className="text-black font-bold">Login</a>
-                                                    </NavLink>
-                                                    :
-                                                    <NavLink
-                                                        active={route().current('logout')}
-                                                        method="post" href={route('logout')} as="button">
-                                                        <a className="text-black font-bold">Log Out</a>
-                                                    </NavLink>
-                                            }
-                                        </div>
+
+                                        {
+                                            Role === "guest" ?
+                                                <NavLink href={route('login')} active={route().current('login')}
+                                                    className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                                bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
+                                                    <div className="text-black font-bold">
+                                                        Login
+                                                    </div>
+                                                </NavLink>
+                                                :
+                                                <NavLink
+                                                    active={route().current('logout')}
+                                                    method="post" href={route('logout')} as="button"
+                                                    className='font-medium leading-4 transition duration-150 ease-in-out focus:outline-none
+                                                    bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80'>
+                                                    <div className="text-black font-bold">
+                                                        Log Out
+                                                    </div>
+                                                </NavLink>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -164,15 +173,15 @@ export default function Guest({ header, children }: PropsWithChildren<{ header?:
                                     {
                                         Role === "guest" ?
 
-                                        <ResponsiveNavLink href={route('login')} active={route().current('login')}>
-                                            Login
-                                        </ResponsiveNavLink>
-                                        :
-                                        <ResponsiveNavLink
-                                            active={route().current('logout')}
-                                            method="post" href={route('logout')} as="button">
-                                            Log Out
-                                        </ResponsiveNavLink>
+                                            <ResponsiveNavLink href={route('login')} active={route().current('login')}>
+                                                Login
+                                            </ResponsiveNavLink>
+                                            :
+                                            <ResponsiveNavLink
+                                                active={route().current('logout')}
+                                                method="post" href={route('logout')} as="button">
+                                                Log Out
+                                            </ResponsiveNavLink>
                                     }
                                 </div>
                             </div>

@@ -6,24 +6,74 @@ use App\Exceptions\ReservationException;
 use App\Models\Booked_room;
 use App\Models\Item_image;
 use App\Models\Room;
+use App\Models\User;
+use App\Notifications\SendNotif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 use Ramsey\Uuid\Uuid;
 
 class RoomController extends Controller
 {
 
+    public function testNotif(Request $request)
+    {
 
+        // validate user id
+        try {
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required|exists:users,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => $validator->errors(),
+                    'message' => 'validation error while sending notif',
+                    'code' => 422, // Unprocessable Entity
+                ], 422);
+            }
+
+            $user = User::findOrFail($request->user_id)->first();
+            //if user not have fcm token
+            if ($user->fcm_token == null) {
+                return response()->json([
+                    'code' => 422,
+                    'error' => 'User not have fcm token',
+                    'message' => 'Cannot send notif',
+                ], 422);
+            }
+            $userName = $user->name;
+            $user->notify(new SendNotif(
+                "Hallo " . $userName,
+                "This is a test notification"
+            ));
+            return response()->json([
+                'code' => 200,
+                'message' => 'success',
+                // 'data' is user fcm token
+                'data' => $user->fcm_token,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 422,
+                'error' => $e->getMessage(), // 'room not found
+                'message' => 'Cannot send notif',
+            ], 422);
+        }
+    }
 
     // show / get all room data with pagination
     public function showAllRoom() // this function is for show all room on database
     {
         try {
+
             $rooms = Room::all();
-            
+
             #get image with storage link
             foreach ($rooms as $room) {
                 $room->image = Storage::url($room->image);
@@ -105,7 +155,7 @@ class RoomController extends Controller
             $room = Room::findOrFail($id);
 
             $room->image = Storage::url($room->image);
-            
+
             return response()->json([
                 'code' => 200,
                 'message' => 'success',
@@ -130,7 +180,6 @@ class RoomController extends Controller
                 'name' => 'required|unique:rooms,name', // Use 'title' for the unique rule
                 'description' => 'required',
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                // 'location' => 'required|unique:rooms,location',
                 'location' => 'required',
             ]);
             if ($validator->fails()) {
@@ -140,7 +189,6 @@ class RoomController extends Controller
                     'code' => 422, // Unprocessable Entity
                 ], 422);
             }
-
             DB::beginTransaction();
 
             $image_link = null;
@@ -203,7 +251,6 @@ class RoomController extends Controller
             #get id
             $room = Room::findOrFail($request->id);
             #update only if attribute is not null
-
 
             DB::beginTransaction();
             // Update only if the request data is not null

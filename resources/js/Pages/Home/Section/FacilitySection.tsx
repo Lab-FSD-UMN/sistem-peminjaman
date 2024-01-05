@@ -6,11 +6,7 @@ import { Swiper } from "swiper";
 import arrow from "/public/assets/arrow.png"
 import PrimaryButton from "@/Components/PrimaryButton";
 import { GoArrowRight } from "react-icons/go";
-
-// type Props = {
-//     facilityTitle: string;
-//     facilityDescription: string;
-// };
+import 'swiper/css';
 
 function FacilitySection() {
     const TestimoniesData: any = usePage().props.testimonies;
@@ -20,7 +16,7 @@ function FacilitySection() {
 
     function nextSlide() {
         setCurrentFacilityIndex((prevIndex) => (prevIndex + 1) % TestimoniesData.length);
-    
+
         if (swiperRef.current) {
             swiperRef.current.slideNext();
             swiperRef.current.autoplay.start();
@@ -71,7 +67,7 @@ function FacilitySection() {
                                     </p>
                                     <PrimaryButton className="md:px-5 md:py-3 bg-sky-600">
                                         Read more
-                                        <span><img src="https://i.ibb.co/GFRFKQg/arrow-pendek.png" className="ml-3"/></span>
+                                        <span><img src="https://i.ibb.co/GFRFKQg/arrow-pendek.png" className="ml-3" /></span>
                                     </PrimaryButton>
                                 </div>
                                 <div>

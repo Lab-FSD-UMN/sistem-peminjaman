@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,8 @@ use Illuminate\Http\Request;
 
 class APIAuthController extends Controller
 {
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         try {
 
             $validator = Validator::make($request->all(), [
@@ -47,7 +49,7 @@ class APIAuthController extends Controller
                 "token" => $token,
                 "user" => $user
             ], 200);
-        } catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 "message" => $e->getMessage(),
             ], 500);
@@ -55,7 +57,8 @@ class APIAuthController extends Controller
     }
 
 
-    public function logout(){
+    public function logout()
+    {
         try {
             $user = auth()->user();
             $user->tokens()->delete();
@@ -63,8 +66,7 @@ class APIAuthController extends Controller
             return response()->json([
                 "message" => "Successfully logged out."
             ], 200);
-
-        } catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 "message" => $e->getMessage(),
             ], 500);
@@ -72,12 +74,13 @@ class APIAuthController extends Controller
     }
 
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:'.User::class,
+                'email' => 'required|string|email|max:255|unique:' . User::class,
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
@@ -96,11 +99,43 @@ class APIAuthController extends Controller
                 "token" => $token,
                 "user" => $user
             ], 200);
-
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 "message" => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    public function updateFCMToken(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'fcm_token' => 'required',
+            ], [
+                'fcm_token.required' => 'FCM token must not be empty.',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validation failed.',
+                    'code' => 422,
+                ], 422);
+            }
+
+            $user = auth()->user();
+            $user->fcm_token = $request->fcm_token;
+            $user->save();
+
+            return response()->json([
+                "message" => "Successfully updated FCM token.",
+                "code" => 200,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => "Failed to update FCM token.",
+                "code" => 422,
+            ], 422);
         }
     }
 }

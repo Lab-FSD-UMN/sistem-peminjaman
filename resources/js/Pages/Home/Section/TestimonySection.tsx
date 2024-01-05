@@ -3,7 +3,8 @@ import { usePage } from '@inertiajs/react'
 import React, { useEffect, useRef } from 'react'
 import { SwiperSlide } from 'swiper/react'
 import { Swiper } from "swiper";
-import "swiper/swiper.min.css";
+// import "swiper/swiper.min.css";
+import 'swiper/css';
 
 export default function TestimonySection(Testimonies: any) {
     const TestimoniesData: any = usePage().props.testimonies

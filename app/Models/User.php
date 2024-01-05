@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\SendNotif;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,6 +31,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'fcm_token',
     ];
 
     /**
@@ -53,19 +55,42 @@ class User extends Authenticatable
     ];
 
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $model->id = Uuid::uuid4()->toString();
-        });
-    }
+    //     static::creating(function ($model) {
+    //         $model->id = Uuid::uuid4()->toString();
+    //     });
+    // }
 
     protected function role(): Attribute
     {
         return new Attribute(
             get: fn ($value) => ["user", "admin"][$value]
         );
+    }
+
+
+
+    // public function fcm_token()
+    // {
+    //     // $token_test = "eZoVVP58QbeXnJbqupHtY3:APA91bGU7JxfCrk5LAXMsF8vXD3Jz4GSv-bUCEMpVP97lWqywMNhWkSUR97CU00aCd2SZITrXEKCZvZZQeNKbvgGZ7-9pmQKEOULkd0ygR3B9tlTfGSJFpXTSZpnWzT3IRrKrBwtOIJw";
+    //     // return $token_test;
+    //     //return fcm token from database
+    //     return $this->
+    // }
+
+
+    // public function fcm_token()
+    // {
+    //     return $this->fcm_token;
+    // }
+
+    public function routeNotificationForFcm()
+    {
+        // $token_test = "eZoVVP58QbeXnJbqupHtY3:APA91bGU7JxfCrk5LAXMsF8vXD3Jz4GSv-bUCEMpVP97lWqywMNhWkSUR97CU00aCd2SZITrXEKCZvZZQeNKbvgGZ7-9pmQKEOULkd0ygR3B9tlTfGSJFpXTSZpnWzT3IRrKrBwtOIJw";
+        // return $token_test;
+        return $this->fcm_token;
     }
 }

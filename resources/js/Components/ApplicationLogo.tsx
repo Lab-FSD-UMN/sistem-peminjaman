@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/react';
 import { SVGAttributes, useEffect } from 'react';
+import LogoBackup from '@/Assets/image/logo.png';
 
 export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
     const page: any = usePage().props;
@@ -8,10 +9,8 @@ export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
     // }, []);
     return (
         <img
-            className='
-                h-11
-            '
-            src={page?.companyData.company_logo}
+            className='h-11'
+            src={LogoBackup}
         />
     );
 }

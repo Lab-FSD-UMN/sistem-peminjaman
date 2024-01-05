@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Reservation;
 use App\Http\Controllers\Controller;
 use App\Models\Booked_room;
 use App\Models\Room;
+use App\Notifications\SendNotif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -96,6 +97,7 @@ class RoomReservationController extends Controller
                 'reservation_date_start' => 'required|date_format:Y-m-d',
                 'reservation_date_end' => 'required|date_format:Y-m-d',
                 'note' => 'nullable|string',
+                'web' => 'nullable|boolean',
             ]);
 
             # If validation fails, return the error messages
@@ -132,7 +134,7 @@ class RoomReservationController extends Controller
             if ($clashingBookings) {
                 return response()->json([
                     'code' => 422,
-                    'message' => 'Booking clashes with existing reservation.'
+                    'message' => 'Booking clashes with existing reservation.',
                 ], 422);
             }
 
@@ -142,14 +144,14 @@ class RoomReservationController extends Controller
             $bookingDuration = $endTime->diffInHours($startTime);
 
             // Check if booking duration exceeds the maximum allowed hours (4 hours in this example)
-            $maxBookingHours = 4;
+            // $maxBookingHours = 4;
 
-            if ($bookingDuration > $maxBookingHours) {
-                return response()->json([
-                    'code' => 422,
-                    'message' => 'Booking duration exceeds the maximum allowed hours.'
-                ], 422);
-            }
+            // if ($bookingDuration > $maxBookingHours) {
+            //     return response()->json([
+            //         'code' => 422,
+            //         'message' => 'Booking duration exceeds the maximum allowed hours.'
+            //     ], 422);
+            // }
 
             // check if the user has already booked the room
 
@@ -164,6 +166,9 @@ class RoomReservationController extends Controller
             ]);
 
             DB::commit();
+            if ($request->web == true) {
+                return redirect()->back()->with('success', 'Reservation created successfully!');
+            }
 
             return response()->json([
                 'code' => 200,
@@ -174,6 +179,9 @@ class RoomReservationController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            if ($request->web == true) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
             return response()->json([
                 'code' => 422,
                 'error' => $e->getMessage(),
@@ -190,14 +198,11 @@ class RoomReservationController extends Controller
         $id = auth()->user()->id;
         $room_reservation = Booked_room::with('room')->where('user_id', $id)->get();
 
-        //image storage url 
-        foreach ($room_reservation as $item) {
-            $item->room->image = Storage::url($item->room->image);
-        }
         //filter, if start date is before today, dont show
         $today = Carbon::now();
         $room_reservation = $room_reservation->filter(function ($value, $key) use ($today) {
-            return $value->reservation_start_time->gte($today);
+            // return $value->reservation_start_time->gte($today) && end date is today 
+            return $value->reservation_end_time->gte($today);
         });
 
 
@@ -206,6 +211,10 @@ class RoomReservationController extends Controller
         $room_reservation = $room_reservation->sortBy('reservation_start_time');
         // get only its array value
         $room_reservation = $room_reservation->values()->all();
+
+        // foreach ($room_reservation as $item) {
+        //     $item->room->image = Storage::url($item->room->image);
+        // }
         return response()->json([
             'code' => 200,
             'data' => $room_reservation,
@@ -283,11 +292,29 @@ class RoomReservationController extends Controller
             $room_reservation->status = $request->input('status');
             $room_reservation->save();
             # if input status is web, redirect to web
+
+            //send notif
+            $user = $room_reservation->user;
+            $username = $user->name;
+            $username = ucwords($username);
+            $reservation_status = $room_reservation->status;
+            if ($reservation_status == 1) {
+                $reservation_status = "approved";
+            } elseif ($reservation_status == 2) {
+                $reservation_status = "rejected";
+            } elseif ($reservation_status == 3) {
+                $reservation_status = "canceled";
+            }
+            $title = "Room Reservation Status Changed!";
+            $body = $username . " Your room reservation status has been changed to " . $reservation_status;
+            $user->notify(new SendNotif($title, $body));
+
             if ($request->web == true) {
                 // return Inertia::red
                 // redrect back
                 return redirect()->back();
             }
+
             return response()->json([
                 'code' => 200,
                 'data' => [
