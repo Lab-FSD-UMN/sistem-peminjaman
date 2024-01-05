@@ -190,15 +190,20 @@ const Route = [
         route: 'admin.webconfig'
     },
     {
-        name: 'Product Config',
-        path: '/admin/product',
-        route: 'admin.product'
+        name: 'Facility Config',
+        path: '/admin/facilityconfig',
+        route: 'admin.facilityconfig'
     },
-    {
-        name: 'Gallery Config',
-        path: '/admin/gallery',
-        route: 'admin.gallery'
-    },
+    // {
+    //     name: 'Product Config',
+    //     path: '/admin/product',
+    //     route: 'admin.product'
+    // },
+    // {
+    //     name: 'Gallery Config',
+    //     path: '/admin/gallery',
+    //     route: 'admin.gallery'
+    // },
     // {
     //     name: 'Reservation',
     //     path: '/admin/reservation',

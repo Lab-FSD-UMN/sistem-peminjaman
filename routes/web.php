@@ -14,6 +14,7 @@ use App\Http\Controllers\Reservation\RoomReservationController as ReservationRoo
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\WebconfigController;
+use App\Http\Controllers\FacilityConfigController;
 use App\Models\Image;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -198,6 +199,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Reservation System END
     Route::get('/admin/webconfig', WebconfigController::class)->name('admin.webconfig');
     Route::post('/admin/webconfig', [WebconfigController::class, 'UpdateWebconfig'])->name('admin.webconfig.update');
+
+    // FACILITY
+    Route::get('/admin/facilityconfig', FacilityConfigController::class)->name('admin.facilityconfig');
+    Route::post('/admin/facilityconfig', [FacilityConfigController::class, 'UpdateFacilityconfig'])->name('admin.facilityconfig.update');
 
     // PRODUCT
     Route::get('/admin/product', [ProductController::class, 'AdminPage'])->name('admin.product');

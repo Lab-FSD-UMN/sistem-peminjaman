@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('kode');
             $table->string('name');
-            $table->text('description');
             $table->string('image');
+            $table->text('description');
+            $table->text('type');
             $table->timestamps();
         });
     }
