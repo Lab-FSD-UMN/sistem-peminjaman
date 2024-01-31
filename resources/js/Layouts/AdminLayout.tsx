@@ -73,22 +73,24 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
 
                                         </Link>
 
-                                        <div className='font-medium leading-4 focus:outline-none
+                                        {
+                                            Role === "guest" ?
+                                                <NavLink
+                                                    href={route('login')}
+                                                    active={route().current('login')} as="button"
+                                                    className='font-medium leading-4 focus:outline-none
+                                        bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
+                                                    <a className="text-black font-bold">Log in</a>
+                                                </NavLink>
+                                                :
+                                                <NavLink
+                                                    active={route().current('logout')}
+                                                    method="post" href={route('logout')} as="button"
+                                                    className='font-medium leading-4 focus:outline-none
                                             bg-kuning px-5 py-2 rounded-e-full hover:bg-opacity-80 transition duration-150 ease-in-out'>
-                                            {
-                                                Role === "guest" ?
-
-                                                    <NavLink href={route('login')} active={route().current('login')}>
-                                                        <a className="text-black font-bold">Login</a>
-                                                    </NavLink>
-                                                    :
-                                                    <NavLink
-                                                        active={route().current('logout')}
-                                                        method="post" href={route('logout')} as="button">
-                                                        <a className="text-black font-bold">Log Out</a>
-                                                    </NavLink>
-                                            }
-                                        </div>
+                                                    <a className="text-black font-bold">Log Out</a>
+                                                </NavLink>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -161,16 +163,17 @@ export default function AdminLayout({ header, children }: PropsWithChildren<{ he
                             </div>
                         </div>
                     </div>
-                </nav>
+                </nav >
 
                 {header && (
                     <header className="bg-white shadow">
                         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
                     </header>
-                )}
+                )
+                }
 
                 <main>{children}</main>
-            </div>
+            </div >
             {/* <Credits />
             <Footer /> */}
         </>
@@ -190,15 +193,20 @@ const Route = [
         route: 'admin.webconfig'
     },
     {
-        name: 'Product Config',
-        path: '/admin/product',
-        route: 'admin.product'
+        name: 'Facility Config',
+        path: '/admin/facilityconfig',
+        route: 'admin.facilityconfig'
     },
-    {
-        name: 'Gallery Config',
-        path: '/admin/gallery',
-        route: 'admin.gallery'
-    },
+    // {
+    //     name: 'Product Config',
+    //     path: '/admin/product',
+    //     route: 'admin.product'
+    // },
+    // {
+    //     name: 'Gallery Config',
+    //     path: '/admin/gallery',
+    //     route: 'admin.gallery'
+    // },
     // {
     //     name: 'Reservation',
     //     path: '/admin/reservation',

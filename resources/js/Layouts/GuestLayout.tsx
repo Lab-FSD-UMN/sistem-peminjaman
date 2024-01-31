@@ -210,6 +210,11 @@ const Route = [
         path: '/',
         route: 'home'
     },
+    {
+        name: 'Facility',
+        path: '/facility',
+        route: 'facility'
+    },
     // {
     //     name: 'About',
     //     path: '/about',

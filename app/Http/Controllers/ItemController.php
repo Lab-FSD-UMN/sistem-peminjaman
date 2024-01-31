@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 use Ramsey\Uuid\Uuid;
 
 class ItemController extends Controller
@@ -179,6 +180,153 @@ class ItemController extends Controller
             return response()->json([
                 'error' => 'An error occurred while searching for items.',
             ], 500);
+        }
+    }
+
+    public function showAdminReservationItemPage()
+    {
+        $item = Item::all();
+
+        foreach ($item as $i) {
+            $i->image = Storage::url($i->image);
+        }
+
+        return Inertia::render(
+            'Admin/Reservation/ReservationMenu/Submenu/Item/showManageItemPage',
+            [
+                'items' => $item
+            ]
+        );
+    }
+
+    public function updateRoom(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required|exists:rooms,id',
+                'name' => 'unique:rooms,name',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+            #get id
+            $room = Item::findOrFail($request->id);
+            #update only if attribute is not null
+
+            DB::beginTransaction();
+            // Update only if the request data is not null
+            if ($request->has('name') && $request->name != null && $request->name != '') {
+                $room->name = $request->name;
+            }
+
+            if ($request->has('description') && $request->description != null && $request->description != '') {
+                $room->description = $request->description;
+            }
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $image_title = imgExtention($image);
+                $image = Storage::putFileAs(
+                    'public/images/rooms',
+                    $request->file('image'),
+                    $image_title
+                );
+                $image_link = $image;
+                $room->image = $image_link;
+            }
+
+            $room->save();
+            DB::commit();
+
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'room' => $room,
+                ],
+                'message' => 'Item has been updated',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction in case of an exception
+            return response()->json([
+                'code' => 404,
+                'error' => $e->getMessage(), // 'room not found
+                'message' => 'Cannot update room',
+            ], 404);
+        }
+    }
+
+
+
+    public function updateItem(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required|exists:items,id',
+                'name' => 'unique:items,name',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+            #get id
+            $item = Item::findOrFail($request->id);
+            #update only if attribute is not null
+
+            DB::beginTransaction();
+            // Update only if the request data is not null
+            if ($request->has('name') && $request->name != null && $request->name != '') {
+                $item->name = $request->name;
+            }
+
+            if ($request->has('description') && $request->description != null && $request->description != '') {
+                $item->description = $request->description;
+            }
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $image_title = imgExtention($image);
+                $image = Storage::putFileAs(
+                    'public/images/rooms',
+                    $request->file('image'),
+                    $image_title
+                );
+                $image_link = $image;
+                $item->image = $image_link;
+            }
+
+            $item->save();
+            DB::commit();
+
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'room' => $item,
+                ],
+                'message' => 'Item has been updated',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction in case of an exception
+            return response()->json([
+                'code' => 404,
+                'error' => $e->getMessage(), // 'room not found
+                'message' => 'Cannot update item',
+            ], 404);
+        }
+    }
+
+    public function deleteItem($id)
+    {
+        try {
+            $item = Item::findOrFail($id);
+            $item->delete();
+            return response()->json([
+                'code' => 200,
+                'data' => [
+                    'room' => $item,
+                ],
+                'message' => 'Item has been deleted',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 422,
+                'error' => $e->getMessage(), // 'room not found
+                'message' => 'Cannot delete item',
+            ], 404);
         }
     }
 }
